@@ -2,7 +2,7 @@ from django.db import models
 
 from requests import Session
 
-API = "https://api.rawg.io/api/games?key=b6a35b94fc574ae78750e6834e5e5e34"
+API = "https://api.rawg.io/api"
 TOKEN = "b6a35b94fc574ae78750e6834e5e5e34"
 
 class ApiSearch():
@@ -14,15 +14,18 @@ class ApiSearch():
         }
         self.session = Session()
         self.session.headers.update(self.headers)
+
+
     def get_all_games(self):
         '''gets a list of all games in db'''
-        url = self.apiurl
+        url = self.apiurl + f'/games?key={TOKEN}'
         response = self.session.get(url)
         data = response.json()
         return data
 
 
-
-# game = ApiSearch()
-# instance = game.get_all_games()
-# print(instance)
+    def search_one_game(self, slug):
+        url = self.apiurl + f'games/{slug}?key={TOKEN}'
+        response = self.session.get(url)
+        data = response.json()
+        return data

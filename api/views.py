@@ -22,6 +22,3 @@ class ApiHomeView(View):
 
     def post(self, request):
         ...
-
-
-
