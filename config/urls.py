@@ -21,7 +21,6 @@ from api.urls import urlpatterns as api_url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
 ]
 
 urlpatterns += account_url

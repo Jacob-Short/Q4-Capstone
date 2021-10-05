@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/api/style.css" />
+    <title>Api</title>
+</head>
+
+<body>
+    {% block content %}
+    <form action="" method="post">
+        {% csrf_token %} {{ form.as_p }}
+        <input type="submit" value="Submit" />
+      </form>
+    {% for result in results %}
+    <div className="card text-white bg-info mb-3" style="max-width: 18rem;">
+        <img src="{{result.background_image}}" class="card-img-top" alt="photo_of_game">
+        <div class="card-body">
+            <h5 class="card-title">{{result.name}}: {{result.released}}</h5>
+            <p class="card-text">{{result.ratings}}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{result.id}}</li>
+            <li class="list-group-item">Rating Top: {{result.rating_top}}</li>
+            <li class="list-group-item">A third item</li>
+        </ul>
+        <div class="card-body">
+            <a href="#" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>
+        </div>
+    </div>
+    
+
+    {% endfor %}
+
+
+    {% endblock %}
+</body>
+
+</html>
