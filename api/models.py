@@ -1,4 +1,5 @@
 from django.db import models
+import random
 
 from requests import Session
 
@@ -22,6 +23,33 @@ class ApiSearch():
         response = self.session.get(url)
         data = response.json()
         return data
+
+    
+    def get_three_games(self):
+        '''returns 3 random images'''
+        url = self.apiurl + f'/games?key={TOKEN}'
+        response = self.session.get(url)
+        data = response.json()
+        res = data['results']
+
+        three_photos = []
+        def main():
+            max = len(res)
+            for _ in range(3):
+                ran = random.randint(0, max)
+                three_photos.append(((res[ran]['background_image']), (res[ran]['name'])))
+
+
+
+            print(three_photos)
+
+        try:
+            main()
+        except Exception as err:
+            print(err)
+            main()
+
+        return three_photos
 
 
     def search_one_game(self, slug):
