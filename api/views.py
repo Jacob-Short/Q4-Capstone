@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic import View
 from api.models import ApiSearch
 from api.forms import SearchApiForm
@@ -44,11 +44,37 @@ class ApiAllGamesView(View):
         initial_search = ApiSearch()
         all_games = initial_search.get_all_games()
 
-        results = all_games["results"]
+        results = all_games
         # print(results)
 
         context = {"results": results, "form": form}
         return render(request, template, context)
 
     def post(self, request):
-        ...
+        template = 'api_game_detail.html'
+        form = SearchApiForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            game = data['search']
+
+            initial_search = ApiSearch()
+            all_games = initial_search.get_all_games()
+
+            for title in all_games:
+                if title['name'].lower() == game.lower():
+                    try:
+                        data = initial_search.search_one_game(game)
+                        print(title['name'])
+                        print(f'data: \n {data}')
+                        context = {'data': data}
+
+                        # print(f'name: {data.name}')
+                        return render(request, template, context)
+                    # print(data)
+                    except Exception as err:
+                        print(err)
+                        return redirect('/')
+
+            
+
+

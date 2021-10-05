@@ -22,7 +22,8 @@ class ApiSearch():
         url = self.apiurl + f'/games?key={TOKEN}'
         response = self.session.get(url)
         data = response.json()
-        return data
+        res = data["results"]
+        return res
 
     
     def get_three_games(self):
@@ -39,9 +40,7 @@ class ApiSearch():
                 ran = random.randint(0, max)
                 three_photos.append(((res[ran]['background_image']), (res[ran]['name'])))
 
-
-
-            print(three_photos)
+            # print(three_photos)
 
         try:
             get_random()
@@ -53,7 +52,9 @@ class ApiSearch():
 
 
     def search_one_game(self, slug):
-        url = self.apiurl + f'games/{slug}?key={TOKEN}'
+        print(type(slug))
+        url = self.apiurl + f'/games/{slug}?key={TOKEN}'
         response = self.session.get(url)
         data = response.json()
+        print(data)
         return data
