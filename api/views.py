@@ -2,8 +2,10 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 from api.models import ApiSearch
 from api.forms import SearchApiForm
+import random
 
 from django.contrib.auth.decorators import login_required
+
 
 class ApiHomeView(View):
     """homepage for api"""
@@ -35,6 +37,7 @@ class ApiHomeView(View):
     def post(self, request):
         ...
 
+
 class ApiAllGamesView(View):
     """displaying all games in api"""
 
@@ -45,36 +48,62 @@ class ApiAllGamesView(View):
         all_games = initial_search.get_all_games()
 
         results = all_games
-        # print(results)
+    
 
-        context = {"results": results, "form": form}
+        xbox_games = []
+        playstation_games = []
+        pc_games = []
+
+        for game in all_games:
+            platform = game["platforms"]
+            for obj in platform:
+                spec_game = obj["platform"]["name"]
+                print(spec_game)
+                if spec_game == "Xbox One" or spec_game == "Xbox 360":
+                    # print(obj["platform"]["name"])
+                    xbox_games.append(game)
+                elif (
+                    spec_game == "PlayStation 4"
+                    or spec_game == "PlayStation 4"
+                    or spec_game == "PlayStation 3"
+                ):
+                    playstation_games.append(game)
+                elif spec_game == "PC":
+                    pc_games.append(game)
+
+
+        print(f'this is the pc game\n{playstation_games}')
+
+        context = {
+            "results": results,
+            "form": form,
+            "pc_games": pc_games,
+            "playstation_games": playstation_games,
+            "xbox_games": xbox_games,
+        }
         return render(request, template, context)
 
     def post(self, request):
-        template = 'api_game_detail.html'
+        template = "api_game_detail.html"
         form = SearchApiForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            game = data['search']
+            game = data["search"]
 
             initial_search = ApiSearch()
             all_games = initial_search.get_all_games()
 
             for title in all_games:
-                if title['name'].lower() == game.lower():
+                if title["name"].lower() == game.lower():
                     try:
                         data = initial_search.search_one_game(game)
-                        print(title['name'])
-                        print(f'data: \n {data}')
-                        context = {'data': data}
+                        print(title["name"])
+                        print(f"data: \n {data}")
+                        context = {"data": data}
 
                         # print(f'name: {data.name}')
                         return render(request, template, context)
                     # print(data)
                     except Exception as err:
                         print(err)
-                        return redirect('/')
-
-            
-
-
+                        return redirect("/")

@@ -12,30 +12,96 @@
 
 <body>
     {% block content %}
-    <form action="" method="post">
+    <!-- <form action="" method="post">
         {% csrf_token %} {{ form.as_p }}
         <input type="submit" value="Submit" />
-      </form>
-    {% for result in results %}
-    <div className="card text-white bg-info mb-3" style="max-width: 18rem;">
-        <img src="{{result.background_image}}" class="card-img-top" alt="photo_of_game">
-        <div class="card-body">
-            <h5 class="card-title">{{result.name}}: {{result.released}}</h5>
-            <p class="card-text">{{result.ratings}}</p>
+    </form> -->
+
+    <form class="row gy-2 gx-3 align-items-center" method="post">
+        {% csrf_token %} {{ form.as_p }}
+        <div class="col-auto">
+          <label class="visually-hidden" for="autoSizingInput">Name</label>
+          <input type="text" class="form-control" id="autoSizingInput" placeholder="Portal">
         </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">{{result.id}}</li>
-            <li class="list-group-item">Rating Top: {{result.rating_top}}</li>
-            <li class="list-group-item">A third item</li>
-        </ul>
-        <div class="card-body">
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
+        <div class="col-auto">
+          <label class="visually-hidden" for="autoSizingInputGroup">Username</label>
+          <div class="input-group">
+            <div class="input-group-text">@</div>
+            <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="Username">
+          </div>
+        </div>
+        <div class="col-auto">
+          <label class="visually-hidden" for="autoSizingSelect">Preference</label>
+          <select class="form-select" id="autoSizingSelect">
+            <option selected>Choose...</option>
+            <option value="1">PC</option>
+            <option value="2">PlayStation</option>
+            <option value="3">Xbox</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="autoSizingCheck">
+            <label class="form-check-label" for="autoSizingCheck">
+              Remember me
+            </label>
+          </div>
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </form>
+
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <h2>PC Games:</h2>
+            {% for result in pc_games %}
+            <div class="card">
+                <img src="{{result.background_image}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{result.name}}</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col">
+            <h2>Playstation Games:</h2>
+            {% for result in playstation_games %}
+
+            <div class="card">
+                <img src="{{result.background_image}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{result.name}}</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+        <div class="col">
+            <h2>Xbox Games:</h2>
+
+            {% for result in xbox_games %}
+
+            <div class="card">
+                <img src="{{result.background_image}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{result.name}}</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content.</p>
+                </div>
+            </div>
+            {% endfor %}
+
         </div>
     </div>
-    
 
-    {% endfor %}
+
+
 
 
     {% endblock %}
