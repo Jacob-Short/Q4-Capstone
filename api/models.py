@@ -33,7 +33,7 @@ class ApiSearch():
         res = data['results']
 
         three_photos = []
-        def main():
+        def get_random():
             max = len(res)
             for _ in range(3):
                 ran = random.randint(0, max)
@@ -44,10 +44,10 @@ class ApiSearch():
             print(three_photos)
 
         try:
-            main()
+            get_random()
         except Exception as err:
             print(err)
-            main()
+            get_random()
 
         return three_photos
 

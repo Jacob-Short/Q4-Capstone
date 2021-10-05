@@ -3,6 +3,7 @@ from django.views.generic import View
 from api.models import ApiSearch
 from api.forms import SearchApiForm
 
+from django.contrib.auth.decorators import login_required
 
 class ApiHomeView(View):
     """homepage for api"""
@@ -33,7 +34,6 @@ class ApiHomeView(View):
 
     def post(self, request):
         ...
-
 
 class ApiAllGamesView(View):
     """displaying all games in api"""
