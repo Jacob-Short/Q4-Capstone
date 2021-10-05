@@ -49,7 +49,7 @@ class ApiAllGamesView(View):
 
         results = all_games
     
-
+        switch_games = []
         xbox_games = []
         playstation_games = []
         pc_games = []
@@ -70,6 +70,8 @@ class ApiAllGamesView(View):
                     playstation_games.append(game)
                 elif spec_game == "PC":
                     pc_games.append(game)
+                elif spec_game == "Nintendo Switch":
+                    switch_games.append(game)
 
 
         print(f'this is the pc game\n{playstation_games}')
@@ -80,6 +82,7 @@ class ApiAllGamesView(View):
             "pc_games": pc_games,
             "playstation_games": playstation_games,
             "xbox_games": xbox_games,
+            "switch_games": switch_games,
         }
         return render(request, template, context)
 
