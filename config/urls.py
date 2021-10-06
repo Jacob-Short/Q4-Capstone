@@ -28,3 +28,4 @@ urlpatterns = [
 urlpatterns += account_url
 urlpatterns += api_url
 urlpatterns += message_url
+urlpatterns += game_url
