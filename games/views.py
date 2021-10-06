@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
+from api.models import ApiSearch
+from games.models import Game
 
 import sqlite3
 import random
@@ -38,24 +40,26 @@ class FillDbWithGames(View):
     '''instantiate db with games from api'''
 
     def get(self, request):
-        ...
+       
+        def populate():
+            req = ApiSearch()
+            api_games = req.get_all_games()
+            for game in api_games:
+                # print(f'each game from populate: {game}')
+                populated_game = Game.objects.create(
+                    name = game['name'],
+                    slug = game['slug'],
+                    # language = game['language'],
+                    rating = game['rating'],
+                    # screen_shots = game['screen_shots'],
+                    platform = game['platforms'],
+                    released_at = game['released'],
+                    image_background = game['background_image'],
+                )
+
+        populate()
+        return redirect('/')
 
 
     def post(self, request):
-
-        def populate(self, reuqest):
-
-            # conn = sqlite3.connect("the-portal.db")
-
-            # c = conn.cursor()
-
-            # c.execute(
-            #     """
-            #     CREATE TABLE IF NOT EXISTS games (
-            #         ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            #         name VARCHAR(150) NOT NULL,
-            #         password VARCHAR(150) NOT NULL,
-                    
-            #     )
-            #     """
-            # )
+        ...
