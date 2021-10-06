@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'accounts',
     'api',
     'message', 
-    'games'
 ]
 
 MIDDLEWARE = [
