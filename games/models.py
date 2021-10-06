@@ -5,6 +5,13 @@ from accounts.models import MyUser
 
 # from reviews.models import Review
 
+'''
+Game:
+    id, name, slug, language, games_count, image_background, 
+    esbr rating, screen_shots, released at, platform
+    
+'''
+
 
 class Game(models.Model):
     POOR = 'poor'
