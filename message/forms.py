@@ -4,4 +4,4 @@ from .models import Message
 class AddTextForm(forms.ModelForm):
     class Meta:
         model = Message
-        fields = ['title', 'description']
+        fields = ['message']
