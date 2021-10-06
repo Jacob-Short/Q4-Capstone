@@ -57,3 +57,16 @@ class LoginView(View):
 def logout_view(request):
     logout(request)
     return redirect(reverse("homepage"))
+
+
+class ProfileView(View):
+    '''each users profile'''
+
+    def get(self, request, id):
+        template = 'profile.html'
+        context = {}
+        return render(request, template, context)
+
+
+    def post(self, request):
+        ...
