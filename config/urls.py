@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 from accounts.urls import urlpatterns as account_url
+from message.urls import urlpatterns as message_url
 from api.urls import urlpatterns as api_url
 from games.urls import urlpatterns as game_url
 
@@ -26,3 +27,4 @@ urlpatterns = [
 
 urlpatterns += account_url
 urlpatterns += api_url
+urlpatterns += message_url
