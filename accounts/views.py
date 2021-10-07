@@ -30,7 +30,7 @@ class SignUpView(View):
         if form.is_valid():
             data = form.cleaned_data
             user = MyUser.objects.create_user(
-                username=data.get("username"), password=data.get("password"),displayname=data.get("displayname"),email=data.get("email")
+                username=data.get("username"), password=data.get("password"),gamer_tag=data.get("gamer_tag"),email=data.get("email")
             )
             login(request, user)
             return redirect(reverse("homepage"))
