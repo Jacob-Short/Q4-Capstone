@@ -10,7 +10,7 @@ class CreateReview(View):
     '''can create a review on a game in db'''
 
     def get(self, request):
-        template = 'create_review.html'
+        template = 'generic_form.html'
         form = CreateReviewForm()
         context = {'form': form}
         return render(request, template, context)
