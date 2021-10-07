@@ -1,20 +1,40 @@
 {% extends 'base.html' %}
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Detail</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>User Detail</title>
-</head>
-
-<body>
-  {% block content %}
+  
+    {% block content %}
     <h1>User Detail</h1>
-    <h2> Welcome {{request.user.username}}</h2>
+    <h2>Welcome {{request.user.username}}</h2>
 
-  {% endblock %}
-</body>
+    
+  
 
+  
+    <div class="card" style="width: 18rem">
+      <img src="{{user.picture.url}}" class="card-img-top" alt="why you no show picture!!!" />
+      <div class="card-body">
+        <h5 class="card-title">{{user.username}}</h5>
+        <p class="card-text">
+          I enjoy long battles on the beach.
+        </p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{user.email}}</li>
+        <li class="list-group-item">GT: {{user.gamer_tag}}</li>
+        <!-- <li class="list-group-item">A third item</li> -->
+      </ul>
+      <div class="card-body">
+        <a href="/edit/{{user.id}}" class="card-link">Edit Profile</a>
+        <a href="#" class="card-link">Message</a>
+      </div>
+    </div>
+    {% endblock %}
+  </body>
 </html>
