@@ -2,13 +2,13 @@ from django.db import models
 from django.db.models.fields import DateField
 from django.utils import timezone
 from accounts.models import MyUser
-# from games.model import Game
+from games.models import Game
 
 
 class Review(models.Model):
     name = models.CharField(max_length=150)
     text = models.TextField()
-    # game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     time_created = DateField(default=timezone.now)
 
