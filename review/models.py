@@ -9,7 +9,7 @@ class Review(models.Model):
     name = models.CharField(max_length=150)
     text = models.TextField()
     game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True, blank=True)
-    user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    user_created = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='created_by')
     time_created = DateField(default=timezone.now)
 
     def __str__(self):
