@@ -21,6 +21,7 @@ from message.urls import urlpatterns as message_url
 from api.urls import urlpatterns as api_url
 from games.urls import urlpatterns as game_url
 from review.urls import urlpatterns as review_url
+from faq.urls import urlpatterns as faq_url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,3 +32,4 @@ urlpatterns += api_url
 urlpatterns += message_url
 urlpatterns += game_url
 urlpatterns += review_url
+urlpatterns += faq_url
