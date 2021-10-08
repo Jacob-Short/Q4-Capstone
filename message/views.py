@@ -19,3 +19,8 @@ def MessageView(req, id):
             return HttpResponseRedirect(reverse('homepage'))
     form = AddTextForm()
     return render(req, 'generic_form.html', {'form': form})
+
+def UserMessages(req, id):
+    user = MyUser.objects.get(id=id)
+    user_messages = Message.objects.filter(recipient=user)
+    return render(req, 'messages.html', {'user_messages': user_messages})

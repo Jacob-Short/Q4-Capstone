@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>hi</h1>
+{% for item in user_messages %}
+{{ item.message }}
+from: {{ item.author }}
+at: {{ item.date }}
+<br>
+{% endfor %}
+{% endblock %}
