@@ -7,7 +7,7 @@ from django.contrib.auth.models import AbstractUser
 class MyUser(AbstractUser):
     gamer_tag = models.CharField(max_length=30, null=True, blank=True)
     email = models.EmailField()
-    picture = models.ImageField(upload_to='images/', max_length=100)
+    picture = models.ImageField(upload_to='images/', max_length=100, default='images/download.png')
     bio = models.TextField(null=True, blank=True)
     # favorite_game = models.ForeignKey(Game, on_delete=models.CASCADE)
 
