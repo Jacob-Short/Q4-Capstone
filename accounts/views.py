@@ -52,7 +52,7 @@ class LoginView(View):
             )
             if user:
                 login(request, user)
-                return redirect(request.GET.get("next", "/"))
+                return redirect(reverse("homepage"))
 
 
 def logout_view(request):
