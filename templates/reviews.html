@@ -12,17 +12,17 @@
     {% block content %}
     <h1>Add Review</h1>
 {% for review in reviews %}
-{{ review.rating }}
+<h6>Rating:{{ review.rating }}</h6>
 <br/>
-{{ review.name }}
+<h6>Game: {{ review.name }}</h6>
 <br/>
-{{ review.text}}
+<h6>Review: {{ review.text}}</h6>
 <br/>
-{{ review.game }}
+<h6>Game Review: {{ review.game }}</h6>
 <br/>
-{{ review.user_created}}
+<h6>Reviewed By: {{ review.user_created}}</h6>
 <br/>
-{{ review.time_created }}
+<h6>Time Created: {{ review.time_created }}</h6>
 <br/>
 ---------------------------------------------
 <br/>
