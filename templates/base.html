@@ -94,13 +94,16 @@
             About Us
           </a>
         </li>
+        {% if request.user.username %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'api_homepage' %}">
             Games
           </a>
         </li>
+        {% endif %}
       </ul>
       <ul class="navbar-nav ">
+        {% if request.user.username %}
         <li class="nav-item">
           <a class="nav-link" href="#">
             <i class="fa fa-envelope-o">
@@ -117,18 +120,17 @@
             Messages
           </a>
         </li>
-        {% if request.user.username %}
         <li class="nav-item">
           <a class="nav-link" href="/profile/{{request.user.id}}/">
             {{request.user.gamer_tag}}
           </a>
         </li>
-        {% endif %}
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="text" placeholder="Search a friend by their GT" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
+      {% endif %}
     </div>
   </nav>
 
