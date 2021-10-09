@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/api/style.css" />
+    <title>Api</title>
+  </head>
+
+  <body>
+    {% block content %}
+ 
+        <div class='games-container'>
+            <h2>Games</h2>
+        </div>
+
+        <div class='reviews-container'>
+            <h2>Reviews</h2>
+        </div>
+
+        <div class='faqs-container'>
+            <h2>FAQs</h2>
+        </div>
+        
+        <div class='sidebar-container'>
+            <h2>Side-Bar</h2>
+        </div>
+
+
+    {% endblock %}
+  </body>
+</html>

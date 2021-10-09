@@ -11,9 +11,17 @@ from django.shortcuts import HttpResponseRedirect, render, reverse, redirect
 
 
 class IndexView(View):
-    '''homepage'''
+    '''index to login or sign up'''
     def get(self, request):
         template = 'index.html'
+        context = {}
+        return render(request, template, context)
+
+
+class HomePageView(View):
+    '''homepage'''
+    def get(self, request):
+        template = 'homepage.html'
         context = {}
         return render(request, template, context)
 
@@ -57,7 +65,7 @@ class LoginView(View):
 
 def logout_view(request):
     logout(request)
-    return redirect(reverse("homepage"))
+    return redirect(reverse("root"))
 
 
 class ProfileView(View):
