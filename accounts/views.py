@@ -107,3 +107,10 @@ def edit_profile(request, id):
         })
         context = {'form': form}
         return render(request, 'profile_edit.html', context)
+
+
+
+def about_devs(request):
+    template = 'about_devs.html'
+    context = {}
+    return render(request, template, context)
