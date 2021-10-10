@@ -46,26 +46,6 @@ class FillDbWithGames(View):
         context = {'games': games}
 
         return render(request, template, context)
-       
-        # def populate():
-        #     req = ApiSearch()
-        #     api_games = req.get_all_games()
-        #     for game in api_games:
-        #         # print(f'each game from populate: {game}')
-        #         populated_game = Game.objects.create(
-        #             name = game['name'],
-        #             slug = game['slug'],
-        #             # language = game['language'],
-        #             rating = game['rating'],
-        #             # screen_shots = game['screen_shots'],
-        #             platform = game['platforms'],
-        #             released_at = game['released'],
-        #             image_background = game['background_image'],
-        #         )
-
-        # populate()
-        # return redirect('/')
-
 
     def post(self, request):
         ...
