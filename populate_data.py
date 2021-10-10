@@ -27,19 +27,7 @@ def main(args):
 
 
     def populate():
-        req = ApiSearch()
-        api_games = req.get_all_games()
-        for game in api_games:
-            populated_game = Game.objects.create(
-            name = game['name'],
-            slug = game['slug'],
-            # language = game['language'],
-            rating = game['rating'],
-            # screen_shots = game['screen_shots'],
-            platform = game['platforms'],
-            released_at = game['released'],
-            image_background = game['background_image'],
-            )
+        os.system("python manage.py populate_games")
 
     if pop:
         populate()
