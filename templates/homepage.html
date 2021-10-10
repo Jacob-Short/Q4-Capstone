@@ -12,21 +12,36 @@
   <body>
     {% block content %}
  
-        <div class='games-container'>
-            <h2>Games</h2>
+    <div class="container">
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-2">
+         <h2>Game</h2>
+         <h2>Game</h2>
+         <h2>Game</h2>
+         <h2>Game</h2>
         </div>
-
-        <div class='reviews-container'>
-            <h2>Reviews</h2>
+        <div class="col-md-auto">
+          Variable width content
         </div>
-
-        <div class='faqs-container'>
-            <h2>FAQs</h2>
+        <div class="col col-lg-2">
+          <h2>Review</h2>
+          <h2>Review</h2>
+          <h2>Review</h2>
+          <h2>Review</h2>
         </div>
-        
-        <div class='sidebar-container'>
-            <h2>Side-Bar</h2>
+      </div>
+      <div class="row">
+        <div class="col">
+          1 of 3
         </div>
+        <div class="col-md-auto">
+          Variable width content
+        </div>
+        <div class="col col-lg-2">
+          3 of 3
+        </div>
+      </div>
+    </div>
 
 
     {% endblock %}
