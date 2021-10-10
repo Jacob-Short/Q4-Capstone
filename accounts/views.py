@@ -7,6 +7,7 @@ from django.shortcuts import redirect, render, reverse
 from accounts.forms import LoginForm, PostForm, SignupForm
 from accounts.models import MyUser
 from django.shortcuts import HttpResponseRedirect, render, reverse, redirect
+from api.models import ApiSearch
 
 
 
@@ -22,7 +23,26 @@ class HomePageView(View):
     '''homepage'''
     def get(self, request):
         template = 'homepage.html'
-        context = {}
+        initial_search = ApiSearch()
+        three_photos = initial_search.get_three_games()
+
+        first_image = three_photos[0][0]
+        first_title = three_photos[0][1]
+
+        second_image = three_photos[1][0]
+        second_title = three_photos[1][1]
+
+        third_image = three_photos[2][0]
+        third_title = three_photos[2][1]
+
+        context = {
+            "first_image": first_image,
+            "first_title": first_title,
+            "second_image": second_image,
+            "second_title": second_title,
+            "third_image": third_image,
+            "third_title": third_title,
+        }
         return render(request, template, context)
 
 
