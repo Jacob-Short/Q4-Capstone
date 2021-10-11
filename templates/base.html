@@ -8,6 +8,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous" />
+
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
   <title>Home</title>
 </head>
 
@@ -15,24 +20,24 @@
 
 
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Gamer Zone</a>
+      <a class="navbar-brand" href="{% url 'homepage' %}">Gamer Zone</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'homepage' %}">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/login/">Login</a>
-          </li>
+          {% if request.user.username %}
           <li class="nav-item">
             <a class="nav-link" href="/logout/">Logout</a>
           </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="/login/">Login</a>
+          </li>
+          {% endif %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
@@ -51,8 +56,81 @@
             <a class="nav-link" href="#">About Us</a>
           </li>
         </ul>
-        <a class="navbar-brand" href="/profile/{{request.user.id}}/">Profile</a>
+        {% if request.user.username %}
+        <a class="navbar-brand" href="/profile/{{request.user.id}}/">{{request.user.gamer_tag}}</a>
+        {% endif %}
       </div>
+    </div>
+  </nav> -->
+
+
+
+  <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'homepage' %}">GamerZone</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        {% if request.user.username %}
+        <li class="nav-item">
+          <a class="nav-link" href="/logout/">
+            </i>
+            Logout
+          </a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/login/">
+            </i>
+            Login
+          </a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="/about_devs">
+            About Us
+          </a>
+        </li>
+        {% if request.user.username %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'api_homepage' %}">
+            Games
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+      <ul class="navbar-nav ">
+        {% if request.user.username %}
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="fa fa-envelope-o">
+              <span class="badge badge-warning">0</span>
+            </i>
+            Notifications
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/user/{{request.user.id}}/messages">
+            <i class="fa fa-globe">
+              <span class="badge badge-success">0</span>
+            </i>
+            Messages
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/profile/{{request.user.id}}/">
+            {{request.user.gamer_tag}}
+          </a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search a friend by their GT" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      {% endif %}
     </div>
   </nav>
 

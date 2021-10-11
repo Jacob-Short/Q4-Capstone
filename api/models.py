@@ -6,8 +6,10 @@ from requests import Session
 API = "https://api.rawg.io/api"
 TOKEN = "b6a35b94fc574ae78750e6834e5e5e34"
 
+SECOND_API = 'https://videogamesapi.herokuapp.com'
+
 class ApiSearch():
-    """searches api for games"""
+    """retrievs 20 api from games"""
     def __init__(self):
         self.apiurl = API
         self.headers = {
@@ -57,4 +59,41 @@ class ApiSearch():
         response = self.session.get(url)
         data = response.json()
         print(data)
+        return data
+
+
+class SecondApiSearch():
+    '''retrieves 28 games from api'''
+    def __init__(self):
+        self.apiurl = SECOND_API
+        self.session = Session()
+        
+
+    def get_first_page(self):
+        url = self.apiurl + '/api/games/'
+        response = self.session.get(url)
+        data = response.json()['results']
+
+        return data
+
+    def get_second_page(self):
+        url = self.apiurl + '/api/games/?page=2'
+        response = self.session.get(url)
+        data = response.json()['results']
+
+        return data
+
+    def get_third_page(self):
+        url = self.apiurl + '/api/games/?page=3'
+        response = self.session.get(url)
+        data = response.json()['results']
+
+        return data
+
+
+    def get_fourth_page(self):
+        url = self.apiurl + '/api/games/?page=4'
+        response = self.session.get(url)
+        data = response.json()['results']
+
         return data
