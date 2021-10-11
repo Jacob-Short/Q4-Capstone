@@ -3,5 +3,6 @@ from message import views
 
 urlpatterns = [
     path('message/user/<int:id>', views.MessageView, name='message'), 
-    path('user/<int:id>/messages', views.UserMessages, name='usermessages')  
+    path('user/<int:id>/messages', views.UserMessages, name='usermessages'),
+    path('delete/message/<int:id>', views.DeleteMessage, name='deletemessage')  
 ]
