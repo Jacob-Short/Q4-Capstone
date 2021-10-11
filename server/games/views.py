@@ -6,34 +6,16 @@ from games.models import Game
 import sqlite3
 import random
 
-'''
-Game:
-    id, name, slug, language, games_count, image_background, 
-    esbr rating, screen_shots, released at, platform
-
-'''
-
-class GamesHomeView(View):
-    '''can view how to create a game into database'''
-
-    def get(self, request):
-        ...
+from rest_framework.viewsets import ModelViewSet
+from games.models import Game
+from games.serializers import GameSerializer
 
 
-    def post(self, request):
-        ...
-
-
-
-class CreateGameView(View):
+class GamesViewSet(ModelViewSet):
     '''can create a game into the database'''
 
-    def get(self, request):
-        ...
-
-
-    def post(self, request):
-        ...
+    serializer_class = GameSerializer
+    queryset = Game.objects.all()
 
 
 class FillDbWithGames(View):
