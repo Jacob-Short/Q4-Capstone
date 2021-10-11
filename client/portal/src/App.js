@@ -1,17 +1,31 @@
 import './App.css';
 import Navigation from "./components/Navigation";
 import Index from "./views/HomePage";
-import React from 'react';
+import AllGames from "./views/AllGames";
+import React, { Fragment } from 'react';
+
+import { Route, Switch } from "react-router-dom";
 
 
 function App() {
   return (
-    <div className="App">
-      <div>
-        <Navigation />
-        <Index />
+    <Fragment>
+      <div className="App">
+        <div>
+          <Navigation />
+          <Route exact path="/" component={Index} />
+
+          <Switch>
+            {/* <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/dashboard" component={Dashboard} /> */}
+            <Route exact path="/games" component={AllGames} />
+            {/* <PrivateRoute exact path="/profile" component={Profile} />
+            <PrivateRoute exact path="/about" component={About} /> */}
+          </Switch>
+        </div>
       </div>
-    </div>
+    </Fragment>
   );
 }
 
