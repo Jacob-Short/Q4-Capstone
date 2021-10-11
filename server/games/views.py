@@ -17,6 +17,8 @@ class GamesViewSet(ModelViewSet):
     serializer_class = GameSerializer
     queryset = Game.objects.all()
 
+    
+
 
 class FillDbWithGames(View):
     '''instantiate db with games from api'''
