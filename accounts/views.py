@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render, reverse
 from accounts.forms import LoginForm, PostForm, SignupForm
 from accounts.models import MyUser
+from message.models import Message
 from django.shortcuts import HttpResponseRedirect, render, reverse, redirect
 
 
@@ -66,7 +67,8 @@ class ProfileView(View):
     def get(self, request, id):
         template = 'profile.html'
         user = MyUser.objects.get(id=id)
-        context = {'user': user}
+        messages = Message.objects.filter(recipient=user)
+        context = {'user': user, 'messages': messages}
         # breakpoint()
         return render(request, template, context)
 
