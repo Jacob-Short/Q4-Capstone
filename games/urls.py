@@ -3,5 +3,5 @@ from games import views as game_views
 
 
 urlpatterns = [
-    path('games_home/', game_views.FillDbWithGames.as_view(), name='api_homepage'),
+    path('games/', game_views.GamesHomeView.as_view(), name='games'),
 ]
