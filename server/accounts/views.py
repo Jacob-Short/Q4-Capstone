@@ -4,12 +4,74 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render, reverse
+from rest_framework.views import APIView
 from accounts.forms import LoginForm, PostForm, SignupForm
 from accounts.models import MyUser
 from message.models import Message
 from django.shortcuts import HttpResponseRedirect, render, reverse, redirect
 from api.models import ApiSearch
 
+
+from django.shortcuts import render, redirect
+from django.views.generic import View
+from api.models import ApiSearch
+from games.models import Game
+from rest_framework.response import Response
+
+from rest_framework.viewsets import ModelViewSet
+from accounts.models import MyUser
+from .serializers import CreateMyUserSerializer
+
+
+class LoginView(APIView):
+    '''login user'''
+
+    serializer_class = CreateMyUserSerializer
+
+    def post(self, request, format=None):
+        
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            username = serializer.username
+            password = serializer.password
+            user = authenticate(
+                request, username=serializer.get("username"), password=serializer.get("password")
+            )
+            if user:
+                login(request, user)
+                return Response(CreateMyUserSerializer(user).data, status=200)
+
+
+class SignUp(APIView):
+    '''login user'''
+
+    serializer_class = CreateMyUserSerializer
+
+    def post(self, request, format=None):
+        
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            gamer_tag = serializer.gamer_tagrname
+            username = serializer.username
+            password = serializer.password
+            email = serializer.email
+            picture = serializer.picture
+            bio = serializer.bio
+        user = MyUser.objects.create(
+            gamer_tag = serializer.gamer_tagrname,
+            username = serializer.username,
+            password = serializer.password,
+            email = serializer.email,
+            picture = serializer.picture,
+            bio = serializer.bio,
+        )
+        if user:
+           login(request, user)
+           return Response(CreateMyUserSerializer(user).data, status=200)
+
+    
 
 
 class IndexView(View):

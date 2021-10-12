@@ -21,11 +21,11 @@ export default function HomePage(props) {
     return (
         <div>
             <h1>Have an Account</h1>
-            <a href=''>
+            <a href='/login/'>
             <button>Login</button>
             </a>
             <h2>Dont have an Account?</h2>
-            <a href=''>
+            <a href='/signup/'>
             <button>Sign Up</button>
             </a>
         </div>
