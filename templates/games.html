@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/api/style.css" />
+    <title>Api</title>
+  </head>
+
+  <body>
+    {% block content %}
+    <h1>Data base games</h1>
+    {% for game in games %}
+    <div class="card" style="width: 18rem">
+      <img
+        src="{{game.image_background}}"
+        class="card-img-top"
+        alt="picture-of-game"
+      />
+      <div class="card-body">
+        <a href='/game_detail/{{game.id}}'>
+        <h5 class="card-title">{{game.name}}</h5>
+      </a>
+        <p class="card-text">
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Rating: {{game.rating}}</li>
+        <li class="list-group-item">Platform: Need to fix when creating games{{game.platform.platform}}</li>
+        <li class="list-group-item">Release Date: {{game.released_at}}</li>
+      </ul>
+      <div class="card-body">
+        <a href="/create_review/{{game.id}}" class="card-link">Leave a Review</a>
+        <a href="/createfaq/{{game.id}}" class="card-link">Write a FAQ</a>
+      </div>
+    </div>
+    {% endfor %} {% endblock %}
+  </body>
+</html>
