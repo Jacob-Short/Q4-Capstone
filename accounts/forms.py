@@ -21,3 +21,7 @@ class PostForm(forms.Form):
     picture = forms.ImageField()
     bio = forms.CharField(widget=forms.Textarea)
     gamer_tag = forms.CharField(max_length=30)
+
+
+class SearchUserForm(forms.Form):
+    gamer_tag = forms.CharField(max_length=150)

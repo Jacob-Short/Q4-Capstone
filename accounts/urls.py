@@ -12,4 +12,5 @@ urlpatterns = [
     path("profile/<int:id>/", account_views.ProfileView.as_view(), name="profile"),
     path("edit/<int:id>/", account_views.edit_profile, name="editprofile"),
     path("about_devs/", account_views.about_devs, name="about"),
+    path("search_user/", account_views.SearchUsersView.as_view(), name="users"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
