@@ -32,8 +32,8 @@
         <li class="list-group-item">Release Date: {{game.released_at}}</li>
       </ul>
       <div class="card-body">
-        <a href="#" class="card-link">Leave a Review</a>
-        <a href="#" class="card-link">Write a FAQ</a>
+        <a href="create_review/{{game.id}}" class="card-link">Leave a Review</a>
+        <a href="createfaq/{{game.id}}" class="card-link">Write a FAQ</a>
       </div>
     </div>
     {% endfor %} {% endblock %}
