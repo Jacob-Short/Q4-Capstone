@@ -20,7 +20,9 @@
         alt="picture-of-game"
       />
       <div class="card-body">
-        <h5 class="card-title">{{game.title}}</h5>
+        <a href='/game_detail/{{game.id}}'>
+        <h5 class="card-title">{{game.name}}</h5>
+      </a>
         <p class="card-text">
           Some quick example text to build on the card title and make up the
           bulk of the card's content.
@@ -32,8 +34,8 @@
         <li class="list-group-item">Release Date: {{game.released_at}}</li>
       </ul>
       <div class="card-body">
-        <a href="create_review/{{game.id}}" class="card-link">Leave a Review</a>
-        <a href="createfaq/{{game.id}}" class="card-link">Write a FAQ</a>
+        <a href="/create_review/{{game.id}}" class="card-link">Leave a Review</a>
+        <a href="/createfaq/{{game.id}}" class="card-link">Write a FAQ</a>
       </div>
     </div>
     {% endfor %} {% endblock %}

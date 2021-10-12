@@ -21,6 +21,21 @@ class GamesHomeView(View):
         ...
 
 
+class GameDetailView(View):
+    '''view a specific game'''
+
+    def get(self, request, id):
+        game = Game.objects.get(id=id)
+        template = 'game_detail.html'
+        context = {'game': game}
+
+        return render(request, template, context)
+
+
+    def post(self, request):
+        ...
+
+
 
 class CreateGameView(View):
     '''can create a review on a game in db'''
