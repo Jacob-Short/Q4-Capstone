@@ -10,36 +10,3 @@
   flex-wrap: wrap;
 
 }
-
-.carousel-item, 
-.carousel-item-active,
-img {
-  height: 500px;
-  width: 100%;
-}
-
-.carousel-item,
-h5 {
-  color: #28a745;
-}
-
-a {
-  text-decoration: none;
-  color: black;
-}
-
-.faq-item {
-  margin-right: 100px;
-}
-
-#carousel-container {
-  width: 100%;
-}
-
-.header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 1px 5px #ffc107;
-}
