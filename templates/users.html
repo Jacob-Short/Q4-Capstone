@@ -13,9 +13,9 @@
   
     {% block content %}
         <h1>Search Results:</h1>
-        {% for user in users %}
-            <h2>{{user}}</h2>
-        {% endfor %}
+      {{users}}
+      {{users.username}}
+      {{users.email}}
     {% endblock %}
   </body>
 </html>

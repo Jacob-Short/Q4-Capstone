@@ -141,20 +141,6 @@ def about_devs(request):
 class SearchUsersView(View):
     '''search for users in the db by gt'''
 
-    def get(self, request):
-        template = 'users.html'
-        print(request)
-        # if form.is_valid():
-        #     data = form.cleaned_data
-        #     gt = data['gamer_tag']
-        #     user = MyUser.objects.get(gamer_tag=gt)
-        user = 'jacob'
-        context = {'user': user}
-        # breakpoint()
-        return render(request, template, context)
-
-
-
     def post(self, request):
         template = 'users.html'
         form = SearchUserForm(request.POST)
@@ -162,6 +148,5 @@ class SearchUsersView(View):
             data = form.cleaned_data
             gt = data['gamer_tag']
             user = MyUser.objects.get(gamer_tag=gt)
-        context = {'user': user}
-        # breakpoint()
-        return render(request, template, context)
+        id = user.id
+        return redirect(f'/profile/{id}')
