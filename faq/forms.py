@@ -3,6 +3,5 @@ from django.db.models.fields import TextField
 from games.models import Game
 
 class FaqForm(forms.Form):
-    email = forms.EmailField()
-    game = forms.ModelChoiceField(queryset=Game.objects.all())
+    # email = forms.EmailField()
     question = forms.CharField(widget=forms.Textarea)
