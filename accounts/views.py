@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render, reverse
-from accounts.forms import LoginForm, PostForm, SignupForm
+from accounts.forms import LoginForm, PostForm, SignupForm, SearchUserForm
 from accounts.models import MyUser
 from message.models import Message
 from django.shortcuts import HttpResponseRedirect, render, reverse, redirect
@@ -136,3 +136,17 @@ def about_devs(request):
     template = 'about_devs.html'
     context = {}
     return render(request, template, context)
+
+
+class SearchUsersView(View):
+    '''search for users in the db by gt'''
+
+    def post(self, request):
+        template = 'users.html'
+        form = SearchUserForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            gt = data['gamer_tag']
+            user = MyUser.objects.get(gamer_tag=gt)
+        id = user.id
+        return redirect(f'/profile/{id}')
