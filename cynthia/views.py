@@ -10,3 +10,7 @@ class CynthiaView(View):
 
     def post(self, request):
         ...
+
+
+def cynthia_view(request):
+    return HttpResponse("Avtivate for a Tour")

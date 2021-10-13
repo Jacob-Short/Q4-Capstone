@@ -10,7 +10,7 @@ from message.models import Message
 from django.shortcuts import HttpResponseRedirect, render, reverse, redirect
 from api.models import ApiSearch
 
-from cynthia.views import CynthiaView
+from cynthia.views import CynthiaView, cynthia_view
 
 
 
@@ -38,8 +38,9 @@ class HomePageView(View):
         third_image = three_photos[2][0]
         third_title = three_photos[2][1]
 
-        cynthia = CynthiaView()
+        cynthia = cynthia_view(request)
 
+        # breakpoint()
         context = {
             "first_image": first_image,
             "first_title": first_title,
@@ -49,7 +50,6 @@ class HomePageView(View):
             "third_title": third_title,
             "cynthia": cynthia,
         }
-
         return render(request, template, context)
 
 
