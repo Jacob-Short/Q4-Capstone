@@ -97,7 +97,6 @@ class ProfileView(View):
         user = MyUser.objects.get(id=id)
         messages = Message.objects.filter(recipient=user)
         context = {'user': user, 'messages': messages}
-        # breakpoint()
         return render(request, template, context)
 
 
