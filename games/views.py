@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 from api.models import ApiSearch
 from games.models import Game
-from games.forms import CreateGameForm
+from games.forms import CreateGameForm, SearchGameForm
+
+import ast
 
 
 
@@ -12,7 +14,40 @@ class GamesHomeView(View):
     def get(self, request):
         games = Game.objects.all()
         template = 'games.html'
-        context = {'games': games}
+
+        form = SearchGameForm()
+
+        switch_games = []
+        xbox_games = []
+        playstation_games = []
+        pc_games = []
+
+        for game in games:
+            spec_game = game.plaftorm
+            if spec_game == "Xbox One" or spec_game == "Xbox 360":
+                xbox_games.append(game)
+            elif (
+                spec_game == "PlayStation 4"
+                or spec_game == "PlayStation 4"
+                or spec_game == "PlayStation 3"
+            ):
+                playstation_games.append(game)
+            elif spec_game == "PC":
+                pc_games.append(game)
+            elif spec_game == "Nintendo Switch":
+                switch_games.append(game)
+
+
+
+        context = {
+            "games": games,
+            "form": form,
+            "pc_games": pc_games,
+            "playstation_games": playstation_games,
+            "xbox_games": xbox_games,
+            "switch_games": switch_games,
+        }
+
 
         return render(request, template, context)
 
@@ -60,4 +95,3 @@ class CreateGameView(View):
                 background_image = data['background_image'],
             )
             return redirect('/')
-

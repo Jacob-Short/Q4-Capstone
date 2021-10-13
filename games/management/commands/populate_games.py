@@ -2,6 +2,9 @@ from django.core.management.base import BaseCommand
 from games.models import Game
 from api.models import ApiSearch, SecondApiSearch
 
+import ast
+
+
 
 class Command(BaseCommand):
     help='can popluate db with api games'
@@ -19,16 +22,20 @@ class Command(BaseCommand):
 
             try:
                 for game in api_games:
+                    print(game['platforms'][0]['platform']['name'])
+                    # plt_eval = ast.literal_eval(game['platforms'])
+                    plt = game['platforms'][0]['platform']['name']
                     populated_game = Game.objects.create(
                         name = game['name'],
                         slug = game['slug'],
                         rating = game['rating'],
-                        platform = game['platforms'],
+                        platform = plt,
                         released_at = game['released'],
                         image_background = game['background_image'],
                     )
 
                 for w in page_one:
+                    
                     populated_game = Game.objects.create(
                         name = w['title'],
                         slug = w['title'],

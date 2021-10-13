@@ -35,4 +35,8 @@ class CreateGameForm(forms.Form):
     background_image = forms.ImageField()
 
 
+class SearchGameForm(forms.Form):
+    name = forms.CharField(max_length=150)
+
+
     
