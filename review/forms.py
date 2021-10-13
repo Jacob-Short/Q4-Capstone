@@ -18,5 +18,5 @@ class CreateReviewForm(forms.Form):
     rating = forms.ChoiceField(choices=CHOICES_RATING)
     name = forms.CharField(max_length=150)
     text = forms.CharField(widget=forms.Textarea)
-    game = forms.ModelChoiceField(queryset=Game.objects.all())
+  
     
