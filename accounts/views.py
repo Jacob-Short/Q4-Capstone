@@ -58,7 +58,7 @@ class HomePageView(View):
             "second_title": second_title,
             "third_image": third_image,
             "third_title": third_title,
-            "messages": messages
+            "messages": messages,
             "faqs": faqs,
             "reviews": reviews,
             "games": games
