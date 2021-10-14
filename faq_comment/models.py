@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.deletion import CASCADE
 from mptt.models import MPTTModel, TreeForeignKey
@@ -7,9 +8,10 @@ from faq.models import UserFaq
 
 
 class FaqComment(MPTTModel):
-    comment = models.CharField(max_length=200, unique=True)
+    comment = models.CharField(max_length=200)
+    faq = models.ForeignKey(UserFaq, on_delete=CASCADE, related_name="parent_faq")
     parent = TreeForeignKey(
-        UserFaq, on_delete=models.CASCADE, null=True, blank=True, related_name="children"
+        'self', on_delete=models.CASCADE, null=True, blank=True, related_name="children"
     )
     user = models.ForeignKey(MyUser, on_delete=CASCADE, null=True, related_name='user_filed')
 
