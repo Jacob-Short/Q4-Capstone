@@ -7,6 +7,8 @@ from faq.forms import FaqForm
 from faq.models import UserFaq
 from games.models import Game
 
+from faq_comment.models import FaqComment
+
 class CreateFaqView(View):
     
     def get(self, request, id):
@@ -28,3 +30,14 @@ class FaqView(View):
     def get(self, request):
         faqs = UserFaq.objects.all().order_by('-time_created')
         return render(request, 'faq.html', {'faqs': faqs})
+
+
+class FaqDetailView(View):
+
+    def get(self, request, id):
+        faq = UserFaq.objects.get(id=id)
+        comments = FaqComment.objects.filter(faq=faq)
+
+        template = 'faq_detail.html'
+        context = {'faq': faq, 'comments': comments}
+        return render(request, template, context)

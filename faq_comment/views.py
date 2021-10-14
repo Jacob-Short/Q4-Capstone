@@ -24,7 +24,7 @@ class CreateFaqComment(View):
             data = form.cleaned_data
             new_comment = FaqComment.objects.create(
                 comment=data['comment'],
-                # parent=data['parent'],
+                parent=data['parent'],
                 user = request.user,
                 faq=faq
             )
