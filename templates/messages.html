@@ -13,7 +13,7 @@
     {% block content %}
     <h2>Messages for {{request.user.username}}</h2>
     
-    {% for item in user_messages %}
+    {% for item in messages %}
     <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
         <div class="card-header">Message from: {{ item.author }}  <a href='/delete/message/{{item.id}}'>Delete</a></div>
         <div class="card-body">

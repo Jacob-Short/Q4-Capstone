@@ -35,6 +35,8 @@ class HomePageView(View):
 
         third_image = three_photos[2][0]
         third_title = three_photos[2][1]
+        user = request.user.id
+        messages = Message.objects.filter(recipient=user)
 
         context = {
             "first_image": first_image,
@@ -43,6 +45,7 @@ class HomePageView(View):
             "second_title": second_title,
             "third_image": third_image,
             "third_title": third_title,
+            "messages": messages
         }
         return render(request, template, context)
 
@@ -133,7 +136,9 @@ def edit_profile(request, id):
 
 def about_devs(request):
     template = 'about_devs.html'
-    context = {}
+    user = request.user.id
+    messages = Message.objects.filter(recipient=user)
+    context = {"messages": messages}
     return render(request, template, context)
 
 
@@ -143,9 +148,12 @@ class SearchUsersView(View):
     def post(self, request):
         template = 'users.html'
         form = SearchUserForm(request.POST)
+        user = request.user.id
+        messages = Message.objects.filter(recipient=user)
         if form.is_valid():
             data = form.cleaned_data
             gt = data['gamer_tag']
             user = MyUser.objects.get(gamer_tag=gt)
+            return render(request, template, {'messages': messages})
         id = user.id
         return redirect(f'/profile/{id}')

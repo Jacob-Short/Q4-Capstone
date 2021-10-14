@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from api.models import ApiSearch
+from message.models import Message
 from games.models import Game
 from games.forms import CreateGameForm
 
@@ -12,7 +13,9 @@ class GamesHomeView(View):
     def get(self, request):
         games = Game.objects.all()
         template = 'games.html'
-        context = {'games': games}
+        user = request.user.id
+        messages = Message.objects.filter(recipient=user)
+        context = {'games': games, 'messages': messages}
 
         return render(request, template, context)
 
