@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'message',
     'review',
     'faq',
+    'mptt',
 ]
 
 MIDDLEWARE = [
