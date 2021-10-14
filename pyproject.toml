@@ -10,6 +10,7 @@ Django = "^3.2.7"
 Pillow = "^8.3.2"
 requests = "^2.26.0"
 django-mptt = "^0.13.4"
+secure-smtplib = "^0.1.1"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.9b0", allow-prereleases = true}

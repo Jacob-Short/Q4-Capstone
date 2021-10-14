@@ -16,6 +16,8 @@ from faq.models import UserFaq
 from review.models import Review
 from games.models import Game
 
+import smtplib
+
 
 
 class IndexView(View):
@@ -80,8 +82,35 @@ class SignUpView(View):
             user = MyUser.objects.create_user(
                 username=data.get("username"), password=data.get("password"),gamer_tag=data.get("gamer_tag"),email=data.get("email")
             )
-            login(request, user)
-            return redirect(reverse("homepage"))
+
+            gmail_user = 'jacobshort.stu@gmail.com'
+            gmail_password = 'wlkkouoagzjzzggm'
+
+
+            sent_from = gmail_user
+            to = user.email
+            subject = 'Welcome to Gamerzone!'
+            body = f'''Thank you so much for signing up with us {user.username}!'''
+
+            email_text = f'''
+            From: {sent_from}\n
+            To: {to}\n
+            Subject: {subject}\n
+            {body}
+            '''
+
+            try:
+                smtp_server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+                smtp_server.ehlo()
+                smtp_server.login(gmail_user, gmail_password)
+                smtp_server.sendmail(sent_from, to, email_text)
+                smtp_server.close()
+                print ("Email sent successfully!")
+                login(request, user)
+                return redirect(reverse("homepage"))    
+            except Exception as ex:
+                print ("Something went wrong….",ex)
+                return redirect(reverse("homepage"))    
 
 
 class LoginView(View):
