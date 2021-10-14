@@ -6,7 +6,7 @@ from accounts.models import MyUser
 from faq.models import UserFaq
 
 
-class File(MPTTModel):
+class FaqComment(MPTTModel):
     comment = models.CharField(max_length=200, unique=True)
     parent = TreeForeignKey(
         UserFaq, on_delete=models.CASCADE, null=True, blank=True, related_name="children"
