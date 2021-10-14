@@ -10,6 +10,12 @@ from message.models import Message
 from django.shortcuts import HttpResponseRedirect, render, reverse, redirect
 from api.models import ApiSearch
 
+from faq import views as faq_views
+from review import views as review_views
+from faq.models import UserFaq
+from review.models import Review
+from games.models import Game
+
 
 
 class IndexView(View):
@@ -36,6 +42,13 @@ class HomePageView(View):
         third_image = three_photos[2][0]
         third_title = three_photos[2][1]
 
+        faqs = UserFaq.objects.all().order_by('-time_created')
+
+        reviews = Review.objects.all()
+
+        games = Game.objects.all()
+
+
         context = {
             "first_image": first_image,
             "first_title": first_title,
@@ -43,6 +56,9 @@ class HomePageView(View):
             "second_title": second_title,
             "third_image": third_image,
             "third_title": third_title,
+            "faqs": faqs,
+            "reviews": reviews,
+            "games": games
         }
         return render(request, template, context)
 
