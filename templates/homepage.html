@@ -70,29 +70,55 @@
 <div class="homepage-container">
 <div class="homepage-item">
 <h2>Recent Questions</h2>
-<h3>FAQ</h3>
-<h3>FAQ</h3>
-<h3>FAQ</h3>
-<h3>FAQ</h3>
-<h3>FAQ</h3>
-<h3>FAQ</h3>
-<h3>FAQ</h3>
+{% for faq in faqs %}
+<div class="card">
+  <div class="card-header">
+      Game: {{faq.game}}
+  </div>
+  <div class="card-body">
+    <blockquote class="blockquote mb-0">
+      <a href='/faq_detail/{{faq.id}}/'>
+      <p> {{faq.question}}</p>
+    </a>
+      <footer class="blockquote-footer">  <cite title="Source Title">Created By: {{faq.user}}</cite></footer>
+    </blockquote>
+    <div class="card-body">
+      <a href="/create_faq_comment/{{faq.id}}" class="card-link">Comment on FAQ</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
   </div>
 
 
   <div class="homepage-item">
-    <h2>Recent Reviews</h2>
-    <h3>Review</h3>
-    <h3>Review</h3>
-    <h3>Review</h3>
-      <h3>Review</h3>
+    <h2>Most active Reviews</h2>
+    {% for review in reviews %}
+    <div class="card">
+      <div class="card-header">
+          Review Game: {{review.game}}
+      </div>
+      <div class="card-body">
+        <blockquote class="blockquote mb-0">
+          <a href='/faq_detail/{{faq.id}}/'>
+          <p> {{review.text}}</p>
+        </a>
+          <footer class="blockquote-footer">  <cite title="Source Title">Created By: {{review.user_created}}</cite></footer>
+        </blockquote>
+        <div class="card-body">
+          <a href="/create_review_comment/{{review.id}}" class="card-link">Comment on Review</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
     </div>
     <div class="homepage-item">
-      <h2>Recently Added Games</h2>
-      <h3>Game</h3>
-      <h3>Game</h3>
-      <h3>Game</h3>
-      <h3>Game</h3>
+      <h2>Top Searched Games</h2>
+        {% for game in games %}
+        <ul>
+          <li>{{game.name}}</li>
+        </ul>
+        {% endfor %}
     </div>
   </div>
   
