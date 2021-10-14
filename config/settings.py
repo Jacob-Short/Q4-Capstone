@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'faq',
     'mptt',
     'faq_comment',
+    'review_comment',
 ]
 
 MIDDLEWARE = [

@@ -19,4 +19,3 @@ class CreateReviewForm(forms.Form):
     name = forms.CharField(max_length=150)
     text = forms.CharField(widget=forms.Textarea)
   
-    
