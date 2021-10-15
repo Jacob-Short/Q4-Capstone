@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'faq',
     'mptt',
     'faq_comment',
+    'community',
 ]
 
 MIDDLEWARE = [
