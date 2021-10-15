@@ -195,14 +195,12 @@ class SearchUsersView(View):
     '''search for users in the db by gt'''
 
     def post(self, request):
-        template = 'users.html'
         form = SearchUserForm(request.POST)
         user = request.user.id
-        messages = Message.objects.filter(recipient=user)
         if form.is_valid():
             data = form.cleaned_data
             gt = data['gamer_tag']
             user = MyUser.objects.get(gamer_tag=gt)
-            return render(request, template, {'messages': messages})
+            
         id = user.id
         return redirect(f'/profile/{id}')

@@ -12,16 +12,13 @@
 
 <body>
   {% block content %}
-
-  {% if messages %}
-  {% for message in messages %}
-    <script>M.toast({html: "{{message}}", classes: 'blue rounded', displayLength:5000});</script>
-  {% endfor %}
-{% endif %}
-  <div id="homepage">
-  <div class="header">
-    <h2>Welcome to the Portal</h2>
-    <h3>Activate Cynthia for a virtual tour</h3>
+<div id="homepage">
+  <div class="homepage-header">
+    <h1>Welcome to the Gamerzone</h1>
+      ________________________________
+    <h4>This is a site where gamers everywhere can talk <br>
+      about, ask about, or just be about games. Feel <br>
+      free to chat with friends while you're at it.</h4>
   </div>
 <div id="homepage-container">
   <div id="carousel-container">    
@@ -106,13 +103,13 @@
       </div>
       <div class="card-body">
         <blockquote class="blockquote mb-0">
-          <a href='/faq_detail/{{faq.id}}/'>
+          <a href='/review_detail/{{review.id}}/'>
           <p> {{review.text}}</p>
         </a>
           <footer class="blockquote-footer">  <cite title="Source Title">Created By: {{review.user_created}}</cite></footer>
         </blockquote>
         <div class="card-body">
-          <a href="/create_review_comment/{{review.id}}" class="card-link">Comment on Review</a>
+          <a href="/create_review_comment/{{review.id}}/" class="card-link">Comment on Review</a>
         </div>
       </div>
     </div>
