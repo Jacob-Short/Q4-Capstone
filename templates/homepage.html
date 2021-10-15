@@ -15,10 +15,12 @@
 <div id="homepage">
   <div class="homepage-header">
     <h1>Welcome to the Gamerzone</h1>
-      ________________________________
+      <p>________________________________</p>
+      <br>
     <h4>This is a site where gamers everywhere can talk <br>
       about, ask about, or just be about games. Feel <br>
       free to chat with friends while you're at it.</h4>
+      <br>
   </div>
 <div id="homepage-container">
   <div id="carousel-container">    
@@ -31,7 +33,7 @@
           <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
           aria-label="Slide 3"></button>
         </div>
-        <div class="carousel-inner">
+        <div class="carousel-inner" style="border-bottom: 3px solid #ffc107;">
           <div class="carousel-item active" data-bs-interval="1500">
             <img src="{{first_image}}" class="d-block w-100" alt="..."">
             <div class="carousel-caption d-none d-md-block">
@@ -71,10 +73,11 @@
 </div>
 
 <div class="homepage-container">
-<div class="homepage-item">
+<div class="homepage-item" style="width: 350px; border-right: 3px solid #ffc107; padding-right: 40px; margin-left: 20px;"">
 <h2>Recent Questions</h2>
+<br>
 {% for faq in faqs %}
-<div class="card">
+<div class="card" style="background-color: #ffc107; font-weight: bold; box-shadow: 1px 1px 30px black;">
   <div class="card-header">
       Game: {{faq.game}}
   </div>
@@ -94,10 +97,12 @@
   </div>
 
 
-  <div class="homepage-item">
+  <div class="homepage-item" style="width: 350px; border-right: 3px solid #ffc107; padding-right: 40px;">
     <h2>Most active Reviews</h2>
+    <br>
+    
     {% for review in reviews %}
-    <div class="card">
+    <div class="card" style="background-color: #ffc107; font-weight: bold; box-shadow: 1px 1px 30px black; margin-bottom: 500px;">
       <div class="card-header">
           Review Game: {{review.game}}
       </div>
@@ -115,7 +120,7 @@
     </div>
     {% endfor %}
     </div>
-    <div class="homepage-item">
+    <div class="homepage-item" style="width: 350px;">
       <h2>Top Searched Games</h2>
         {% for game in games %}
         <ul>
