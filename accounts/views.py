@@ -58,7 +58,7 @@ class HomePageView(View):
             "second_title": second_title,
             "third_image": third_image,
             "third_title": third_title,
-            "messages": messages
+            "messages": messages,
             "faqs": faqs,
             "reviews": reviews,
             "games": games
@@ -89,7 +89,7 @@ class LoginView(View):
     def get(self, request):
         template_name = 'generic_form.html'
         form = LoginForm()
-        return render(request, template_name, {"form": form, "header": "Login"})
+        return render(request, template_name, {"form": form, "title": "Login"})
 
     def post(self, request):
         form = LoginForm(request.POST)

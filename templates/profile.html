@@ -9,6 +9,7 @@
   </head>
 
   
+  <div id="profile-containter">
     {% block content %}
     <h1>User Detail</h1>
     <h2>Welcome {{request.user.username}}</h2>
@@ -17,12 +18,12 @@
   
 
   
-    <div class="card" style="width: 18rem">
+    <div class="card" style="width: 300px; height: 500px;">
       <img src="{{user.picture.url}}" class="card-img-top" alt="why you no show picture!!!" />
       <div class="card-body">
-        <h5 class="card-title">{{user.username}}</h5>
+        <h4 class="card-title">{{user.username}}</h4>
         <p class="card-text">
-          {{user.bio}}
+          Bio: {{user.bio}}
         </p>
       </div>
       <ul class="list-group list-group-flush">
@@ -33,10 +34,10 @@
       <div class="card-body">
         <a href="/edit/{{user.id}}" class="card-link">Edit Profile</a>
         <a href="/message/user/{{user.id}}" class="card-link">Message</a>
-        <a href="/user/{{user.id}}/messages" class="card-link">Messages({{messages.count}})</a>
       </div>
     </div>
     {% endblock %}
+  </div>
   </body>
 </html>
 
