@@ -12,6 +12,12 @@
 
 <body>
   {% block content %}
+
+  {% if messages %}
+  {% for message in messages %}
+    <script>M.toast({html: "{{message}}", classes: 'blue rounded', displayLength:5000});</script>
+  {% endfor %}
+{% endif %}
   <div id="homepage">
   <div class="header">
     <h2>Welcome to the Portal</h2>

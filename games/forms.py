@@ -31,8 +31,5 @@ class CreateGameForm(forms.Form):
     slug = forms.CharField(max_length=150)
     rating = forms.ChoiceField(choices=RATING_CHOICES)
     platform = forms.ChoiceField(choices=SYS_CHOICES)
-    released_at = forms.DateField()
-    background_image = forms.ImageField()
-
-
-    
+    released_at = forms.DateTimeField(widget=forms.SelectDateWidget)
+    image_background = forms.ImageField()

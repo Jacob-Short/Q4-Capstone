@@ -16,6 +16,7 @@ from faq.models import UserFaq
 from review.models import Review
 from games.models import Game
 
+from django.contrib import messages
 import smtplib
 
 
@@ -106,6 +107,7 @@ class SignUpView(View):
                 smtp_server.sendmail(sent_from, to, email_text)
                 smtp_server.close()
                 print ("Email sent successfully!")
+                messages.success(request, messages.SUCCESS, f"Login Successful")
                 login(request, user)
                 return redirect(reverse("homepage"))    
             except Exception as ex:
@@ -129,11 +131,13 @@ class LoginView(View):
             )
             if user:
                 login(request, user)
+                messages.success(request, f'You have successfully logged in')
                 return redirect(reverse("homepage"))
 
 
 def logout_view(request):
     logout(request)
+    messages.error(request, f"Logged out")
     return redirect(reverse("root"))
 
 

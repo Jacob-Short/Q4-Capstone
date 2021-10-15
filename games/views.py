@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect, reverse
 from django.views.generic import View
 from api.models import ApiSearch
 from message.models import Message
@@ -44,23 +44,25 @@ class CreateGameView(View):
     '''can create a review on a game in db'''
 
     def get(self, request):
-        template = 'generic_form.html'
+        template = 'create_game.html'
         form = CreateGameForm()
         context = {'form': form}
         return render(request, template, context)
 
 
     def post(self, request):
-        form = CreateGameForm(request.POST)
+        form = CreateGameForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.cleaned_data
             game = Game.objects.create(
                 name = data['name'],
                 slug = data['slug'],
                 rating = data['rating'],
-                platfom = data['platfom'],
+                platform = data['platform'],
                 released_at = data['released_at'],
-                background_image = data['background_image'],
+                image_background = data['image_background'],
             )
-            return redirect('/')
+            return HttpResponseRedirect(reverse("homepage"))
+        else:
+            print('form is not clean')
 

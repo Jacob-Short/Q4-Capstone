@@ -11,7 +11,10 @@
 
   <body>
     {% block content %}
-    <h1>Data base games</h1>
+    <h1>Data base games</h1> 
+    <a href='/create_game/'>
+      <button>Add a Game</button>
+    </a>
     {% for game in games %}
     <div class="card" style="width: 18rem">
       <img
