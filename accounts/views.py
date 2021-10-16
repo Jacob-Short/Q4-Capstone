@@ -19,6 +19,8 @@ from games.models import Game
 from django.contrib import messages
 import smtplib
 
+from community import settings
+
 
 
 class IndexView(View):
@@ -52,6 +54,8 @@ class HomePageView(View):
         reviews = Review.objects.all()
 
         games = Game.objects.all()
+
+        print(settings.faq_users)
 
 
         context = {

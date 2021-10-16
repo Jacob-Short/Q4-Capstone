@@ -3,10 +3,29 @@ from django.views.generic import View
 
 from .models import Community
 from games.models import Game
-
 from .forms import CreateCommunityForm
 
+import sqlite3
+
 class AbilityToCreateCommunity(View):
+    '''when 2 or more users leave a review and faq on the same
+    game, a community will then become available to create'''
+    
+    def get(self, request, id):
+        '''checking if a community is available'''
+        conn = sqlite3.connect('db.sqlite3')
+        c = conn.cursor()
+        c.execute('''
+            SELECT username FROM accounts_myuser
+            WHERE 
+        ''')
+
+
+    def post(self, request, id):
+        ...
+
+
+class CreateCommunity(View):
     '''when 2 or more users leave a review and faq on the same
     game, a community will then become available to create'''
     

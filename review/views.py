@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
+from community.models import Community
 from games.models import Game
 from review.models import Review
 from review.forms import CreateReviewForm
+
+from community import settings
 
 
 class CreateReview(View):
@@ -27,6 +30,7 @@ class CreateReview(View):
                 game = game,
                 user_created = request.user,
             )
+            settings.review_users.append(request.user)
             return redirect('/')
 
 
