@@ -30,7 +30,10 @@ class CreateReview(View):
                 game = game,
                 user_created = request.user,
             )
-            settings.review_users.append(request.user)
+            if game not in settings.review_users:
+                settings.review_users[game] = [request.user]
+            else:
+                settings.review_users[game].append(request.user)
             return redirect('/')
 
 

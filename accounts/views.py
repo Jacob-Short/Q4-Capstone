@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render, reverse
 from accounts.forms import LoginForm, PostForm, SignupForm, SearchUserForm
 from accounts.models import MyUser
+import faq
 from message.models import Message
 from django.shortcuts import HttpResponseRedirect, render, reverse, redirect
 from api.models import ApiSearch
@@ -18,6 +19,7 @@ from games.models import Game
 
 from django.contrib import messages
 import smtplib
+import sqlite3
 
 from community import settings
 
@@ -55,7 +57,38 @@ class HomePageView(View):
 
         games = Game.objects.all()
 
+
+        # checking for community
         print(settings.faq_users)
+        print(settings.review_users)
+
+        conn = sqlite3.connect('db.sqlite3')
+        c = conn.cursor()
+
+        c.execute('''
+            SELECT 
+                faq_userfaq.user_id,
+                games_game.id
+
+            FROM 
+                faq_userfaq,
+                games_game
+            WHERE 
+                faq_userfaq.user_id = (
+                    SELECT 
+                        review_review.user_created_id
+                    FROM 
+                        review_review,
+                        games_game
+                    WHERE 
+                        review_review.game_id = games_game.id
+            )
+        ''')
+        res = c.fetchone()
+        print(res)
+
+
+
 
 
         context = {
