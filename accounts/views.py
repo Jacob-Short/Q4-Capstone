@@ -17,6 +17,8 @@ from review import views as review_views
 from faq.models import UserFaq
 from review.models import Review
 from games.models import Game
+import random
+
 
 from django.contrib import messages
 import smtplib
@@ -35,17 +37,7 @@ class HomePageView(LoginRequiredMixin, View):
     '''homepage'''
     def get(self, request):
         template = 'homepage.html'
-        initial_search = ApiSearch()
-        three_photos = initial_search.get_three_games()
 
-        first_image = three_photos[0][0]
-        first_title = three_photos[0][1]
-
-        second_image = three_photos[1][0]
-        second_title = three_photos[1][1]
-
-        third_image = three_photos[2][0]
-        third_title = three_photos[2][1]
         user = request.user.id
         messages = Message.objects.filter(recipient=user)
 
@@ -55,6 +47,25 @@ class HomePageView(LoginRequiredMixin, View):
 
         games = Game.objects.all()
 
+        front_page_photos = list(Game.objects.all())
+
+        three_games = random.sample(front_page_photos, 3)
+
+        three_photos = []
+
+        for game in three_games:
+            three_photos.append((game.image_background, game.name))
+
+        print(f'threee photos: {three_photos}')
+        
+        first_image = three_photos[0][0]
+        first_title = three_photos[0][1]
+
+        second_image = three_photos[1][0]
+        second_title = three_photos[1][1]
+
+        third_image = three_photos[2][0]
+        third_title = three_photos[2][1]
 
         context = {
             "first_image": first_image,
@@ -140,7 +151,7 @@ class LoginView(View):
 def logout_view(request):
     logout(request)
     messages.error(request, f"Logged out")
-    return redirect(reverse("root"))
+    return redirect(reverse("homepage"))
 
 
 class ProfileView(View):
@@ -199,10 +210,57 @@ class SearchUsersView(View):
     def post(self, request):
         form = SearchUserForm(request.POST)
         user = request.user.id
-        if form.is_valid():
-            data = form.cleaned_data
-            gt = data['gamer_tag']
-            user = MyUser.objects.get(gamer_tag=gt)
-            
-        id = user.id
-        return redirect(f'/profile/{id}')
+        try:
+            if form.is_valid():
+                data = form.cleaned_data
+                gt = data['gamer_tag']
+                user = MyUser.objects.get(gamer_tag=gt)
+
+            id = user.id
+            return redirect(f'/profile/{id}')
+        except Exception as err:
+            # need to display message to user that match is not found
+                # try checking capitalization
+            messages.error(request, f"User does not exist, try checking capitalization")
+            print(err)
+            return HttpResponseRedirect(reverse('homepage'))
+
+
+class VirtualTour(LoginRequiredMixin, View):
+    '''a virtual tour from bot of homepage'''
+    def get(self, request):
+        template = 'homepage.html'
+        initial_search = ApiSearch()
+        three_photos = initial_search.get_three_games()
+
+        first_image = three_photos[0][0]
+        first_title = three_photos[0][1]
+
+        second_image = three_photos[1][0]
+        second_title = three_photos[1][1]
+
+        third_image = three_photos[2][0]
+        third_title = three_photos[2][1]
+        user = request.user.id
+        messages = Message.objects.filter(recipient=user)
+
+        faqs = UserFaq.objects.all().order_by('-time_created')
+
+        reviews = Review.objects.all()
+
+        games = Game.objects.all()
+
+
+        context = {
+            "first_image": first_image,
+            "first_title": first_title,
+            "second_image": second_image,
+            "second_title": second_title,
+            "third_image": third_image,
+            "third_title": third_title,
+            "messages": messages,
+            "faqs": faqs,
+            "reviews": reviews,
+            "games": games
+        }
+        return render(request, template, context)
