@@ -15,7 +15,7 @@
     
     {% for item in messages %}
     <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-        <div class="card-header">Message from: {{ item.author }}  <a href='/delete/message/{{item.id}}'>Delete</a></div>
+      <div class="card-header">Message from: <a href='/profile/{{item.author.id}}/'>{{item.author}}</a>-<a href='/delete/message/{{item.id}}'>Delete</a></div>
         <div class="card-body">
           <h4 class="card-title">{{ item.message }}</h4>
           <p class="card-text">at: {{ item.date }}</p>
