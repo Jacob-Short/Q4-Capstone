@@ -21,7 +21,7 @@ from django.contrib import messages
 import smtplib
 import sqlite3
 
-from community import settings
+# from community import settings
 
 
 
@@ -59,33 +59,26 @@ class HomePageView(View):
 
 
         # checking for community
-        print(settings.faq_users)
-        print(settings.review_users)
+        possible_community = {}
 
-        conn = sqlite3.connect('db.sqlite3')
-        c = conn.cursor()
 
-        c.execute('''
-            SELECT 
-                faq_userfaq.user_id,
-                games_game.id
+        for game in games:
+            specific_game_review_users = Review.objects.filter(game=game)
+            specific_game_faq_users = UserFaq.objects.filter(game=game)
+            review_users = [x.user_created for x in specific_game_review_users]
+            faq_users = [x.user for x in specific_game_faq_users]
+            for person in review_users:
+                if person in faq_users:
+                    if game not in possible_community:
+                        possible_community[game] = [person]
+                    else:
+                        possible_community[game].append(person)
+        print(possible_community)
 
-            FROM 
-                faq_userfaq,
-                games_game
-            WHERE 
-                faq_userfaq.user_id = (
-                    SELECT 
-                        review_review.user_created_id
-                    FROM 
-                        review_review,
-                        games_game
-                    WHERE 
-                        review_review.game_id = games_game.id
-            )
-        ''')
-        res = c.fetchone()
-        print(res)
+        for key in possible_community:
+            if len(possible_community[key]) > 1:
+                print('A community is available to be created')
+
 
 
 
