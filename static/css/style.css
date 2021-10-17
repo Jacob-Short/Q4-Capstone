@@ -1,4 +1,4 @@
-/* homepage.html */
+/* base */
 html{
   background-color:#343a404d;
   height: auto;
@@ -7,6 +7,7 @@ body{
   background-color: initial;
   height: fit-content;
 }
+/* homepage.html */
 
 .homepage-container {
   display: flex;

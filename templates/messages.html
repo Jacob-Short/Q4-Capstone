@@ -14,19 +14,23 @@
   
   <body>
      {% block content %}
-      <h2>Messages for {{request.user.username}}</h2>
-      
-      {% for item in messages %}
-      <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
-        <div class="card-header" style="background: darkgreen;">Message from: {{ item.author }}  
-          <button style="margin-left: 20px;"><a href='/delete/message/{{item.id}}'>Delete</a></button>
-            </div>
-        <div class="card-body">
-          <h4 class="card-title">{{ item.message }}</h4>
-          <p class="card-text">at: {{ item.date }}</p>
-        </div>
+     <div class="homepage-header">
+       <h2>Messages for {{request.user.username}}</h2>
       </div>
-      {% endfor %}
+      
+      <div class="messages-container">
+      {% for item in messages %}
+        <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+          <div class="card-header" style="background: darkgreen;">Message from: {{ item.author }}  
+            <button style="margin-left: 20px;"><a href='/delete/message/{{item.id}}'>Delete</a></button>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">{{ item.message }}</h4>
+            <p class="card-text">at: {{ item.date }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
     
       {% endblock %}
     </body>
