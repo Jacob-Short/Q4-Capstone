@@ -19,6 +19,8 @@ from review.models import Review
 from games.models import Game
 import random
 
+import pyttsx3
+
 
 from django.contrib import messages
 import smtplib
@@ -259,6 +261,15 @@ class VirtualTour(LoginRequiredMixin, View):
 
         third_image = three_photos[2][0]
         third_title = three_photos[2][1]
+
+        # cynthia
+        engine = pyttsx3.init()
+        engine.setProperty('voice', 'english_rp+f3')
+        engine.say('''
+        Hello and welcome to the gamerzone. Where gamers from all around the world can come together
+        and in our common interest
+        ''')
+        engine.runAndWait()
 
         context = {
             "first_image": first_image,
