@@ -227,20 +227,10 @@ class SearchUsersView(View):
 
 
 class VirtualTour(LoginRequiredMixin, View):
-    '''a virtual tour from bot of homepage'''
+    '''homepage'''
     def get(self, request):
-        template = 'homepage.html'
-        initial_search = ApiSearch()
-        three_photos = initial_search.get_three_games()
+        template = 'virtual_tour.html'
 
-        first_image = three_photos[0][0]
-        first_title = three_photos[0][1]
-
-        second_image = three_photos[1][0]
-        second_title = three_photos[1][1]
-
-        third_image = three_photos[2][0]
-        third_title = three_photos[2][1]
         user = request.user.id
         messages = Message.objects.filter(recipient=user)
 
@@ -250,6 +240,25 @@ class VirtualTour(LoginRequiredMixin, View):
 
         games = Game.objects.all()
 
+        front_page_photos = list(Game.objects.all())
+
+        three_games = random.sample(front_page_photos, 3)
+
+        three_photos = []
+
+        for game in three_games:
+            three_photos.append((game.image_background, game.name))
+
+        print(f'threee photos: {three_photos}')
+        
+        first_image = three_photos[0][0]
+        first_title = three_photos[0][1]
+
+        second_image = three_photos[1][0]
+        second_title = three_photos[1][1]
+
+        third_image = three_photos[2][0]
+        third_title = three_photos[2][1]
 
         context = {
             "first_image": first_image,
