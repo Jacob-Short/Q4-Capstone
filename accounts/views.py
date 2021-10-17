@@ -266,10 +266,26 @@ class VirtualTour(LoginRequiredMixin, View):
         engine = pyttsx3.init()
         engine.setProperty('voice', 'english_rp+f3')
         engine.say('''
-        Hello and welcome to the gamerzone. Where gamers from all around the world can come together
-        and in our common interest
+        Hello and welcome to the gamerzone. Where gamers from all around the world can come to
+        find and create Frequently Asked Questions, Reviews, or just chat about a game with a friend!
         ''')
         engine.runAndWait()
+        engine.say('''
+        Dont see a game that you like ? If you will direct your attention to the top of the screen in our navigation bar, we
+        have a games section where you can add a game to our selection!
+        ''')
+        engine.runAndWait()
+        engine.say('''
+        Towards the bottom of the sreen, we have the most recent questions asked, as well as the most
+        active review!
+        ''')
+        engine.runAndWait()
+        engine.say('''
+        See a question that you know the answer to ? Create a thread on that question!
+        ''')
+        engine.runAndWait()
+
+
 
         context = {
             "first_image": first_image,
