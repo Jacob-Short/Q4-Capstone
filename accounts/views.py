@@ -10,6 +10,8 @@ from message.models import Message
 from django.shortcuts import HttpResponseRedirect, render, reverse, redirect
 from api.models import ApiSearch
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from faq import views as faq_views
 from review import views as review_views
 from faq.models import UserFaq
@@ -29,7 +31,7 @@ class IndexView(View):
         return render(request, template, context)
 
 
-class HomePageView(View):
+class HomePageView(LoginRequiredMixin, View):
     '''homepage'''
     def get(self, request):
         template = 'homepage.html'
