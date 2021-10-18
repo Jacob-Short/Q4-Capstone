@@ -10,22 +10,24 @@
   </head>
 
   {% load crispy_forms_tags %}
-{% block content %}
-
-<div id="forms">  
-  <div class="forms-header">
-    <h1>{{header}}</h1>
-    <br>
+  {% block content %}
+  <div id="forms-container">
+    <div id="forms">  
+      
+      
+      <div class="forms-header">
+        <h1>{{header}}</h1>
+        <br>
+      </div>
+      
+      <form action="" method="post">
+        {% csrf_token %} {{ form | crispy }}
+        <button class="btn-form"type="submit">Submit</button>
+      </form>
+      
+      
+    </div>
   </div>
-
-  <div class="forms-container">
     
-    <form action="" method="post">
-      {% csrf_token %} {{ form | crispy }}
-      <button class="btn-form"type="submit">Submit</button>
-    </form>
-    
-  </div>
-</div>
-{% endblock %}
-</html>
+  {% endblock %}
+  </html>
