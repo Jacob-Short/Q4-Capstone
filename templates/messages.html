@@ -21,13 +21,25 @@
       <div class="messages-container">
       {% for item in messages %}
         <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
-          <div class="card-header" style="background: darkgreen;">Message from: {{ item.author }}  
-            <button style="margin-left: 20px;"><a href='/delete/message/{{item.id}}'>Delete</a></button>
+          <div class="card-header" style="background: darkgreen;">Message from: 
+            <a href="/profile/{{item.author.id}}/" style="text-decoration: none;
+            color: white;">
+              <img  src="{{item.author.picture.url}}" alt="Your profile photo" style="
+            height: 40px; 
+            width: 40px;
+            border-radius: 20px;
+            margin-left: 30px;
+            cursor: pointer;
+            
+            "/>
+            {{ item.author }}  
+          </a>
           </div>
           <div class="card-body">
             <h4 class="card-title">{{ item.message }}</h4>
             <p class="card-text">at: {{ item.date }}</p>
           </div>
+          <button ><a href='/delete/message/{{item.id}}'>Delete</a></button>
         </div>
         {% endfor %}
       </div>
