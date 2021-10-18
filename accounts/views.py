@@ -55,6 +55,10 @@ class HomePageView(LoginRequiredMixin, View):
 
         three_photos = []
 
+
+        # can make this function into its own function
+            # so can use on more pages than just homepage
+
         for game in three_games:
             three_photos.append((game.image_background, game.name))
 
@@ -165,9 +169,9 @@ class ProfileView(View):
 
     def get(self, request, id):
         template = 'profile.html'
-        user = MyUser.objects.get(id=id)
-        messages = Message.objects.filter(recipient=user)
-        context = {'user': user, 'messages': messages}
+        target_user = MyUser.objects.get(id=id)
+        messages = Message.objects.filter(recipient=target_user)
+        context = {'target_user': target_user, 'messages': messages}
         return render(request, template, context)
 
 
