@@ -3,6 +3,7 @@ from django.views.generic import View
 from games.models import Game
 from review.models import Review
 from review.forms import CreateReviewForm
+from review_comment.models import ReviewComment
 
 
 class CreateReview(View):
@@ -45,9 +46,10 @@ class Reviews(View):
 class ReviewDetailView(View):
     
     def get(self, request, id):
-        reviews = Review.objects.get(id=id)
+        review = Review.objects.get(id=id)
+        comments = ReviewComment.objects.filter(review=review)
         template = 'review_detail.html'
-        context = {'review': reviews}
+        context = {'review': review, 'comments': comments}
 
         return render(request, template, context)
 

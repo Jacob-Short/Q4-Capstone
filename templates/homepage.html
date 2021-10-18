@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load mptt_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -100,12 +100,11 @@
       </div>
       <div class="card-body">
         <blockquote class="blockquote mb-0">
-          <a href='/faq_detail/{{faq.id}}/'>
+          <a href='/review_detail/{{review.id}}/'>
           <p> {{review.text}}</p>
         </a>
           <footer class="blockquote-footer">  <cite title="Source Title">Created By: {{review.user_created}}</cite></footer>
         </blockquote>
-        <div class="card-body">
           <a href="/create_review_comment/{{review.id}}" class="card-link">Comment on Review</a>
         </div>
       </div>
@@ -121,11 +120,6 @@
         {% endfor %}
     </div>
   </div>
-  
-  
-
-
-
 
 </div>
   {% endblock %}
