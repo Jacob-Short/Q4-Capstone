@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'faq_comment',
     'crispy_forms',
     'community',
+    'notification',
 ]
 
 MIDDLEWARE = [
