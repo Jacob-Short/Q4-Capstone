@@ -4,18 +4,7 @@ from faq_notification.models import FaqNotification
 from accounts.models import MyUser
 
 
-def notification_view(request):
-    target_user = request.user
-    new_notifications = []
-    notifications = FaqNotification.objects.all().order_by('-id')
-
-    if len(notifications) > 1:
-        no_new_notifs = 'You have no new notifications!'
-
-    context = {'request': request, 'notifications': notifications, 'no_new_notifs': no_new_notifs}
-    return render(request, 'notifications.html', context)
-
-def create_notification(faq, tagged):
+def create_faq_notification(faq, tagged):
     all_users = MyUser.objects.all()
     names = [x.username for x in all_users]
     print(names)

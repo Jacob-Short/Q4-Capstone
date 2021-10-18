@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'review_comment',
     'crispy_forms',
     'community',
+    'all_notifications',
     'message_notification',
     'review_notification',
     'faq_notification',
