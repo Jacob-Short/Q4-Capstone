@@ -134,7 +134,11 @@ class LoginView(View):
     
     def get(self, request):
         template_name = 'generic_form.html'
-        form = LoginForm()
+        # INITIAL = {
+        #     'username': '',
+        #     'password': '',
+        # }
+        form = LoginForm(initial=None)
         return render(request, template_name, {"form": form, "header": "Login"})
 
     def post(self, request):

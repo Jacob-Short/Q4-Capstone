@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'faq',
     'mptt',
     'faq_comment',
+    'review_comment',
     'crispy_forms',
     'community',
     'notification',
