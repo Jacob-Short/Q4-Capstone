@@ -10,11 +10,17 @@ from message.models import Message
 from django.shortcuts import HttpResponseRedirect, render, reverse, redirect
 from api.models import ApiSearch
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from faq import views as faq_views
 from review import views as review_views
 from faq.models import UserFaq
 from review.models import Review
 from games.models import Game
+import random
+
+import pyttsx3
+
 
 from django.contrib import messages
 import smtplib
@@ -29,21 +35,11 @@ class IndexView(View):
         return render(request, template, context)
 
 
-class HomePageView(View):
+class HomePageView(LoginRequiredMixin, View):
     '''homepage'''
     def get(self, request):
         template = 'homepage.html'
-        initial_search = ApiSearch()
-        three_photos = initial_search.get_three_games()
 
-        first_image = three_photos[0][0]
-        first_title = three_photos[0][1]
-
-        second_image = three_photos[1][0]
-        second_title = three_photos[1][1]
-
-        third_image = three_photos[2][0]
-        third_title = three_photos[2][1]
         user = request.user.id
         messages = Message.objects.filter(recipient=user)
 
@@ -53,6 +49,25 @@ class HomePageView(View):
 
         games = Game.objects.all()
 
+        front_page_photos = list(Game.objects.all())
+
+        three_games = random.sample(front_page_photos, 3)
+
+        three_photos = []
+
+        for game in three_games:
+            three_photos.append((game.image_background, game.name))
+
+        print(f'threee photos: {three_photos}')
+        
+        first_image = three_photos[0][0]
+        first_title = three_photos[0][1]
+
+        second_image = three_photos[1][0]
+        second_title = three_photos[1][1]
+
+        third_image = three_photos[2][0]
+        third_title = three_photos[2][1]
 
         context = {
             "first_image": first_image,
@@ -138,7 +153,7 @@ class LoginView(View):
 def logout_view(request):
     logout(request)
     messages.error(request, f"Logged out")
-    return redirect(reverse("root"))
+    return redirect(reverse("homepage"))
 
 
 class ProfileView(View):
@@ -197,10 +212,91 @@ class SearchUsersView(View):
     def post(self, request):
         form = SearchUserForm(request.POST)
         user = request.user.id
-        if form.is_valid():
-            data = form.cleaned_data
-            gt = data['gamer_tag']
-            user = MyUser.objects.get(gamer_tag=gt)
-            
-        id = user.id
-        return redirect(f'/profile/{id}')
+        try:
+            if form.is_valid():
+                data = form.cleaned_data
+                gt = data['gamer_tag']
+                user = MyUser.objects.get(gamer_tag=gt)
+
+            id = user.id
+            return redirect(f'/profile/{id}')
+        except Exception as err:
+            # need to display message to user that match is not found
+                # try checking capitalization
+            messages.error(request, f"User does not exist, try checking capitalization")
+            print(err)
+            return HttpResponseRedirect(reverse('homepage'))
+
+
+class VirtualTour(LoginRequiredMixin, View):
+    '''homepage'''
+    def get(self, request):
+        template = 'virtual_tour.html'
+
+        user = request.user.id
+        messages = Message.objects.filter(recipient=user)
+
+        faqs = UserFaq.objects.all().order_by('-time_created')
+
+        reviews = Review.objects.all()
+
+        games = Game.objects.all()
+
+        front_page_photos = list(Game.objects.all())
+
+        three_games = random.sample(front_page_photos, 3)
+
+        three_photos = []
+
+        for game in three_games:
+            three_photos.append((game.image_background, game.name))
+
+        print(f'threee photos: {three_photos}')
+        
+        first_image = three_photos[0][0]
+        first_title = three_photos[0][1]
+
+        second_image = three_photos[1][0]
+        second_title = three_photos[1][1]
+
+        third_image = three_photos[2][0]
+        third_title = three_photos[2][1]
+
+        # cynthia
+        engine = pyttsx3.init()
+        engine.setProperty('voice', 'english_rp+f3')
+        engine.say('''
+        Hello and welcome to the gamerzone. Where gamers from all around the world can come to
+        find and create Frequently Asked Questions, Reviews, or just chat about a game with a friend!
+        ''')
+        engine.runAndWait()
+        engine.say('''
+        Dont see a game that you like ? If you will direct your attention to the top of the screen in our navigation bar, we
+        have a games section where you can add a game to our selection!
+        ''')
+        engine.runAndWait()
+        engine.say('''
+        Towards the bottom of the sreen, we have the most recent questions asked, as well as the most
+        active review!
+        ''')
+        engine.runAndWait()
+        engine.say('''
+        See a question that you know the answer to ? Create a thread on that question!
+        ''')
+        engine.runAndWait()
+
+
+
+        context = {
+            "first_image": first_image,
+            "first_title": first_title,
+            "second_image": second_image,
+            "second_title": second_title,
+            "third_image": third_image,
+            "third_title": third_title,
+            "messages": messages,
+            "faqs": faqs,
+            "reviews": reviews,
+            "games": games
+        }
+        return render(request, template, context)

@@ -35,6 +35,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
+LOGIN_URL = 'login'
+
 
 # Application definition
 
@@ -55,6 +57,7 @@ INSTALLED_APPS = [
     'faq_comment',
     'crispy_forms',
     'community',
+    'notification',
 ]
 
 MIDDLEWARE = [

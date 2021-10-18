@@ -13,6 +13,13 @@ class ApiHomeView(View):
     def get(self, request):
         template = "api_homepage.html"
         initial_search = ApiSearch()
+        res = initial_search.get_all_games()
+        print(type(res))
+        for r in res:
+            plat = r['platforms']
+            for obj in plat:
+                platform = obj['platform']['name']
+                print(platform)
         three_photos = initial_search.get_three_games()
 
         first_image = three_photos[0][0]
