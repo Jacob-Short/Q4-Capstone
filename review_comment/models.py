@@ -9,7 +9,7 @@ class ReviewComment(MPTTModel):
     comment = models.CharField(max_length=300)
     review = models.ForeignKey(Review, on_delete=CASCADE, related_name="parent_review")
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="children")
-    user = models.ForeignKey(MyUser, on_delete=CASCADE, null=True, related_name='user')
+    user_created = models.ForeignKey(MyUser, on_delete=CASCADE, null=True, related_name='user_created')
 
     def __str__(self):
         return self.comment

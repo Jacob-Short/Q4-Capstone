@@ -24,12 +24,20 @@
 <br/>
 <h6>Time Created: {{ review.time_created }}</h6>
 <br/>
----------------------------------------------
+<button style="background: rgb(10, 146, 236); cursor: pointer" type="button">
+  <a href="/create_review_comment/{{review.id}}/">Comment</a>
+</button>
+<br/>
+---------------------------------------------------------------------------
 <br/>
 {% endfor %}
     {% endblock %}
   </body>
-</html>
+
+
+
+
+
 
 
 
