@@ -1,32 +1,42 @@
 
 {% extends 'base.html' %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
     <title>User Detail</title>
   </head>
 
   
-    {% block content %}
-    <h2>Messages for {{request.user.username}}</h2>
-    
-    {% for item in messages %}
-    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-        <div class="card-header">Message from: {{ item.author }}  <a href='/delete/message/{{item.id}}'>Delete</a></div>
-        <div class="card-body">
-          <h4 class="card-title">{{ item.message }}</h4>
-          <p class="card-text">at: {{ item.date }}</p>
+  <body>
+     {% block content %}
+     <div class="homepage-header">
+       <h2>Messages for {{request.user.username}}</h2>
+      </div>
+      
+      <div class="messages-container">
+      {% for item in messages %}
+        <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+          <div class="card-header" style="background: darkgreen;">Message from: {{ item.author }}  
+            <button style="margin-left: 20px;"><a href='/delete/message/{{item.id}}'>Delete</a></button>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">{{ item.message }}</h4>
+            <p class="card-text">at: {{ item.date }}</p>
+          </div>
         </div>
-    </div>
-    {% endfor %}
-    {% endblock %}
-  </body>
-</html>
-
-
-
-
-
+        {% endfor %}
+      </div>
+    
+      {% endblock %}
+    </body>
+    </html>
+    
+    
+    
+    
+    
