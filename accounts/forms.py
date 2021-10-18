@@ -2,6 +2,7 @@ from django import forms
 from django.db.models.fields import TextField
 from django.forms.fields import EmailField
 
+from games.models import Game
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=100)
@@ -16,11 +17,12 @@ class SignupForm(forms.Form):
     gamer_tag = forms.CharField(max_length=30)
 
 
-class PostForm(forms.Form):
+class EditProfileForm(forms.Form):
     email = forms.EmailField()
     picture = forms.ImageField()
     bio = forms.CharField(widget=forms.Textarea)
     gamer_tag = forms.CharField(max_length=30)
+    favorite_game = forms.ModelChoiceField(queryset=Game.objects.all())
 
 
 class SearchUserForm(forms.Form):

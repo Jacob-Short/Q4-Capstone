@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render, reverse
-from accounts.forms import LoginForm, PostForm, SignupForm, SearchUserForm
+from accounts.forms import LoginForm, EditProfileForm, SignupForm, SearchUserForm
 from accounts.models import MyUser
 from message.models import Message
 from django.shortcuts import HttpResponseRedirect, render, reverse, redirect
@@ -127,7 +127,7 @@ class SignUpView(View):
                 return redirect(reverse("homepage"))    
             except Exception as ex:
                 print ("Something went wrong….",ex)
-                return redirect(reverse("homepage"))    
+                return redirect(reverse("homepage"))
 
 
 class LoginView(View):
@@ -175,30 +175,35 @@ class ProfileView(View):
         ...
 
 
-def edit_profile(request, id):
-    profile_id = request.user.id
-    profile_user = MyUser.objects.get(id=id)
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
+class EditProfile(View):
+    '''can edit your profile'''
+    def get(self, request, id):
+        profile_user = MyUser.objects.get(id=id)
+        form = EditProfileForm(initial={
+        'username': profile_user.username,
+        'bio': profile_user.bio,
+        'email': profile_user.email,
+        'gamer_tag': profile_user.gamer_tag,
+        'picture': profile_user.picture,
+        'favorite_game': profile_user.favorite_game
+        })
+        context = {'form': form}
+        return render(request, 'profile_edit.html', context)
+        
+    def post(self, request, id):
+        profile_id = request.user.id
+        profile_user = MyUser.objects.get(id=id)
+        form = EditProfileForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.cleaned_data
             profile_user.bio=data['bio']
             profile_user.email=data['email']
             profile_user.gamer_tag=data['gamer_tag']
             profile_user.picture=data['picture']
+            profile_user.favorite_game=data['favorite_game']
             profile_user.save()
             print(data['picture'])
             return HttpResponseRedirect(reverse('homepage'))
-    else:
-        form = PostForm(initial={
-        'username': profile_user.username,
-        'bio': profile_user.bio,
-        'email': profile_user.email,
-        'gamer_tag': profile_user.gamer_tag,
-        'picture': profile_user.picture,
-        })
-        context = {'form': form}
-        return render(request, 'profile_edit.html', context)
 
 
 

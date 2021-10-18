@@ -1,9 +1,6 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.utils import timezone
-from accounts.models import MyUser
-
-# from reviews.models import Review
 
 '''
 Game:
