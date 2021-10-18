@@ -11,23 +11,23 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('review', '0001_initial'),
+        ('faq', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ReviewComment',
+            name='FaqComment',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('comment', models.CharField(max_length=300)),
+                ('comment', models.CharField(max_length=200)),
                 ('lft', models.PositiveIntegerField(editable=False)),
                 ('rght', models.PositiveIntegerField(editable=False)),
                 ('tree_id', models.PositiveIntegerField(db_index=True, editable=False)),
                 ('level', models.PositiveIntegerField(editable=False)),
-                ('parent', mptt.fields.TreeForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='children', to='review_comment.reviewcomment')),
-                ('review', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='parent_review', to='review.review')),
-                ('user_created', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='user_created', to=settings.AUTH_USER_MODEL)),
+                ('faq', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='parent_faq', to='faq.userfaq')),
+                ('parent', mptt.fields.TreeForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='children', to='faq_comment.faqcomment')),
+                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='user_filed', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'abstract': False,

@@ -1,33 +1,44 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/style.css' %}"
+    />
   </head>
 
-  {% load crispy_forms_tags %}
-  {% block content %}
+  {% load crispy_forms_tags %} {% block content %}
   <div id="forms-container">
-    <div id="forms">  
-      
-      
+    <div id="forms">
       <div class="forms-header">
         <h1>{{header}}</h1>
-        <br>
+        <br />
       </div>
-      
+
       <form action="" method="post">
         {% csrf_token %} {{ form | crispy }}
-        <button class="btn-form"type="submit">Submit</button>
+        <button class="btn-form" type="submit" style="margin-left: 110px">
+          Submit
+        </button>
       </form>
-      
-      
+      {% if header == "Login" %}
+      <h6>--- not a member? Join us ---</h6>
+      <a class="signup-btn" href="/signup/">
+        <button class="btn-form" type="submit">Sign Up</button>
+      </a>
+      {% else %}
+      <h6>--- Already a member? Login! ---</h6>
+      <a class="signup-btn" href="/login/">
+        <button class="btn-form" type="submit">Login</button>
+      </a>
+      {% endif %}
     </div>
   </div>
-    
+
   {% endblock %}
-  </html>
+</html>
