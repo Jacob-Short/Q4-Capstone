@@ -58,7 +58,10 @@ INSTALLED_APPS = [
     'review_comment',
     'crispy_forms',
     'community',
-    'notification',
+    'message_notification',
+    'review_notification',
+    'faq_notification',
+
 ]
 
 MIDDLEWARE = [
