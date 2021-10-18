@@ -170,7 +170,7 @@ class ProfileView(View):
     def get(self, request, id):
         template = 'profile.html'
         target_user = MyUser.objects.get(id=id)
-        messages = Message.objects.filter(recipient=target_user)
+        messages = Message.objects.filter(recipient=request.user)
         context = {'target_user': target_user, 'messages': messages}
         return render(request, template, context)
 
