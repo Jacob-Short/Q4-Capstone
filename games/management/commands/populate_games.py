@@ -17,13 +17,18 @@ class Command(BaseCommand):
             page_three = second_req.get_third_page()
             page_four = second_req.get_fourth_page()
 
+            def get_platform(plat):
+                for obj in plat:
+                    platform = obj['platform']['name']
+                return platform
+
             try:
                 for game in api_games:
                     populated_game = Game.objects.create(
                         name = game['name'],
                         slug = game['slug'],
                         rating = game['rating'],
-                        platform = game['platforms'],
+                        platform = get_platform(game['platforms']),
                         released_at = game['released'],
                         image_background = game['background_image'],
                     )
