@@ -12,4 +12,4 @@ class AddInitialFaqCommentForm(forms.Form):
 
 class AddFaqCommentForm(forms.Form):
     comment = forms.CharField(max_length=200)
-    parent = TreeNodeChoiceField(queryset=FaqComment.objects.all(), level_indicator="+--")
+    parent = TreeNodeChoiceField(queryset=FaqComment.objects.all(), level_indicator="+--", required=False)
