@@ -19,7 +19,7 @@
       </div>
       
       <div class="messages-container">
-      {% for item in messages %}
+        {% for item in messages %}
         <div class="card text-white bg-success mb-3" style="max-width: 20rem;">
           <div class="card-header" style="
             background: darkgreen;">
@@ -36,23 +36,22 @@
             "/>
             {{ item.author }}  
           </a>
-          </div>
-          <div class="card-body">
-            <h4 class="card-title">{{ item.message }}</h4>
-            <p class="card-text">at: {{ item.date }}</p>
-          </div>
-          <a href='/delete/message/{{item.id}}/'>
-          <button >
-              Delete
-            </button>
-            </a>
-            <a href="/message/user/{{item.author.id}}">
-              <button>reply</button>
-            </a>
         </div>
-        {% endfor %}
+        <div class="card-body">
+          <h4 class="card-title">{{ item.message }}</h4>
+          <p class="card-text">at: {{ item.date }}</p>
+        </div>
+        <a href='/delete/message/{{item.id}}'>
+          <button >
+            Delete
+          </button>
+        </a>
+        <a href="/message/user/{{item.author.id}}">
+          <button>reply</button>
+        </a>
       </div>
-    
+      {% endfor %}
+    </div>
       {% endblock %}
     </body>
     </html>

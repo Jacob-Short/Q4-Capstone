@@ -25,8 +25,8 @@ def MessageView(req, id):
     return render(req, 'generic_form.html', {'form': form, 'header':'message'})
 
 def UserMessages(req, id):
-    user = MyUser.objects.get(id=id)
-    messages = Message.objects.filter(recipient=user)
+    target_user = MyUser.objects.get(id=id)
+    messages = Message.objects.filter(recipient=target_user)
     return render(req, 'messages.html', {'messages': messages})
 
 def DeleteMessage(req, id):
