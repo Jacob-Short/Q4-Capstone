@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render, reverse
 from accounts.forms import LoginForm, EditProfileForm, SignupForm, SearchUserForm
 from accounts.models import MyUser
+import community
+import faq
 from message.models import Message
 from django.shortcuts import HttpResponseRedirect, render, reverse, redirect
 from api.models import ApiSearch
@@ -21,6 +23,7 @@ from review import views as review_views
 from faq.models import UserFaq
 from review.models import Review
 from games.models import Game
+from community.models import Community
 import random
 
 import pyttsx3
@@ -28,6 +31,9 @@ import pyttsx3
 
 from django.contrib import messages
 import smtplib
+import sqlite3
+
+# from community import settings
 
 
 
@@ -78,6 +84,33 @@ class HomePageView(LoginRequiredMixin, View):
         third_image = three_photos[2][0]
         third_title = three_photos[2][1]
 
+        # checking for community
+        possible_community = {}
+
+
+        for game in games:
+            specific_game_review_users = Review.objects.filter(game=game)
+            specific_game_faq_users = UserFaq.objects.filter(game=game)
+            review_users = [x.user_created for x in specific_game_review_users]
+            faq_users = [x.user for x in specific_game_faq_users]
+            for person in review_users:
+                if person in faq_users:
+                    if game not in possible_community:
+                        possible_community[game] = [person]
+                    else:
+                        possible_community[game].append(person)
+        print(possible_community)
+
+
+        for key in possible_community:
+            if len(possible_community[key]) > 1:
+                community_game = key
+                community_game_id = key.id
+                possible_community_members = possible_community[key]
+                print('A community is available to be created')
+
+
+
 
         message_notifications = MessageNotification.objects.filter(
         user_notified=target_user
@@ -88,6 +121,7 @@ class HomePageView(LoginRequiredMixin, View):
         all_notifications = list(message_notifications) + list(review_notifications) + list(faq_notifications)
 
         notifications_count = len(all_notifications)
+
 
         context = {
             "first_image": first_image,
@@ -100,6 +134,9 @@ class HomePageView(LoginRequiredMixin, View):
             "faqs": faqs,
             "reviews": reviews,
             "games": games,
+            "community_game": community_game,
+            "community_game_id": community_game_id,
+            "possible_community_members": possible_community_members
             "notifications_count": notifications_count
         }
         return render(request, template, context)
@@ -186,6 +223,9 @@ class ProfileView(View):
 
     def get(self, request, id):
         template = 'profile.html'
+
+        communities = Community.objects.filter(members=user)
+
         target_user = MyUser.objects.get(id=id)
         messages = Message.objects.filter(recipient=target_user)
 
@@ -199,7 +239,7 @@ class ProfileView(View):
         all_notifications = list(message_notifications) + list(review_notifications) + list(faq_notifications)
 
         notifications_count = len(all_notifications)
-        context = {'target_user': target_user, 'messages': messages, "notifications_count": notifications_count}
+        context = {'target_user': target_user, 'messages': messages, "notifications_count": notifications_count, 'communities': communities}
         return render(request, template, context)
 
 

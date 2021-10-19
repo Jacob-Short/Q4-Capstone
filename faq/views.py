@@ -9,6 +9,8 @@ from games.models import Game
 
 from faq_comment.models import FaqComment
 
+from community import settings
+
 class CreateFaqView(View):
     
     def get(self, request, id):
@@ -22,6 +24,11 @@ class CreateFaqView(View):
         if form.is_valid():
             data = form.cleaned_data
             faq = UserFaq.objects.create(question=data.get("question"), user=request.user, game=game)
+            if game not in settings.faq_users:
+                settings.faq_users[game] = [request.user.username]
+            else:
+                settings.faq_users[game].append(request.user.username)
+
             return HttpResponseRedirect(reverse("homepage"))
 
 

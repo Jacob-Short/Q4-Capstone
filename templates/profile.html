@@ -14,9 +14,6 @@
     <h1>User Detail</h1>
     <h2>Welcome {{target_user.username}}</h2>
 
-    
-  
-
   
     <div class="card" style="width: 300px; height: 500px">
       <img src="{{target_user.picture.url}}" class="card-img-top" alt="why you no show picture!!!" />
@@ -37,6 +34,9 @@
         <a href="/message/user/{{target_user.id}}" class="card-link">Message</a>
         <a href="/user/{{target_user.id}}/messages" class="card-link">Messages({{messages.count}})</a>
       </div>
+      {% for community in communities %}
+      <a href="/community/{{community.id}}/" class="card-link">Community: {{community.game}}</a>
+      {% endfor %}
     </div>
     </body>
     {% endblock %}
