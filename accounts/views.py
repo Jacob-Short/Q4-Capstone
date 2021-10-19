@@ -26,7 +26,7 @@ import random
 import pyttsx3
 
 
-from django.contrib import messages
+from django.contrib import messages as django_messages
 import smtplib
 
 
@@ -143,7 +143,7 @@ class SignUpView(View):
                 smtp_server.sendmail(sent_from, to, email_text)
                 smtp_server.close()
                 print ("Email sent successfully!")
-                messages.success(request, messages.SUCCESS, f"Login Successful")
+                django_messages.success(request, django_messages.SUCCESS, f"Login Successful")
                 login(request, user)
                 return redirect(reverse("homepage"))    
             except Exception as ex:
@@ -171,13 +171,19 @@ class LoginView(View):
             )
             if user:
                 login(request, user)
-                messages.success(request, f'You have successfully logged in')
+                django_messages.success(request, f'You have successfully logged in')
                 return redirect(reverse("homepage"))
+            if user is not None:
+                login(request, user)
+                return redirect(reverse('generic_form.html'))
+            else:
+                django_messages.success(request, f'Invalid credentials, please try again!')
+                return redirect('login')
 
 
 def logout_view(request):
     logout(request)
-    messages.error(request, f"Logged out")
+    django_messages.error(request, f"Logged out")
     return redirect(reverse("homepage"))
 
 
@@ -264,7 +270,7 @@ class SearchUsersView(View):
         except Exception as err:
             # need to display message to user that match is not found
                 # try checking capitalization
-            messages.error(request, f"User does not exist, try checking capitalization")
+            django_messages.error(request, f"User does not exist, try checking capitalization")
             print(err)
             return HttpResponseRedirect(reverse('homepage'))
 

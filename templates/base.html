@@ -97,7 +97,11 @@
 </div>
   {% if messages %}
   {% for message in messages %}
-    <script>M.toast({html: "{{message}}", classes: 'blue rounded', displayLength:5000});</script>
+    <!-- <script>M.toast({html: "{{message}}", classes: 'blue rounded', displayLength:5000});</script> -->
+    
+    <div class="alert alert-danger" role="alert">
+      {{message}}
+    </div>
   {% endfor %}
 {% endif %}
 
@@ -108,7 +112,10 @@
     integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/"
     crossorigin="anonymous"></script>
     
-          {% block content %} {% endblock %}
+          {% block content %} 
+          
+          
+          {% endblock %}
 
   </body>
   
