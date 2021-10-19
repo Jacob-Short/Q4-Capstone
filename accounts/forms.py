@@ -19,7 +19,7 @@ class SignupForm(forms.Form):
 
 class EditProfileForm(forms.Form):
     email = forms.EmailField()
-    picture = forms.ImageField()
+    picture = forms.ImageField(required=False)
     bio = forms.CharField(widget=forms.Textarea)
     gamer_tag = forms.CharField(max_length=30)
     favorite_game = forms.ModelChoiceField(queryset=Game.objects.all())

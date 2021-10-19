@@ -30,7 +30,9 @@
           <!-- <li class="list-group-item">A third item</li> -->
         </ul>
         <div class="card-body">
+          {% if request.user.username == target_user.username %}
           <a href="/edit/{{target_user.id}}" class="card-link">Edit Profile</a>
+          {% endif %}
           <a href="/message/user/{{target_user.id}}" class="card-link">Message</a>
         </div>
       </div>
