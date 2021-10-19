@@ -12,7 +12,9 @@
 
   <body>
     {% block content %}
-    <h1>Data base games</h1> 
+    <div class="homepage-header">
+      <h1>Data base games</h1> 
+    </div>
     <a href='/create_game/'>
       <button>Add a Game</button>
     </a>
@@ -33,10 +35,6 @@
           <a href='/game_detail/{{game.id}}'>
             <h5 class="card-title">{{game.name}}</h5>
           </a>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">Rating: {{game.rating}}</li>

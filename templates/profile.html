@@ -11,34 +11,31 @@
   
     {% block content %}
     <body>
-    <h1>User Detail</h1>
-    <h2>Welcome {{target_user.username}}</h2>
-
-    
-  
-
-  
-    <div class="card" style="width: 300px; height: 500px">
-      <img src="{{target_user.picture.url}}" class="card-img-top" alt="why you no show picture!!!" />
-      <div class="card-body">
-        <h5 class="card-title">{{target_user.username}}</h5>
-        <p class="card-text">
-          {{target_user.bio}}
-        </p>
+      <div class= "homepage-header">
+        <h1>{{target_user.gamer_tag}}'s Profile</h1>
       </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">{{target_user.email}}</li>
-        <li class="list-group-item">GT: {{target_user.gamer_tag}}</li>
-        <li class="list-group-item">Favorite Game: {{target_user.favorite_game}}</li>
-        <!-- <li class="list-group-item">A third item</li> -->
-      </ul>
-      <div class="card-body">
-        <a href="/edit/{{target_user.id}}" class="card-link">Edit Profile</a>
-        <a href="/message/user/{{target_user.id}}" class="card-link">Message</a>
-        <a href="/user/{{target_user.id}}/messages" class="card-link">Messages({{messages.count}})</a>
+    <div class="profile-container">
+      <div class="card" style="margin-top:20px; width: 500px; height: 800px; box-shadow:4px 4px 30px black;">
+        <img style="border-radius: 230px;"src="{{target_user.picture.url}}" class="card-img-top" alt="why you no show picture!!!" />
+        <div class="card-body">
+          <h5 class="card-title">{{target_user.username}}</h5>
+          <p class="card-text">
+           <b>Bio:</b> {{target_user.bio}}
+          </p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><b>Email:</b>{{target_user.email}}</li>
+          <li class="list-group-item"><b>GT:</b> {{target_user.gamer_tag}}</li>
+          <li class="list-group-item"><b>Favorite Game:</b> {{target_user.favorite_game}}</li>
+          <!-- <li class="list-group-item">A third item</li> -->
+        </ul>
+        <div class="card-body">
+          <a href="/edit/{{target_user.id}}" class="card-link">Edit Profile</a>
+          <a href="/message/user/{{target_user.id}}" class="card-link">Message</a>
+        </div>
       </div>
     </div>
     </body>
     {% endblock %}
   </body>
-</html>
+  </html>

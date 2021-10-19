@@ -5,6 +5,7 @@ from .forms import AddTextForm
 
 
 def MessageView(req, id):
+    template = 'generic_form.html'
     if req.method == 'POST':
         recip = MyUser.objects.get(id=id)
         form = AddTextForm(req.POST)
