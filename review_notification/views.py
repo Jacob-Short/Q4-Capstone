@@ -9,12 +9,11 @@ def create_review_notification(review, tagged):
     names = [x.username for x in all_users]
     print(names)
     user_string = ''
-    for person in tagged:
-        user_string += person
+    user_string += str(tagged)
     print(user_string)
     target_user = MyUser.objects.get(username=user_string)
     notification = ReviewNotification.objects.create(
-        message = review,
+        review = review,
         user_notified = target_user,
     )
 

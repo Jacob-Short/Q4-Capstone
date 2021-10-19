@@ -3,6 +3,8 @@ from .models import Message
 from accounts.models import MyUser
 from .forms import AddTextForm
 
+from message_notification.views import create_message_notification
+
 
 def MessageView(req, id):
     if req.method == 'POST':
@@ -10,11 +12,12 @@ def MessageView(req, id):
         form = AddTextForm(req.POST)
         if form.is_valid():
             data = form.cleaned_data
-            Message.objects.create(
+            message = Message.objects.create(
                 message=data['message'],
                 author=req.user,
                 recipient=recip
             )
+            create_message_notification(message, recip)
 
             return HttpResponseRedirect(reverse('profile', args=(id,)))
     form = AddTextForm()

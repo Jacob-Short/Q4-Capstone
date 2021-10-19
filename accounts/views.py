@@ -12,6 +12,10 @@ from api.models import ApiSearch
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from message_notification.models import MessageNotification
+from review_notification.models import ReviewNotification
+from faq_notification.models import FaqNotification
+
 from faq import views as faq_views
 from review import views as review_views
 from faq.models import UserFaq
@@ -41,6 +45,7 @@ class HomePageView(LoginRequiredMixin, View):
         template = 'homepage.html'
 
         user = request.user.id
+        target_user = request.user
         messages = Message.objects.filter(recipient=user)
 
         faqs = UserFaq.objects.all().order_by('-time_created')
@@ -73,6 +78,17 @@ class HomePageView(LoginRequiredMixin, View):
         third_image = three_photos[2][0]
         third_title = three_photos[2][1]
 
+
+        message_notifications = MessageNotification.objects.filter(
+        user_notified=target_user
+        )
+        review_notifications = ReviewNotification.objects.filter(user_notified=target_user)
+        faq_notifications = MessageNotification.objects.filter(user_notified=target_user)
+
+        all_notifications = list(message_notifications) + list(review_notifications) + list(faq_notifications)
+
+        notifications_count = len(all_notifications)
+
         context = {
             "first_image": first_image,
             "first_title": first_title,
@@ -83,7 +99,8 @@ class HomePageView(LoginRequiredMixin, View):
             "messages": messages,
             "faqs": faqs,
             "reviews": reviews,
-            "games": games
+            "games": games,
+            "notifications_count": notifications_count
         }
         return render(request, template, context)
 
@@ -171,7 +188,18 @@ class ProfileView(View):
         template = 'profile.html'
         target_user = MyUser.objects.get(id=id)
         messages = Message.objects.filter(recipient=target_user)
-        context = {'target_user': target_user, 'messages': messages}
+
+
+        message_notifications = MessageNotification.objects.filter(
+        user_notified=target_user
+        )
+        review_notifications = ReviewNotification.objects.filter(user_notified=target_user)
+        faq_notifications = MessageNotification.objects.filter(user_notified=target_user)
+
+        all_notifications = list(message_notifications) + list(review_notifications) + list(faq_notifications)
+
+        notifications_count = len(all_notifications)
+        context = {'target_user': target_user, 'messages': messages, "notifications_count": notifications_count}
         return render(request, template, context)
 
 
