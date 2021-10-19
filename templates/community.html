@@ -20,7 +20,12 @@
         <h2>Creator: {{community.creator}}</h2>
         <h2>Game: {{community.game}}</h2>
         <h2>Members: {{community.members}}</h2>
-        <h2>Messages: {{community.messages}}</h2>
+        <h2>Messages:</h2>
+        <ul>
+        {% for message in community_messages %}
+          <li>{{message}}</li>
+        {% endfor %}
+      </ul>
         <h2>Tiem created: {{community.time_created}}</h2>
 
         <form action="" method="post">

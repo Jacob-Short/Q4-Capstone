@@ -57,7 +57,9 @@ class CommunityView(View):
         template = 'community.html'
         form = CreateCommunityMessageForm()
         community = Community.objects.get(id=id)
-        context = {'community': community, 'form': form}
+        community_messages = CommunityMessage.objects.filter(community=community)
+        print(community.messages)
+        context = {'community': community, 'form': form, 'community_messages': community_messages}
         return render(request, template, context)
 
 

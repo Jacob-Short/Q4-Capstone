@@ -18,6 +18,9 @@ class Community(models.Model):
     messages = models.ManyToManyField('CommunityMessage', blank=True, related_name="comm_messages")
     time_created = models.DateTimeField(default=timezone.now)
 
+    def __str__(self):
+        return self.creator
+
 
 class CommunityMessage(models.Model):
     """sub messages within cimmunity"""

@@ -136,7 +136,7 @@ class HomePageView(LoginRequiredMixin, View):
             "games": games,
             "community_game": community_game,
             "community_game_id": community_game_id,
-            "possible_community_members": possible_community_members
+            "possible_community_members": possible_community_members,
             "notifications_count": notifications_count
         }
         return render(request, template, context)
@@ -224,9 +224,10 @@ class ProfileView(View):
     def get(self, request, id):
         template = 'profile.html'
 
-        communities = Community.objects.filter(members=user)
 
         target_user = MyUser.objects.get(id=id)
+        communities = Community.objects.filter(members=target_user)
+
         messages = Message.objects.filter(recipient=target_user)
 
 
