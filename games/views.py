@@ -44,7 +44,7 @@ class CreateGameView(View):
     '''can create a review on a game in db'''
 
     def get(self, request):
-        template = 'generic_form.html'
+        template = 'create_game.html'
         form = CreateGameForm()
         context = {'form': form}
         return render(request, template, context)
@@ -54,6 +54,7 @@ class CreateGameView(View):
         form = CreateGameForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.cleaned_data
+            print(data)
             game = Game.objects.create(
                 name = data['name'],
                 slug = data['slug'],

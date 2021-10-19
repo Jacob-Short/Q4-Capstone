@@ -134,9 +134,9 @@ class HomePageView(LoginRequiredMixin, View):
             "faqs": faqs,
             "reviews": reviews,
             "games": games,
-            "community_game": community_game,
-            "community_game_id": community_game_id,
-            "possible_community_members": possible_community_members
+            # "community_game": community_game,
+            # "community_game_id": community_game_id,
+            # "possible_community_members": possible_community_members,
             "notifications_count": notifications_count
         }
         return render(request, template, context)
@@ -230,17 +230,17 @@ class ProfileView(View):
     def get(self, request, id):
         template = 'profile.html'
 
-        communities = Community.objects.filter(members=user)
 
         target_user = MyUser.objects.get(id=id)
+        communities = Community.objects.filter(members=target_user)
         messages = Message.objects.filter(recipient=target_user)
 
-
+ 
         message_notifications = MessageNotification.objects.filter(
-        user_notified=target_user
+        user_notified=request.user
         )
-        review_notifications = ReviewNotification.objects.filter(user_notified=target_user)
-        faq_notifications = MessageNotification.objects.filter(user_notified=target_user)
+        review_notifications = ReviewNotification.objects.filter(user_notified=request.user)
+        faq_notifications = MessageNotification.objects.filter(user_notified=request.user)
 
         all_notifications = list(message_notifications) + list(review_notifications) + list(faq_notifications)
 
