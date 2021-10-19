@@ -33,3 +33,6 @@ class CreateGameForm(forms.Form):
     platform = forms.ChoiceField(choices=SYS_CHOICES)
     released_at = forms.DateField()
     image_background = forms.ImageField()
+
+class SearchGameForm(forms.Form):
+    search = forms.CharField(max_length=100)

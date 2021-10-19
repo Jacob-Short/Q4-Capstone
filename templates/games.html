@@ -1,52 +1,65 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/style.css' %}"
+    />
     <title>Api</title>
   </head>
 
   <body>
     {% block content %}
     <div class="homepage-header">
-      <h1>Data base games</h1> 
+      <h1>Data base games</h1>
     </div>
-    <a href='/create_game/'>
+    <form class="row gy-2 gx-3 align-items-center" method="post">
+      {% csrf_token %} {{ form.as_p }}
+    </form>
+    <a href="/create_game/">
       <button>Add a Game</button>
     </a>
     <div id="games">
       {% for game in games %}
-      <div class="card" style="
-        width: 18rem;
-        margin: 20px;
-        height: 600px;
-        box-shadow: 4px 4px 30px black;
-      ">
+      <div
+        class="card"
+        style="
+          width: 18rem;
+          margin: 20px;
+          height: 600px;
+          box-shadow: 4px 4px 30px black;
+        "
+      >
         <img
-        src="{{game.image_background}}"
-        class="card-img-top"
-        alt="picture-of-game"
+          src="{{game.image_background}}"
+          class="card-img-top"
+          alt="picture-of-game"
         />
         <div class="card-body">
-          <a href='/game_detail/{{game.id}}'>
+          <a href="/game_detail/{{game.id}}">
             <h5 class="card-title">{{game.name}}</h5>
           </a>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">Rating: {{game.rating}}</li>
-          <li class="list-group-item">Platform: Need to fix when creating games{{game.platform.platform}}</li>
+          <li class="list-group-item">
+            Platform: Need to fix when creating games{{game.platform.platform}}
+          </li>
           <li class="list-group-item">Release Date: {{game.released_at}}</li>
         </ul>
         <div class="card-body">
-          <a href="/create_review/{{game.id}}" class="card-link">Leave a Review</a>
+          <a href="/create_review/{{game.id}}" class="card-link"
+            >Leave a Review</a
+          >
           <a href="/createfaq/{{game.id}}" class="card-link">Write a FAQ</a>
         </div>
       </div>
-      {% endfor %} 
+      {% endfor %}
     </div>
     {% endblock %}
   </body>
