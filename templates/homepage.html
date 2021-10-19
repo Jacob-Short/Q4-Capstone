@@ -13,6 +13,17 @@
 
 <body>
   {% block content %}
+
+  {% if django_messages %}
+  {% for message in django_messages %}
+    <!-- <script>M.toast({html: "{{message}}", classes: 'blue rounded', displayLength:5000});</script> -->
+    
+    <div class="alert alert-danger" role="alert">
+      {{message}}
+    </div>
+  {% endfor %}
+{% endif %}
+
 <div id="homepage">
   <div class="homepage-header">
     <h1>Welcome to the Gamerzone</h1>
