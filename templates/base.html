@@ -87,8 +87,14 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/profile/{{request.user.id}}/">
-            {{request.user.gamer_tag}}
+          <a href="/profile/{{request.user.id}}/">
+            <img  src="{{request.user.picture.url}}" alt="Your profile photo" style="
+          height: 40px; 
+          width: 40px;
+          border-radius: 20px;
+          margin-top: 6px;
+          margin-right: 10px;
+          "/>
           </a>
         </li>
       </ul>

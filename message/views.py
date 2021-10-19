@@ -7,6 +7,7 @@ from message_notification.views import create_message_notification
 
 
 def MessageView(req, id):
+    template = 'generic_form.html'
     if req.method == 'POST':
         recip = MyUser.objects.get(id=id)
         form = AddTextForm(req.POST)

@@ -107,13 +107,16 @@ input {
 }
 
 /* profile/profile.edit.html */
-#profile-container {
+.profile-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 300px;
+  width: auto;
 }
+/* .profile-container{
+  margin-left: 30px;
+} */
 
 /* games.html */
 
@@ -131,6 +134,12 @@ img{
   height: 300px;
 } */
 
+/* messages.html */
+
+.messages-container {
+  margin-left: 30px;
+  margin-top: 30px;
+}
 /* Aris Fornasari's styling for 404 errors*/
 
 #fourofour {
