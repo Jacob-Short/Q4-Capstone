@@ -235,7 +235,7 @@ class ProfileView(View):
         communities = Community.objects.filter(members=target_user)
         messages = Message.objects.filter(recipient=target_user)
 
- 
+
         message_notifications = MessageNotification.objects.filter(
         user_notified=request.user
         )

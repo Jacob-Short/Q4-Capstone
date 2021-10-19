@@ -18,7 +18,7 @@
   {% for message in django_messages %}
     <!-- <script>M.toast({html: "{{message}}", classes: 'blue rounded', displayLength:5000});</script> -->
     
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger" role="alert" displayLength:5000>
       {{message}}
     </div>
   {% endfor %}
