@@ -19,7 +19,9 @@
         <div class="card-body">
           <blockquote class="blockquote mb-0">
             <p> {{review.text}}</p>
+            <a href="/profile/{{review.user_created.id}}/">
             <footer class="blockquote-footer">  <cite title="Source Title">Reviewed By: {{review.user_created}}</cite></footer>
+          </a>
           </blockquote>
           <div class="card-body">
             <a href="/create_review_comment/{{review.id}}" class="card-link">Add Comment</a>

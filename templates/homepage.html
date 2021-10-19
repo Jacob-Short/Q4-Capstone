@@ -27,7 +27,6 @@
 <div id="homepage">
   <div class="homepage-header">
     <h1>Welcome to the Gamerzone</h1>
-    <!-- <img src="{{user.picture.url}}" alt="Your profile photo"/> -->
       <p>________________________________</p>
       <br>
     <h4>This is a site where gamers everywhere can talk <br>
@@ -86,11 +85,11 @@
 </div>
 
 <div class="homepage-container">
-<div class="homepage-item" style="display:flex; flex-direction: column; align-items: center; width: 600px; border: 3px solid #ffc107;">
+<div class="homepage-item" style="width: 350px; border-right: 3px solid #ffc107; padding-right: 40px; margin-left: 20px;"">
 <h2>Recent Questions</h2>
 <br>
 {% for faq in faqs|slice:":4" %}
-<div class="card" style="width: 500px; background-color: #ffc107; font-weight: bold; box-shadow: 1px 1px 30px black;">
+<div class="card" style="background-color: #ffc107; font-weight: bold; box-shadow: 1px 1px 30px black;">
   <div class="card-header">
       Game: {{faq.game}}
   </div>
@@ -99,7 +98,9 @@
       <a href='/faq_detail/{{faq.id}}/'>
       <p> {{faq.question}}</p>
     </a>
+      <a href="/profile/{{faq.user.id}}/">
       <footer class="blockquote-footer">  <cite title="Source Title">Created By: {{faq.user}}</cite></footer>
+    </a>
     </blockquote>
     <div class="card-body">
       <a href="/create_faq_comment/{{faq.id}}" class="card-link">Comment on FAQ</a>
@@ -110,12 +111,12 @@
   </div>
 
 
-  <div class="homepage-item" style="display:flex; flex-direction: column; align-items: center; width: 600px; border: 3px solid #ffc107;">
+  <div class="homepage-item" style="width: 350px; border-right: 3px solid #ffc107; padding-right: 40px;">
     <h2>Most active Reviews</h2>
     <br>
     
     {% for review in reviews %}
-    <div class="card" style=" width:500px; background-color: #ffc107; font-weight: bold; box-shadow: 1px 1px 30px black;">
+    <div class="card" style="background-color: #ffc107; font-weight: bold; box-shadow: 1px 1px 30px black; margin-bottom: 500px;">
       <div class="card-header">
           Review Game: {{review.game}}
       </div>
@@ -124,7 +125,9 @@
           <a href='/review_detail/{{review.id}}/'>
           <p> {{review.text}}</p>
         </a>
+        <a href="/profile/{{review.user_created.id}}/">
           <footer class="blockquote-footer">  <cite title="Source Title">Created By: {{review.user_created}}</cite></footer>
+        </a>
         </blockquote>
         <div class="card-body">
           <a href="/create_review_comment/{{review.id}}/" class="card-link">Comment on Review</a>
@@ -133,7 +136,7 @@
     </div>
     {% endfor %}
     </div>
-    <div class="homepage-item" style="display:flex; flex-direction: column; align-items: center; width: 600px; border: 3px solid #ffc107;">
+    <div class="homepage-item" style="width: 350px;">
       <h2>Top Searched Games</h2>
         {% for game in games|slice:":9" %}
         <ul>
