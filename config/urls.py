@@ -25,6 +25,10 @@ from faq.urls import urlpatterns as faq_url
 from faq_comment.urls import urlpatterns as faq_comment_url
 from community.urls import urlpatterns as community_comment_url
 
+from review_comment.urls import urlpatterns as review_comment_url
+from all_notifications.urls import urlpatterns as notification_url
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
@@ -37,3 +41,6 @@ urlpatterns += review_url
 urlpatterns += faq_url
 urlpatterns += faq_comment_url
 urlpatterns += community_comment_url
+urlpatterns += review_comment_url
+urlpatterns += notification_url
+

@@ -65,15 +65,15 @@
           </a>
           {% endif %}
         {% if request.user.username %}
-        <li class="nav-item">
+        <li class="nav-item" style="font-size: 14px;">
           <a class="nav-link" href="/virtual_tour/">
             Activate Virtual Tour
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/notifications/">
             <i class="fa fa-envelope-o">
-              <span class="badge badge-warning">0</span>
+              <span class="badge badge-warning">{{notifications_count}}</span>
             </i>
             Notifications
           </a>

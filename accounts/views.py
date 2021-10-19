@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render, reverse
-from accounts.forms import LoginForm, PostForm, SignupForm, SearchUserForm
+from accounts.forms import LoginForm, EditProfileForm, SignupForm, SearchUserForm
 from accounts.models import MyUser
 import community
 import faq
@@ -14,6 +14,10 @@ from api.models import ApiSearch
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from message_notification.models import MessageNotification
+from review_notification.models import ReviewNotification
+from faq_notification.models import FaqNotification
+
 from faq import views as faq_views
 from review import views as review_views
 from faq.models import UserFaq
@@ -21,6 +25,8 @@ from review.models import Review
 from games.models import Game
 from community.models import Community
 import random
+
+import pyttsx3
 
 
 from django.contrib import messages
@@ -45,6 +51,7 @@ class HomePageView(LoginRequiredMixin, View):
         template = 'homepage.html'
 
         user = request.user.id
+        target_user = request.user
         messages = Message.objects.filter(recipient=user)
 
         faqs = UserFaq.objects.all().order_by('-time_created')
@@ -58,6 +65,10 @@ class HomePageView(LoginRequiredMixin, View):
         three_games = random.sample(front_page_photos, 3)
 
         three_photos = []
+
+
+        # can make this function into its own function
+            # so can use on more pages than just homepage
 
         for game in three_games:
             three_photos.append((game.image_background, game.name))
@@ -101,7 +112,15 @@ class HomePageView(LoginRequiredMixin, View):
 
 
 
+        message_notifications = MessageNotification.objects.filter(
+        user_notified=target_user
+        )
+        review_notifications = ReviewNotification.objects.filter(user_notified=target_user)
+        faq_notifications = MessageNotification.objects.filter(user_notified=target_user)
 
+        all_notifications = list(message_notifications) + list(review_notifications) + list(faq_notifications)
+
+        notifications_count = len(all_notifications)
 
 
         context = {
@@ -118,6 +137,7 @@ class HomePageView(LoginRequiredMixin, View):
             "community_game": community_game,
             "community_game_id": community_game_id,
             "possible_community_members": possible_community_members
+            "notifications_count": notifications_count
         }
         return render(request, template, context)
 
@@ -165,14 +185,18 @@ class SignUpView(View):
                 return redirect(reverse("homepage"))    
             except Exception as ex:
                 print ("Something went wrong….",ex)
-                return redirect(reverse("homepage"))    
+                return redirect(reverse("homepage"))
 
 
 class LoginView(View):
     
     def get(self, request):
         template_name = 'generic_form.html'
-        form = LoginForm()
+        # INITIAL = {
+        #     'username': '',
+        #     'password': '',
+        # }
+        form = LoginForm(initial=None)
         return render(request, template_name, {"form": form, "header": "Login"})
 
     def post(self, request):
@@ -199,12 +223,23 @@ class ProfileView(View):
 
     def get(self, request, id):
         template = 'profile.html'
-        user = MyUser.objects.get(id=id)
-        messages = Message.objects.filter(recipient=user)
 
         communities = Community.objects.filter(members=user)
-        print(communities)
-        context = {'user': user, 'messages': messages, 'communities': communities}
+
+        target_user = MyUser.objects.get(id=id)
+        messages = Message.objects.filter(recipient=target_user)
+
+
+        message_notifications = MessageNotification.objects.filter(
+        user_notified=target_user
+        )
+        review_notifications = ReviewNotification.objects.filter(user_notified=target_user)
+        faq_notifications = MessageNotification.objects.filter(user_notified=target_user)
+
+        all_notifications = list(message_notifications) + list(review_notifications) + list(faq_notifications)
+
+        notifications_count = len(all_notifications)
+        context = {'target_user': target_user, 'messages': messages, "notifications_count": notifications_count, 'communities': communities}
         return render(request, template, context)
 
 
@@ -212,30 +247,35 @@ class ProfileView(View):
         ...
 
 
-def edit_profile(request, id):
-    profile_id = request.user.id
-    profile_user = MyUser.objects.get(id=id)
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
+class EditProfile(View):
+    '''can edit your profile'''
+    def get(self, request, id):
+        profile_user = MyUser.objects.get(id=id)
+        form = EditProfileForm(initial={
+        'username': profile_user.username,
+        'bio': profile_user.bio,
+        'email': profile_user.email,
+        'gamer_tag': profile_user.gamer_tag,
+        'picture': profile_user.picture,
+        'favorite_game': profile_user.favorite_game
+        })
+        context = {'form': form}
+        return render(request, 'profile_edit.html', context)
+        
+    def post(self, request, id):
+        profile_id = request.user.id
+        profile_user = MyUser.objects.get(id=id)
+        form = EditProfileForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.cleaned_data
             profile_user.bio=data['bio']
             profile_user.email=data['email']
             profile_user.gamer_tag=data['gamer_tag']
             profile_user.picture=data['picture']
+            profile_user.favorite_game=data['favorite_game']
             profile_user.save()
             print(data['picture'])
             return HttpResponseRedirect(reverse('homepage'))
-    else:
-        form = PostForm(initial={
-        'username': profile_user.username,
-        'bio': profile_user.bio,
-        'email': profile_user.email,
-        'gamer_tag': profile_user.gamer_tag,
-        'picture': profile_user.picture,
-        })
-        context = {'form': form}
-        return render(request, 'profile_edit.html', context)
 
 
 
@@ -302,6 +342,31 @@ class VirtualTour(LoginRequiredMixin, View):
 
         third_image = three_photos[2][0]
         third_title = three_photos[2][1]
+
+        # cynthia
+        engine = pyttsx3.init()
+        engine.setProperty('voice', 'english_rp+f3')
+        engine.say('''
+        Hello and welcome to the gamerzone. Where gamers from all around the world can come to
+        find and create Frequently Asked Questions, Reviews, or just chat about a game with a friend!
+        ''')
+        engine.runAndWait()
+        engine.say('''
+        Dont see a game that you like ? If you will direct your attention to the top of the screen in our navigation bar, we
+        have a games section where you can add a game to our selection!
+        ''')
+        engine.runAndWait()
+        engine.say('''
+        Towards the bottom of the sreen, we have the most recent questions asked, as well as the most
+        active review!
+        ''')
+        engine.runAndWait()
+        engine.say('''
+        See a question that you know the answer to ? Create a thread on that question!
+        ''')
+        engine.runAndWait()
+
+
 
         context = {
             "first_image": first_image,

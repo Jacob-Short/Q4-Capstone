@@ -1,7 +1,7 @@
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-# from games.models import Game
+from games.models import Game
 
 # Create your models here.
 class MyUser(AbstractUser):
@@ -9,7 +9,7 @@ class MyUser(AbstractUser):
     email = models.EmailField()
     picture = models.ImageField(upload_to='images/', max_length=100, default='images/download.png')
     bio = models.TextField(null=True, blank=True)
-    # favorite_game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    favorite_game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.username

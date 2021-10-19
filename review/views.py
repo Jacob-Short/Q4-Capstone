@@ -7,6 +7,9 @@ from review.forms import CreateReviewForm
 
 from community import settings
 
+from review_comment.models import ReviewComment 
+
+
 
 class CreateReview(View):
     '''can create a review on a game in db'''
@@ -52,9 +55,12 @@ class Reviews(View):
 class ReviewDetailView(View):
     
     def get(self, request, id):
-        reviews = Review.objects.get(id=id)
+        review = Review.objects.get(id=id)
+        comments = ReviewComment.objects.filter(review=review)
+
         template = 'review_detail.html'
-        context = {'review': reviews}
+        comments = ReviewComment.objects.filter(review=review)
+        context = {'review': review, 'comments': comments}
 
         return render(request, template, context)
 

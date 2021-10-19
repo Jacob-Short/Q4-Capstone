@@ -12,26 +12,27 @@
     {% block content %}
     <body>
     <h1>User Detail</h1>
-    <h2>Welcome {{request.user.username}}</h2>
+    <h2>Welcome {{target_user.username}}</h2>
 
   
     <div class="card" style="width: 300px; height: 500px">
-      <img src="{{user.picture.url}}" class="card-img-top" alt="why you no show picture!!!" />
+      <img src="{{target_user.picture.url}}" class="card-img-top" alt="why you no show picture!!!" />
       <div class="card-body">
-        <h5 class="card-title">{{user.username}}</h5>
+        <h5 class="card-title">{{target_user.username}}</h5>
         <p class="card-text">
-          {{user.bio}}
+          {{target_user.bio}}
         </p>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item">{{user.email}}</li>
-        <li class="list-group-item">GT: {{user.gamer_tag}}</li>
+        <li class="list-group-item">{{target_user.email}}</li>
+        <li class="list-group-item">GT: {{target_user.gamer_tag}}</li>
+        <li class="list-group-item">Favorite Game: {{target_user.favorite_game}}</li>
         <!-- <li class="list-group-item">A third item</li> -->
       </ul>
       <div class="card-body">
-        <a href="/edit/{{user.id}}" class="card-link">Edit Profile</a>
-        <a href="/message/user/{{user.id}}" class="card-link">Message</a>
-        <a href="/user/{{user.id}}/messages" class="card-link">Messages({{messages.count}})</a>
+        <a href="/edit/{{target_user.id}}" class="card-link">Edit Profile</a>
+        <a href="/message/user/{{target_user.id}}" class="card-link">Message</a>
+        <a href="/user/{{target_user.id}}/messages" class="card-link">Messages({{messages.count}})</a>
       </div>
       {% for community in communities %}
       <a href="/community/{{community.id}}/" class="card-link">Community: {{community.game}}</a>
@@ -41,4 +42,3 @@
     {% endblock %}
   </body>
 </html>
-
