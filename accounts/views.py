@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render, reverse
 from accounts.forms import LoginForm, PostForm, SignupForm, SearchUserForm
 from accounts.models import MyUser
+import community
 import faq
 from message.models import Message
 from django.shortcuts import HttpResponseRedirect, render, reverse, redirect
@@ -18,6 +19,7 @@ from review import views as review_views
 from faq.models import UserFaq
 from review.models import Review
 from games.models import Game
+from community.models import Community
 import random
 
 
@@ -199,7 +201,10 @@ class ProfileView(View):
         template = 'profile.html'
         user = MyUser.objects.get(id=id)
         messages = Message.objects.filter(recipient=user)
-        context = {'user': user, 'messages': messages}
+
+        communities = Community.objects.filter(members=user)
+        print(communities)
+        context = {'user': user, 'messages': messages, 'communities': communities}
         return render(request, template, context)
 
 
