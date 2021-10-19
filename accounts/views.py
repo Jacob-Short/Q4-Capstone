@@ -88,9 +88,14 @@ class HomePageView(LoginRequiredMixin, View):
                         possible_community[game].append(person)
         print(possible_community)
 
+
         for key in possible_community:
             if len(possible_community[key]) > 1:
+                community_game = key
+                community_game_id = key.id
+                possible_community_members = possible_community[key]
                 print('A community is available to be created')
+
 
 
 
@@ -107,7 +112,10 @@ class HomePageView(LoginRequiredMixin, View):
             "messages": messages,
             "faqs": faqs,
             "reviews": reviews,
-            "games": games
+            "games": games,
+            "community_game": community_game,
+            "community_game_id": community_game_id,
+            "possible_community_members": possible_community_members
         }
         return render(request, template, context)
 

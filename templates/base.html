@@ -58,6 +58,12 @@
         {% endif %}
       </ul>
       <ul class="navbar-nav ">
+        {% if community_game %}
+        <li class="nav-item">
+          <a class="nav-link" href="/create_community/{{community_game_id}}/">
+            Create Community
+          </a>
+          {% endif %}
         {% if request.user.username %}
         <li class="nav-item">
           <a class="nav-link" href="/virtual_tour/">

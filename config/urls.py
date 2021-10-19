@@ -23,6 +23,7 @@ from games.urls import urlpatterns as game_url
 from review.urls import urlpatterns as review_url
 from faq.urls import urlpatterns as faq_url
 from faq_comment.urls import urlpatterns as faq_comment_url
+from community.urls import urlpatterns as community_comment_url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,3 +36,4 @@ urlpatterns += game_url
 urlpatterns += review_url
 urlpatterns += faq_url
 urlpatterns += faq_comment_url
+urlpatterns += community_comment_url

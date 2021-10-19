@@ -44,6 +44,6 @@ class CreateCommunity(View):
             community = Community.objects.create(
                 creator=request.user,
                 game=game,
-                members=data['members'],
             )
+            community.members.set(data['members'])
             return HttpResponseRedirect(reverse("homepage"))

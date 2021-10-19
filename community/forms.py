@@ -3,4 +3,4 @@ from games.models import Game
 from accounts.models import MyUser
 
 class CreateCommunityForm(forms.Form):
-    members = forms.ModelMultipleChoiceField(MyUser)
+    members = forms.ModelMultipleChoiceField(queryset=MyUser.objects.all())
