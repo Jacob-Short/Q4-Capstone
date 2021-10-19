@@ -15,6 +15,7 @@ import os
 
 from dotenv import load_dotenv
 
+
 project_folder = os.path.expanduser('./')
 
 load_dotenv(os.path.join(project_folder, '.env'))
@@ -58,7 +59,11 @@ INSTALLED_APPS = [
     'review_comment',
     'crispy_forms',
     'community',
-    'notification',
+    'all_notifications',
+    'message_notification',
+    'review_notification',
+    'faq_notification',
+
 ]
 
 MIDDLEWARE = [

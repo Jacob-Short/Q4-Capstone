@@ -34,6 +34,9 @@
           <a href="/message/user/{{target_user.id}}" class="card-link">Message</a>
         </div>
       </div>
+      {% for community in communities %}
+      <a href="/community/{{community.id}}/" class="card-link">Community: {{community.game}}</a>
+      {% endfor %}
     </div>
     </body>
     {% endblock %}

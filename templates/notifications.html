@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications</title>
+</head>
+
+<body>
+  {% block content %}
+  <div>
+    <h1>Message Notifications</h1>
+    {% for noti in message_notifications %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">{{noti.message}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{noti.user_notified.username}}</h6>
+          <!-- <p class="card-text">{{noti.message}}</p> -->
+          <p class="card-text">{{noti.isNew}}</p>
+          <a href="{% url 'homepage' %}" class="card-link">Go Back Home</a>
+        </div>
+      </div>
+    {% endfor %}
+</div>
+<div>
+    <h1>Review Notifications</h1>
+    {% for noti in review_notifications %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Someone commented on {{noti.review}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{noti.user_notified.username}}</h6>
+          <!-- <p class="card-text">{{noti.message}}</p> -->
+          <p class="card-text">{{noti.isNew}}</p>
+          <a href="{% url 'homepage' %}" class="card-link">Go Back Home</a>
+        </div>
+      </div>
+    {% endfor %}
+</div>
+<div>
+    <h1>Faq Notifications</h1>
+    {% for noti in faq_notifications %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Someone commented on {{noti.faq}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{noti.user_notified.username}}</h6>
+          <!-- <p class="card-text">{{noti.message}}</p> -->
+          <p class="card-text">{{noti.isNew}}</p>
+          <a href="{% url 'homepage' %}" class="card-link">Go Back Home</a>
+        </div>
+      </div>
+    {% endfor %}
+</div>
+  {% endblock %}
+</body>
+
+</html>

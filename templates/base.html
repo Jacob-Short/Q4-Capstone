@@ -58,6 +58,12 @@
         {% endif %}
       </ul>
       <ul class="navbar-nav ">
+        {% if community_game %}
+        <li class="nav-item">
+          <a class="nav-link" href="/create_community/{{community_game_id}}/">
+            Create Community
+          </a>
+          {% endif %}
         {% if request.user.username %}
         <li class="nav-item" style="font-size: 14px;">
           <a class="nav-link" href="/virtual_tour/">
@@ -65,9 +71,9 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/notifications/">
             <i class="fa fa-envelope-o">
-              <span class="badge badge-warning">0</span>
+              <span class="badge badge-warning">{{notifications_count}}</span>
             </i>
             Notifications
           </a>

@@ -6,6 +6,7 @@ from django.views.generic import View
 from review_comment.forms import AddReviewCommentForm
 
 from review_comment.models import ReviewComment
+from review_notification.views import create_review_notification
 # from review.models import User
 
 class CreateReviewComment(View):
@@ -26,4 +27,6 @@ class CreateReviewComment(View):
                 review = review,
                 user_created = request.user,
             )
+            created_review = review.user_created
+            create_review_notification(review, created_review)
             return redirect('homepage')
