@@ -85,29 +85,29 @@ class HomePageView(LoginRequiredMixin, View):
         third_title = three_photos[2][1]
 
         # checking for community
-        possible_community = {}
+        # possible_community = {}
 
 
-        for game in games:
-            specific_game_review_users = Review.objects.filter(game=game)
-            specific_game_faq_users = UserFaq.objects.filter(game=game)
-            review_users = [x.user_created for x in specific_game_review_users]
-            faq_users = [x.user for x in specific_game_faq_users]
-            for person in review_users:
-                if person in faq_users:
-                    if game not in possible_community:
-                        possible_community[game] = [person]
-                    else:
-                        possible_community[game].append(person)
-        print(possible_community)
+        # for game in games:
+        #     specific_game_review_users = Review.objects.filter(game=game)
+        #     specific_game_faq_users = UserFaq.objects.filter(game=game)
+        #     review_users = [x.user_created for x in specific_game_review_users]
+        #     faq_users = [x.user for x in specific_game_faq_users]
+        #     for person in review_users:
+        #         if person in faq_users:
+        #             if game not in possible_community:
+        #                 possible_community[game] = [person]
+        #             else:
+        #                 possible_community[game].append(person)
+        # print(possible_community)
 
 
-        for key in possible_community:
-            if len(possible_community[key]) > 1:
-                community_game = key
-                community_game_id = key.id
-                possible_community_members = possible_community[key]
-                print('A community is available to be created')
+        # for key in possible_community:
+        #     if len(possible_community[key]) > 1:
+        #         community_game = key
+        #         community_game_id = key.id
+        #         possible_community_members = possible_community[key]
+        #         print('A community is available to be created')
 
 
 

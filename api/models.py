@@ -27,6 +27,15 @@ class ApiSearch():
         res = data["results"]
         return res
 
+
+    def get_all_next_games(self, num):
+        '''gets a list of all games in db'''
+        url = self.apiurl + f'/games?key={TOKEN}&page={num}'
+        response = self.session.get(url)
+        data = response.json()
+        res = data["results"]
+        return res
+
     
     def get_three_games(self):
         '''returns 3 random images'''

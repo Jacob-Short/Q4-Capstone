@@ -42,7 +42,7 @@ class Game(models.Model):
     rating = models.CharField(max_length=150, choices=RATING_CHOICES)
     # screen_shots = models.CharField(max_length=150)
     platform = models.CharField(max_length=150, choices=SYS_CHOICES)
-    released_at = models.DateField()
+    released_at = models.DateField(null=True, blank=True)
     image_background = models.ImageField(upload_to="images/", null=True, blank=True)
 
     # reviews = models.ForeignKey(Review, on_delete=models.CASCADE, null=True, blank=True)

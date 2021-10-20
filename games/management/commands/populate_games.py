@@ -10,6 +10,8 @@ class Command(BaseCommand):
             req = ApiSearch()
             api_games = req.get_all_games()
 
+            
+
             second_req = SecondApiSearch()
 
             page_one = second_req.get_first_page()
@@ -32,6 +34,21 @@ class Command(BaseCommand):
                         released_at = game['released'],
                         image_background = game['background_image'],
                     )
+
+                start = 2
+                for num in range(start, 200):
+                    all_next_api_pages = req.get_all_next_games(num)
+
+                    for gm in all_next_api_pages:
+                        populated_game = Game.objects.create(
+                            name = gm['name'],
+                            slug = gm['slug'],
+                            rating = gm['rating'],
+                            platform = get_platform(gm['platforms']),
+                            released_at = gm['released'],
+                            image_background = gm['background_image'],
+                        )
+                        start = start + 1
 
                 for w in page_one:
                     populated_game = Game.objects.create(
