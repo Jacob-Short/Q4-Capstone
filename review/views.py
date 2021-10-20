@@ -87,3 +87,9 @@ class FilteredReviews(View):
 
     def post(self, request):
         ...
+
+
+def delete_review(request, id):
+    review = Review.objects.get(id=id)
+    review.delete()
+    return redirect('/')
