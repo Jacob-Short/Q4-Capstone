@@ -6,7 +6,7 @@ from faq_comment.forms import AddFaqCommentForm
 
 from faq_comment.models import FaqComment
 from faq.models import UserFaq
-
+from message.models import Message
 from faq_notification.models import FaqNotification
 from faq_notification.views import create_faq_notification
 
@@ -16,7 +16,9 @@ class CreateFaqComment(View):
 
     def get(self, request, id):
         form = AddFaqCommentForm()
-        context = {'form': form}
+        target_user = request.user.id
+        messages = Message.objects.filter(recipient=target_user)
+        context = {'messages': messages, 'form': form}
         return render(request, 'generic_form.html', context)
 
 

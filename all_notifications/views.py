@@ -6,7 +6,6 @@ from faq_notification.models import FaqNotification
 
 # from message_notification.models import MessageNotification
 from accounts.models import MyUser
-
 from django.db.models import Q
 
 def notify_seen(notifications):
@@ -42,7 +41,7 @@ def get_notification_count(logged_in_user):
 def notification_view(request):
     target_user = request.user
     new_notifications = []
-
+    messages = Message.objects.filter(recipient=target_user)
     new_message_notifications = MessageNotification.objects.filter(
         Q(user_notified=target_user) & Q(isNew=True)
     )
@@ -88,7 +87,8 @@ def notification_view(request):
         "new_message_notifications": new_message_notifications,
         "new_review_notifications": new_review_notifications,
         "new_faq_notifications": new_faq_notifications,
-        "old_notifications": old_notifications
+        "old_notifications": old_notifications,
+        "messages": messages
     }
 
     notify_seen(new_notifications)

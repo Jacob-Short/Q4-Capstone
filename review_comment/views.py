@@ -4,7 +4,7 @@ from review.models import Review
 from review_comment.models import ReviewComment
 from django.views.generic import View
 from review_comment.forms import AddReviewCommentForm
-
+from message.models import Message
 from review_comment.models import ReviewComment
 from review_notification.views import create_review_notification
 # from review.models import User
@@ -12,8 +12,10 @@ from review_notification.views import create_review_notification
 class CreateReviewComment(View):
 
     def get(self, request, id):
+        target_user = request.user.id
+        messages = Message.objects.filter(recipient=target_user)
         form = AddReviewCommentForm()
-        context = {'form': form}
+        context = {'form': form, 'messages': messages}
         return render(request, 'generic_form.html', context)
 
     def post(self, request, id):

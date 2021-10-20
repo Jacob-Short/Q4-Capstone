@@ -6,7 +6,7 @@ from review.models import Review
 from review.forms import CreateReviewForm
 
 from community import settings
-
+from message.models import Message
 from review_comment.models import ReviewComment 
 
 
@@ -17,7 +17,9 @@ class CreateReview(View):
     def get(self, request, id):
         template = 'generic_form.html'
         form = CreateReviewForm()
-        context = {'form': form}
+        target_user = request.user.id
+        messages = Message.objects.filter(recipient=target_user)
+        context = {'messages': messages, 'form': form}
         return render(request, template, context)
 
 

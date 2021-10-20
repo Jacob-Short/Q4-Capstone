@@ -83,7 +83,9 @@ class CreateGameView(View):
     def get(self, request):
         template = "create_game.html"
         form = CreateGameForm()
-        context = {"form": form}
+        target_user = request.user.id
+        messages = Message.objects.filter(recipient=target_user)
+        context = {"form": form, 'messages': messages}
         return render(request, template, context)
 
     def post(self, request):

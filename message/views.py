@@ -14,10 +14,18 @@ from all_notifications.views import get_notification_count
 
 
 
+def get_messages_count(logged_in_user):
+    target_user = logged_in_user
+    messages = Message.objects.filter(recipient=target_user)
+
+    messages_count = len(messages)
+    return messages_count
+
 def MessageView(req, id):
     template = "generic_form.html"
+    recip = MyUser.objects.get(id=id)
+    messages = Message.objects.filter(recipient=recip)
     if req.method == "POST":
-        recip = MyUser.objects.get(id=id)
         form = AddTextForm(req.POST)
         if form.is_valid():
             data = form.cleaned_data
@@ -28,7 +36,7 @@ def MessageView(req, id):
 
             return HttpResponseRedirect(reverse("profile", args=(id,)))
     form = AddTextForm()
-    return render(req, "generic_form.html", {"form": form, "header": "message"})
+    return render(req, "generic_form.html", {"messages": messages, "form": form, "header": "message"})
 
 
 def UserMessages(req, id):
@@ -50,3 +58,5 @@ def DeleteMessage(req, id):
     user_id = req.user.id
     del_message.delete()
     return HttpResponseRedirect(reverse("usermessages", args=(user_id,)))
+
+

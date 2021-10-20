@@ -6,7 +6,7 @@ from django.views.generic import View
 from faq.forms import FaqForm
 from faq.models import UserFaq
 from games.models import Game
-
+from message.models import Message
 from faq_comment.models import FaqComment
 
 from community import settings
@@ -14,9 +14,11 @@ from community import settings
 class CreateFaqView(View):
     
     def get(self, request, id):
+        target_user = request.user.id
+        messages = Message.objects.filter(recipient=target_user)
         template_name = "generic_form.html"
         form = FaqForm()
-        return render(request, template_name, {"form": form, "header": "Create a Post"})
+        return render(request, template_name, {'messages': messages, "form": form, "header": "Create a Post"})
 
     def post(self, request, id):
         form = FaqForm(request.POST)

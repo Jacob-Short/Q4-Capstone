@@ -251,6 +251,7 @@ class EditProfile(View):
     '''can edit your profile'''
     def get(self, request, id):
         profile_user = MyUser.objects.get(id=id)
+        messages = Message.objects.filter(recipient=profile_user)
         form = EditProfileForm(initial={
         'username': profile_user.username,
         'bio': profile_user.bio,
@@ -259,7 +260,7 @@ class EditProfile(View):
         'picture': profile_user.picture,
         'favorite_game': profile_user.favorite_game
         })
-        context = {'form': form}
+        context = {'messages': messages, 'form': form}
         return render(request, 'profile_edit.html', context)
         
     def post(self, request, id):
