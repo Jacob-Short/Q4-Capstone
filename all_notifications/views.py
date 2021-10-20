@@ -7,30 +7,91 @@ from faq_notification.models import FaqNotification
 # from message_notification.models import MessageNotification
 from accounts.models import MyUser
 
+from django.db.models import Q
+
+def notify_seen(notifications):
+    for noti in notifications:
+        noti.isNew = False
+        noti.save()
+
+def get_notification_count(logged_in_user):
+    target_user = logged_in_user
+    new_notifications = []
+
+    new_message_notifications = MessageNotification.objects.filter(
+        Q(user_notified=target_user) & Q(isNew=True)
+    )
+    new_review_notifications = ReviewNotification.objects.filter(
+        Q(user_notified=target_user) & Q(isNew=True)
+    )
+    new_faq_notifications = FaqNotification.objects.filter(
+        Q(user_notified=target_user) & Q(isNew=True)
+    )
+
+    new_notifications = (
+        list(new_message_notifications)
+        + list(new_review_notifications)
+        + list(new_faq_notifications)
+    )
+
+    notifications_count = len(new_notifications)
+    return notifications_count
+
+
 
 def notification_view(request):
     target_user = request.user
     new_notifications = []
 
-    message_notifications = MessageNotification.objects.filter(
-        user_notified=target_user
+    new_message_notifications = MessageNotification.objects.filter(
+        Q(user_notified=target_user) & Q(isNew=True)
     )
-    review_notifications = ReviewNotification.objects.filter(user_notified=target_user)
-    faq_notifications = FaqNotification.objects.filter(user_notified=target_user)
+    new_review_notifications = ReviewNotification.objects.filter(
+        Q(user_notified=target_user) & Q(isNew=True)
+    )
+    new_faq_notifications = FaqNotification.objects.filter(
+        Q(user_notified=target_user) & Q(isNew=True)
+    )
 
-    all_notifications = list(message_notifications) + list(review_notifications) + list(faq_notifications)
+    new_notifications = (
+        list(new_message_notifications)
+        + list(new_review_notifications)
+        + list(new_faq_notifications)
+    )
 
-    notifications_count = len(all_notifications)
+    notifications_count = get_notification_count(request.user)
 
-    print(all_notifications)
-    print(f'messages: {message_notifications}')
-    print(f'reviews: {review_notifications}')
+    # old notifications
+    old_message_notifications = MessageNotification.objects.filter(
+        Q(user_notified=target_user) & Q(isNew=False)
+    )
+    old_review_notifications = ReviewNotification.objects.filter(
+        Q(user_notified=target_user) & Q(isNew=False)
+    )
+    old_faq_notifications = FaqNotification.objects.filter(
+        Q(user_notified=target_user) & Q(isNew=False)
+    )
+
+    old_notifications = (
+        list(old_message_notifications)
+        + list(old_review_notifications)
+        + list(old_faq_notifications)
+    )
+
+    print(new_notifications)
+    print(f"messages: {new_message_notifications}")
+    print(f"reviews: {new_review_notifications}")
 
     context = {
         "request": request,
         "notifications_count": notifications_count,
-        "message_notifications": message_notifications,
-        "review_notifications": review_notifications,
-        "faq_notifications": faq_notifications,
+        "new_message_notifications": new_message_notifications,
+        "new_review_notifications": new_review_notifications,
+        "new_faq_notifications": new_faq_notifications,
+        "old_notifications": old_notifications
     }
+
+    notify_seen(new_notifications)
     return render(request, "notifications.html", context)
+
+

@@ -5,36 +5,39 @@ from .models import Community, CommunityMessage
 from games.models import Game
 from .forms import CreateCommunityForm, CreateCommunityMessageForm
 
+from all_notifications.views import get_notification_count
+
 import sqlite3
 
+
 class AbilityToCreateCommunity(View):
-    '''when 2 or more users leave a review and faq on the same
-    game, a community will then become available to create'''
-    
+    """when 2 or more users leave a review and faq on the same
+    game, a community will then become available to create"""
+
     def get(self, request, id):
-        '''checking if a community is available'''
-        conn = sqlite3.connect('db.sqlite3')
+        """checking if a community is available"""
+        conn = sqlite3.connect("db.sqlite3")
         c = conn.cursor()
-        c.execute('''
+        c.execute(
+            """
             SELECT username FROM accounts_myuser
             WHERE 
-        ''')
-
+        """
+        )
 
     def post(self, request, id):
         ...
 
 
 class CreateCommunity(View):
-    '''when 2 or more users leave a review and faq on the same
-    game, a community will then become available to create'''
-    
-    def get(self, request):
-        template = 'generic_form.html'
-        form = CreateCommunityForm()
-        context = {'form': form}
-        return render(request, template, context)
+    """when 2 or more users leave a review and faq on the same
+    game, a community will then become available to create"""
 
+    def get(self, request):
+        template = "generic_form.html"
+        form = CreateCommunityForm()
+        context = {"form": form}
+        return render(request, template, context)
 
     def post(self, request):
         form = CreateCommunityForm(request.POST)
@@ -42,34 +45,39 @@ class CreateCommunity(View):
             data = form.cleaned_data
             community = Community.objects.create(
                 creator=request.user,
-                game=data['game'],
+                game=data["game"],
             )
-            community.members.set(data['members'])
+            community.members.set(data["members"])
             return HttpResponseRedirect(reverse("homepage"))
 
 
 class CommunityView(View):
-    '''when 2 or more users leave a review and faq on the same
-    game, a community will then become available to create'''
-    
+    """when 2 or more users leave a review and faq on the same
+    game, a community will then become available to create"""
+
     def get(self, request, id):
-        template = 'community.html'
+        template = "community.html"
         form = CreateCommunityMessageForm()
         community = Community.objects.get(id=id)
         community_messages = CommunityMessage.objects.filter(community=community)
-        context = {'community': community, 'form': form, 'community_messages': community_messages}
-        return render(request, template, context)
 
+        notifications_count = get_notification_count(request.user)
+
+        context = {
+            "community": community,
+            "form": form,
+            "community_messages": community_messages,
+            "notifications_count": notifications_count,
+        }
+        return render(request, template, context)
 
     def post(self, request, id):
         form = CreateCommunityMessageForm(request.POST)
-        community=Community.objects.get(id=id)
+        community = Community.objects.get(id=id)
         if form.is_valid():
             data = form.cleaned_data
-            CommunityMessage.objects.create(
-                message=data['message'],
-                author=request.user,
-                community=community
+            message = CommunityMessage.objects.create(
+                message=data["message"], author=request.user, community=community
             )
             community.messages.set(message)
             return HttpResponseRedirect(reverse("community", args=(id,)))

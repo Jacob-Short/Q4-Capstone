@@ -9,8 +9,7 @@ def create_faq_notification(faq, tagged):
     names = [x.username for x in all_users]
     print(names)
     user_string = ''
-    for person in tagged:
-        user_string += person
+    user_string += str(tagged)
     print(user_string)
     target_user = MyUser.objects.get(username=user_string)
     notification = FaqNotification.objects.create(

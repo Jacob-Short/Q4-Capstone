@@ -10,6 +10,9 @@ from message_notification.models import MessageNotification
 from review_notification.models import ReviewNotification
 from faq_notification.models import FaqNotification
 
+from all_notifications.views import get_notification_count
+
+
 
 def MessageView(req, id):
     template = "generic_form.html"
@@ -31,17 +34,8 @@ def MessageView(req, id):
 def UserMessages(req, id):
     target_user = MyUser.objects.get(id=id)
 
-    message_notifications = MessageNotification.objects.filter(
-        user_notified=target_user
-    )
-    review_notifications = ReviewNotification.objects.filter(user_notified=target_user)
-    faq_notifications = MessageNotification.objects.filter(user_notified=target_user)
-    all_notifications = (
-        list(message_notifications)
-        + list(review_notifications)
-        + list(faq_notifications)
-    )
-    notifications_count = len(all_notifications)
+    notifications_count = get_notification_count(req.user)
+
 
     messages = Message.objects.filter(recipient=target_user)
     context = {

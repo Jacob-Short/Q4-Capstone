@@ -33,6 +33,8 @@ from django.contrib import messages as django_messages
 import smtplib
 import sqlite3
 
+from all_notifications.views import get_notification_count
+
 # from community import settings
 
 
@@ -120,7 +122,7 @@ class HomePageView(LoginRequiredMixin, View):
 
         all_notifications = list(message_notifications) + list(review_notifications) + list(faq_notifications)
 
-        notifications_count = len(all_notifications)
+        notifications_count = get_notification_count(request.user)
 
 
         context = {
@@ -235,16 +237,8 @@ class ProfileView(View):
         communities = Community.objects.filter(members=target_user)
         messages = Message.objects.filter(recipient=target_user)
 
+        notifications_count = notifications_count = get_notification_count(request.user)
 
-        message_notifications = MessageNotification.objects.filter(
-        user_notified=request.user
-        )
-        review_notifications = ReviewNotification.objects.filter(user_notified=request.user)
-        faq_notifications = MessageNotification.objects.filter(user_notified=request.user)
-
-        all_notifications = list(message_notifications) + list(review_notifications) + list(faq_notifications)
-
-        notifications_count = len(all_notifications)
         context = {'target_user': target_user, 'messages': messages, "notifications_count": notifications_count, 'communities': communities}
         return render(request, template, context)
 

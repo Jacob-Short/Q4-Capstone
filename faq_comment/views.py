@@ -7,6 +7,9 @@ from faq_comment.forms import AddFaqCommentForm
 from faq_comment.models import FaqComment
 from faq.models import UserFaq
 
+from faq_notification.models import FaqNotification
+from faq_notification.views import create_faq_notification
+
 
 class CreateFaqComment(View):
     '''can create a comment on a review'''
@@ -19,6 +22,7 @@ class CreateFaqComment(View):
 
     def post(self, request, id):
         faq = UserFaq.objects.get(id=id)
+        faq_created = faq.user
         form = AddFaqCommentForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
@@ -28,4 +32,5 @@ class CreateFaqComment(View):
                 user = request.user,
                 faq=faq
             )
+            create_faq_notification(faq, faq_created)
             return redirect('homepage')
