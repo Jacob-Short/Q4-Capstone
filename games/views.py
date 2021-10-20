@@ -11,6 +11,7 @@ from faq_notification.models import FaqNotification
 
 from all_notifications.views import get_notification_count
 
+import random
 
 
 class GamesHomeView(View):
@@ -18,7 +19,9 @@ class GamesHomeView(View):
 
     def get(self, request):
         form = SearchGameForm()
-        games = Game.objects.all()
+        all_games = [game for game in Game.objects.all()]
+
+        games = random.sample(all_games, 250)
         template = "games.html"
         user = request.user.id
         messages = Message.objects.filter(recipient=user)

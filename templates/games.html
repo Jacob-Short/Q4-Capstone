@@ -16,14 +16,22 @@
   <body>
     {% block content %}
     <div class="homepage-header">
-      <h1>Data base games</h1>
+      <h1>All games</h1>
     </div>
     <form class="row gy-2 gx-3 align-items-center" method="post">
       {% csrf_token %} {{ form.as_p }}
     </form>
-    <a href="/create_game/">
-      <button>Add a Game</button>
+    <div class="d-grid gap-2 d-md-block">
+      <a href="/create_game/">
+      <button class="btn btn-primary" type="button">Add a Game</button>
     </a>
+    <a href="/reviews/">
+      <button class="btn btn-info" type="button">All Reviews</button>
+    </a>
+    <a href="/faqshome/">
+      <button class="btn btn-info" type="button">All FAQs</button>
+    </a>
+    </div>
     <div id="games">
       {% for game in games %}
       <div
