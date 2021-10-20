@@ -99,7 +99,16 @@
       <p> {{faq.question}}</p>
     </a>
       <a href="/profile/{{faq.user.id}}/">
-      <footer class="blockquote-footer">  <cite title="Source Title">Created By: {{faq.user}}</cite></footer>
+      <footer class="blockquote-footer">  <cite title="Source Title">
+        Created By: {{faq.user}}
+      <a href="/profile/{{faq.user.id}}/">
+        <img  src="{{faq.user.picture.url}}" alt="Your profile photo" style="
+      height: 50px; 
+      width: 50px;
+      border-radius: 25px;
+      "/>
+      </cite></footer>
+      </a>
     </a>
     </blockquote>
     <div class="card-body">
@@ -126,7 +135,15 @@
           <p> {{review.text}}</p>
         </a>
         <a href="/profile/{{review.user_created.id}}/">
-          <footer class="blockquote-footer">  <cite title="Source Title">Created By: {{review.user_created}}</cite></footer>
+          <footer class="blockquote-footer">  <cite title="Source Title">Created By: {{review.user_created}}
+            <a href="/profile/{{review.user_created.id}}/">
+              <img  src="{{review.user_created.picture.url}}" alt="Your profile photo" style="
+            height: 50px; 
+            width: 50px;
+            border-radius: 25px;
+            "/>
+            </a>
+          </cite></footer>
         </a>
         </blockquote>
         <div class="card-body">

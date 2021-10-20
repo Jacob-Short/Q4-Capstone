@@ -16,14 +16,27 @@
   {% load crispy_forms_tags %}
   
     {% block content %}
-        <h2>Group Message Between:</h2>
+        <h2><b>Group Message Between:</b></h2>
         {% for member in community.members.all %}
-        <h2>{{member}}</h2>
+        <h2>{{member}} <a href="/profile/{{member.id}}/">
+          <img  src="{{member.picture.url}}" alt="Your profile photo" style="
+        height: 50px; 
+        width: 50px;
+        border-radius: 25px;
+        "/>
+        </a></h2>
         {% endfor %}
-        <h2>Creator: {{community.creator}}</h2>
-        <h2>Created at: {{community.time_created}}</h2>
-        <h2>Game: {{community.game}}</h2>
-        <h2>Messages:</h2>
+        <h2><b>Creator:</b> {{community.creator}}
+          <a href="/profile/{{community.creator.id}}/">
+            <img  src="{{community.creator.picture.url}}" alt="Your profile photo" style="
+          height: 50px; 
+          width: 50px;
+          border-radius: 25px;
+          "/>
+          </a></h2>
+        <h2><b>Created at:</b></h2> {{community.time_created}}</h2>
+        <h2><b>Game:</b> {{community.game}}</h2>
+        <h2><b>Messages:</b></h2>
         {% for message in community_messages.all %}
         <div class="card mb-1">
           <div class="card-body">

@@ -67,17 +67,15 @@ input {
 }
 #forms {
   display: flex;
-  background-image: url("/media/images/Kratos.jpeg ");
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 440px;
+  width: 650px;
   height: 650px;
   margin-left: 30%;
   margin-top: 20px;
-  color: #ffc107;
   font-weight: bold;
-  box-shadow: 4px 4px 30px black;
+  
 }
 
 .forms-body {
