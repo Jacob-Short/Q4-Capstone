@@ -154,8 +154,8 @@
     {% endfor %}
     </div>
     <div class="homepage-item" style="width: 350px;">
-      <h2>Top Searched Games</h2>
-        {% for game in games|slice:":9" %}
+      <h2>Daily Picks</h2>
+        {% for game in random_games %}
         <ul>
           <li>{{game.name}}</li>
         </ul>

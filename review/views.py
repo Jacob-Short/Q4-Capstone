@@ -7,7 +7,9 @@ from review.forms import CreateReviewForm
 
 from community import settings
 from message.models import Message
-from review_comment.models import ReviewComment 
+from review_comment.models import ReviewComment
+
+from all_notifications.views import get_notification_count
 
 
 
@@ -60,9 +62,14 @@ class ReviewDetailView(View):
         review = Review.objects.get(id=id)
         comments = ReviewComment.objects.filter(review=review)
 
+
+        notifications_count = get_notification_count(request.user)
+
+        messages = Message.objects.filter(recipient=request.user)
+
         template = 'review_detail.html'
         comments = ReviewComment.objects.filter(review=review)
-        context = {'review': review, 'comments': comments}
+        context = {'review': review, 'comments': comments, 'notifications_count': notifications_count, 'messages': messages}
 
         return render(request, template, context)
 

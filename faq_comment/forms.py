@@ -12,4 +12,3 @@ class AddInitialFaqCommentForm(forms.Form):
 
 class AddFaqCommentForm(forms.Form):
     answer = forms.CharField(max_length=200)
-    previous_answer = TreeNodeChoiceField(queryset=FaqComment.objects.all(), level_indicator="+--", required=False)

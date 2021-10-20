@@ -15,7 +15,7 @@
         <h1>{{target_user.gamer_tag}}'s Profile</h1>
       </div>
     <div class="profile-container">
-      <div class="card" style="margin-top:20px; width: 500px; height: 800px; box-shadow:4px 4px 30px black;">
+      <div class="card" style="margin-top:20px; width: 500px; height: 850px; box-shadow:4px 4px 30px black;">
         <img style="border-radius: 230px;"src="{{target_user.picture.url}}" class="card-img-top" alt="why you no show picture!!!" />
         <div class="card-body">
           <h5 class="card-title">{{target_user.username}}</h5>
@@ -36,8 +36,10 @@
           <a href="/message/user/{{target_user.id}}" class="card-link">Message</a>
         </div>
       </div>
-
+      <br>
       <a href="/create_community/" class="card-link"><button type="button" class="btn btn-success">Create A Group Chat About A Game</button></a>
+      <br>
+
       {% if request.user.username == target_user.username %}
       {% if communities %}
       {% for community in communities %}

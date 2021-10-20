@@ -9,6 +9,8 @@ from all_notifications.views import get_notification_count
 from message.models import Message
 import sqlite3
 
+from all_notifications.views import get_notification_count
+
 
 class AbilityToCreateCommunity(View):
     """when 2 or more users leave a review and faq on the same
@@ -36,7 +38,13 @@ class CreateCommunity(View):
     def get(self, request):
         template = "generic_form.html"
         form = CreateCommunityForm()
-        context = {"form": form}
+        notifications_count = get_notification_count(request.user)
+        messages = Message.objects.filter(recipient=request.user)
+        context = {
+            "form": form,
+            "notifications_count": notifications_count,
+            "messages": messages,
+        }
         return render(request, template, context)
 
     def post(self, request):
@@ -60,7 +68,9 @@ class CommunityView(View):
         messages = Message.objects.filter(recipient=request.user)
         form = CreateCommunityMessageForm()
         community = Community.objects.get(id=id)
-        community_messages = CommunityMessage.objects.filter(community=community).order_by("-id")
+        community_messages = CommunityMessage.objects.filter(
+            community=community
+        ).order_by("-id")
 
         notifications_count = get_notification_count(request.user)
 
@@ -69,7 +79,7 @@ class CommunityView(View):
             "form": form,
             "community_messages": community_messages,
             "notifications_count": notifications_count,
-            "messages": messages
+            "messages": messages,
         }
         return render(request, template, context)
 

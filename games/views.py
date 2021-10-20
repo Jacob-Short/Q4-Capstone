@@ -9,6 +9,8 @@ from message_notification.models import MessageNotification
 from review_notification.models import ReviewNotification
 from faq_notification.models import FaqNotification
 
+from all_notifications.views import get_notification_count
+
 
 
 class GamesHomeView(View):
@@ -85,7 +87,8 @@ class CreateGameView(View):
         form = CreateGameForm()
         target_user = request.user.id
         messages = Message.objects.filter(recipient=target_user)
-        context = {"form": form, 'messages': messages}
+        notifications_count = get_notification_count(request.user)
+        context = {"form": form, 'messages': messages, 'notifications_count': notifications_count}
         return render(request, template, context)
 
     def post(self, request):

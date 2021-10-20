@@ -25,31 +25,26 @@
           </blockquote>
           <div class="card-body">
             <a href="/create_review_comment/{{review.id}}" class="card-link"><button class="btn btn-primary" type="button">Add a comment</button></a>
-          </div>
-
-
-          {% recursetree comments %}
-
-          <div class="card">
-            <div class="card-header">
-              {{ node.comment }}
-            </div>
-            {% if not node.is_leaf_node %}
-            <div class="card-body">
-              <blockquote class="blockquote mb-0">
-              <ul class="children">
-                <p>{{ children }}</p>
-              </ul>
-              <a href="/profile/{{node.user_created.id}}/">
-              <footer class="blockquote-footer"><cite title="Source Title">Created By {{ node.user_created }}</cite></footer>
-            </a>
-            </blockquote>
-          </div>
-          {% endif %}
-          </div>
-          <hr>
-        {% endrecursetree %}          
+          </div>        
         </div>
+
+        {% recursetree comments %}
+        <ul>
+          <div class="card" style="width: 18rem;">
+            <div class="card-header">
+              {{node.comment}}
+              <h6>Created by: {{node.user}}</h6>
+            <a href="/reply_review_comment/{{node.id}}/" class="card-link"><button class="btn btn-primary btn-sm" type="button">Reply</button></a>
+              
+            </div>
+          </div>
+            {% if not node.is_leaf_node %}
+                <li class="children">
+                    {{ children }}
+                </li>
+                {% endif %}
+              </ul>
+    {% endrecursetree %}
       </div>
 
     

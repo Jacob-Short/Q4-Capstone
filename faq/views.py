@@ -9,23 +9,31 @@ from games.models import Game
 from message.models import Message
 from faq_comment.models import FaqComment
 
+from all_notifications.views import get_notification_count
+
 from community import settings
 
+
 class CreateFaqView(View):
-    
     def get(self, request, id):
         target_user = request.user.id
         messages = Message.objects.filter(recipient=target_user)
         template_name = "generic_form.html"
         form = FaqForm()
-        return render(request, template_name, {'messages': messages, "form": form, "header": "Create a Post"})
+        return render(
+            request,
+            template_name,
+            {"messages": messages, "form": form, "header": "Create a Post"},
+        )
 
     def post(self, request, id):
         form = FaqForm(request.POST)
         game = Game.objects.get(id=id)
         if form.is_valid():
             data = form.cleaned_data
-            faq = UserFaq.objects.create(question=data.get("question"), user=request.user, game=game)
+            faq = UserFaq.objects.create(
+                question=data.get("question"), user=request.user, game=game
+            )
             if game not in settings.faq_users:
                 settings.faq_users[game] = [request.user.username]
             else:
@@ -35,18 +43,25 @@ class CreateFaqView(View):
 
 
 class FaqView(View):
-    
     def get(self, request):
-        faqs = UserFaq.objects.all().order_by('-time_created')
-        return render(request, 'faq.html', {'faqs': faqs})
+        faqs = UserFaq.objects.all().order_by("-time_created")
+        return render(request, "faq.html", {"faqs": faqs})
 
 
 class FaqDetailView(View):
-
     def get(self, request, id):
         faq = UserFaq.objects.get(id=id)
         comments = FaqComment.objects.filter(faq=faq)
 
-        template = 'faq_detail.html'
-        context = {'faq': faq, 'comments': comments}
+        notifications_count = get_notification_count(request.user)
+
+        messages = Message.objects.filter(recipient=request.user)
+
+        template = "faq_detail.html"
+        context = {
+            "faq": faq,
+            "comments": comments,
+            "notifications_count": notifications_count,
+            "messages": messages,
+        }
         return render(request, template, context)
