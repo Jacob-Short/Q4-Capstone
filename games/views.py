@@ -14,6 +14,33 @@ from all_notifications.views import get_notification_count
 import random
 
 
+def filtered_games(request, games):
+    template = "games.html"
+    user = request.user.id
+    messages = Message.objects.filter(recipient=user)
+    message_notifications = MessageNotification.objects.filter(
+        user_notified=user
+    )
+    review_notifications = ReviewNotification.objects.filter(
+        user_notified=user
+    )
+    faq_notifications = MessageNotification.objects.filter(
+        user_notified=user
+    )
+    all_notifications = (
+        list(message_notifications)
+        + list(review_notifications)
+        + list(faq_notifications)
+    )
+    notifications_count = len(all_notifications)
+    context = {
+        "games": games,
+        "messages": messages,
+        "notifications_count": notifications_count,
+    }
+    return render(request, template, context)
+
+
 class GamesHomeView(View):
     """view alll games in db"""
 
@@ -53,19 +80,43 @@ class GamesHomeView(View):
 
     def post(self, request):
         form = SearchGameForm(request.POST)
-        games = Game.objects.all()
-        all_game_names = [game.name for game in games] 
+        user = request.user.id
+        all_game_names = [game.name for game in Game.objects.all()] 
+        message_notifications = MessageNotification.objects.filter(
+            user_notified=user
+        )
+        review_notifications = ReviewNotification.objects.filter(
+            user_notified=user
+        )
+        faq_notifications = MessageNotification.objects.filter(
+            user_notified=user
+        )
+        all_notifications = (
+            list(message_notifications)
+            + list(review_notifications)
+            + list(faq_notifications)
+        )
+        notifications_count = len(all_notifications)
+        messages = Message.objects.filter(recipient=user)
+        print(all_game_names)
         if form.is_valid():
             data = form.cleaned_data
             game = data['search']
-            for title in all_game_names:
-                if title.lower() == game.lower():
-                    print(game)
-                    search_game = Game.objects.get(name=game)
-                    return redirect(reverse("game_detail", args=(search_game.id,)))
-                else:
-                    django_messages.success(request, django_messages.SUCCESS, f"Sorry!, Case Sensitive!")
-                    return redirect('/games/')
+            if game in all_game_names:
+                print(game)
+                # if title.lower() == game.lower():
+                games = Game.objects.filter(name__icontains=game)
+                context = {
+                    "form": form,
+                    "games": games,
+                    "messages": messages,
+                    "notifications_count": notifications_count,
+                }
+                return render(request, 'games.html', context)
+            else:
+                django_messages.success(request, django_messages.SUCCESS, f"Sorry!, Case Sensitive!")
+                return redirect('/games/')
+
 
 
 class GameDetailView(View):
