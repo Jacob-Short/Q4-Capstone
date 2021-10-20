@@ -31,9 +31,18 @@
         </ul>
         <div class="card-body">
           {% if request.user.username == target_user.username %}
-          <a href="/edit/{{target_user.id}}" class="card-link">Edit Profile</a>
+          <a href="/edit/{{target_user.id}}">
+          <button class="btn btn-warning" type="submit">Edit Profile</button>
+        </a>
+        <a href='/delete_account/{{target_user.id}}/'>
+          <button class="btn btn-danger" type="submit">Delete Account</button>
+        </a>
+          {% else %}
+          <a href="/message/user/{{target_user.id}}">
+          <button class="btn btn-success" type="submit">Message</button>
+        </a>
           {% endif %}
-          <a href="/message/user/{{target_user.id}}" class="card-link">Message</a>
+
         </div>
       </div>
       <br>

@@ -275,7 +275,7 @@ class EditProfile(View):
                 "favorite_game": profile_user.favorite_game,
             }
         )
-        context = {"messages": messages, "form": form}
+        context = {"messages": messages, "form": form, 'profile_user': profile_user}
         return render(request, "profile_edit.html", context)
 
     def post(self, request, id):
@@ -408,3 +408,9 @@ class VirtualTour(LoginRequiredMixin, View):
             "games": games,
         }
         return render(request, template, context)
+
+
+def delete_account(request, id):
+    account = MyUser.objects.get(id=id)
+    account.delete()
+    return redirect('/')
