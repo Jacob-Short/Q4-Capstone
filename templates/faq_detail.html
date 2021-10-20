@@ -11,8 +11,8 @@
 
   
   
-    {% block content %}
-    <div class="card">
+    
+    <!-- <div class="card">
         <div class="card-header">
             Game: {{faq.game}}
         </div>
@@ -37,8 +37,52 @@
               </ul>
           {% endif %}
       </li>
-  {% endrecursetree %}
-    
+  {% endrecursetree %} -->
+
+
+
+<!-- new bellow, added card to better organize data -->
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            Game: {{faq.game}}
+        </div>
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <p> {{faq.question}}</p>
+            <a href="/profile/{{faq.user.id}}/">
+            <footer class="blockquote-footer">  <cite title="Source Title">Created By: {{faq.user}}</cite></footer>
+          </a>
+          </blockquote>
+          <div class="card-body">
+            <a href="/create_faq_comment/{{faq.id}}" class="card-link"><button class="btn btn-primary" type="button">Answer Question</button></a>
+          </div>
+
+
+          {% recursetree comments %}
+
+          <div class="card">
+            <div class="card-header">
+              {{ node.comment }}
+            </div>
+            {% if not node.is_leaf_node %}
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+              <ul class="children">
+                <p>{{ children }}</p>
+              </ul>
+              <a href="/profile/{{node.user.id}}/">
+              <footer class="blockquote-footer"><cite title="Source Title">Created By {{ node.user}}</cite></footer>
+            </a>
+            </blockquote>
+          </div>
+          {% endif %}
+          </div>
+          <hr>
+        {% endrecursetree %}          
+        </div>
+      </div>
 {% endblock %}
   </body>
 </html>

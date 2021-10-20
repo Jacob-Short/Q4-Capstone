@@ -9,4 +9,4 @@ class AddInitialReviewCommentForm(forms.Form):
 
 class AddReviewCommentForm(forms.Form):
     comment = forms.CharField(max_length=300)
-    parent = TreeNodeChoiceField(queryset=ReviewComment.objects.all(), level_indicator="+--", required=False)
+    previous_comment = TreeNodeChoiceField(queryset=ReviewComment.objects.all(), level_indicator="+--", required=False)

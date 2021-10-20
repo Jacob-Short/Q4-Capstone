@@ -23,7 +23,7 @@ class CreateReviewComment(View):
             data = form.cleaned_data
             new_comment = ReviewComment.objects.create(
                 comment = data['comment'],
-                parent = data['parent'],
+                parent = data['previous_comment'],
                 review = review,
                 user_created = request.user,
             )
