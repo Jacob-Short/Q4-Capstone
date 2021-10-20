@@ -57,7 +57,13 @@
           </blockquote>
           <div class="card-body">
             <a href="/create_faq_comment/{{faq.id}}" class="card-link"><button class="btn btn-primary" type="button">Answer Question</button></a>
-          </div>      
+          </div> 
+          
+          {% if faq.user.username == request.user.username or request.user.is_staff %}
+          <a href='/delete_faq/{{faq.id}}/'>
+          <button type="button" class="btn btn-danger">Delete</button>  
+        </a>
+          {% endif %}   
         </div>
         {% recursetree comments %}
         <ul>

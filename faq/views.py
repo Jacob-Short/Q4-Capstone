@@ -65,3 +65,9 @@ class FaqDetailView(View):
             "messages": messages,
         }
         return render(request, template, context)
+
+
+def delete_faq(request, id):
+    faq = UserFaq.objects.get(id=id)
+    faq.delete()
+    return redirect('/')
