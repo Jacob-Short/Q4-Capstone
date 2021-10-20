@@ -36,9 +36,34 @@
           <a href="/message/user/{{target_user.id}}" class="card-link">Message</a>
         </div>
       </div>
+
+      <a href="/create_community/" class="card-link"><button type="button" class="btn btn-success">Create A Group Chat About A Game</button></a>
+      {% if request.user.username == target_user.username %}
+      {% if communities %}
       {% for community in communities %}
-      <a href="/community/{{community.id}}/" class="card-link">Community: {{community.game}}</a>
-      {% endfor %}
+      <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{{community.game.image_background}}" class="img-fluid rounded-start" alt="picture-of-game">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <a href='/community/{{community.id}}/'>
+              <h5 class="card-title">Game: {{community.game}}</h5>
+            </a>
+            <p class="card-text">Members:</p>
+            {% for member in community.members.all %}
+              <p class="card-text">{{member}}</p>
+            {% endfor %}
+              <p class="card-text"><small class="text-muted">Created At: {{community.time_created}}</small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+        {% endfor %}
+      {% endif %}
+      {% endif %}
+
     </div>
     </body>
     {% endblock %}

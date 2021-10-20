@@ -29,21 +29,20 @@ class CreateCommunity(View):
     '''when 2 or more users leave a review and faq on the same
     game, a community will then become available to create'''
     
-    def get(self, request, id):
+    def get(self, request):
         template = 'generic_form.html'
         form = CreateCommunityForm()
         context = {'form': form}
         return render(request, template, context)
 
 
-    def post(self, request, id):
+    def post(self, request):
         form = CreateCommunityForm(request.POST)
-        game = Game.objects.get(id=id)
         if form.is_valid():
             data = form.cleaned_data
             community = Community.objects.create(
                 creator=request.user,
-                game=game,
+                game=data['game'],
             )
             community.members.set(data['members'])
             return HttpResponseRedirect(reverse("homepage"))
@@ -57,7 +56,8 @@ class CommunityView(View):
         template = 'community.html'
         form = CreateCommunityMessageForm()
         community = Community.objects.get(id=id)
-        context = {'community': community, 'form': form}
+        community_messages = CommunityMessage.objects.filter(community=community)
+        context = {'community': community, 'form': form, 'community_messages': community_messages}
         return render(request, template, context)
 
 
@@ -71,4 +71,5 @@ class CommunityView(View):
                 author=request.user,
                 community=community
             )
+            community.messages.set(message)
             return HttpResponseRedirect(reverse("community", args=(id,)))

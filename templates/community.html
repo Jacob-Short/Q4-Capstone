@@ -16,12 +16,22 @@
   {% load crispy_forms_tags %}
   
     {% block content %}
-        <h1>Community:</h1>
+        <h2>Group Message Between:</h2>
+        {% for member in community.members.all %}
+        <h2>{{member}}</h2>
+        {% endfor %}
         <h2>Creator: {{community.creator}}</h2>
+        <h2>Created at: {{community.time_created}}</h2>
         <h2>Game: {{community.game}}</h2>
-        <h2>Members: {{community.members}}</h2>
-        <h2>Messages: {{community.messages}}</h2>
-        <h2>Tiem created: {{community.time_created}}</h2>
+        <h2>Messages:</h2>
+        {% for message in community_messages.all %}
+        <div class="card mb-1">
+          <div class="card-body">
+            <p class="card-text">{{message}}</p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          </div>
+        </div>
+        {% endfor %}
 
         <form action="" method="post">
           {% csrf_token %} {{ form | crispy }}
