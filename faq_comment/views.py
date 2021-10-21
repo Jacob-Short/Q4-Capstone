@@ -9,6 +9,7 @@ from faq.models import UserFaq
 from message.models import Message
 from faq_notification.models import FaqNotification
 from faq_notification.views import create_faq_notification
+from django.contrib import messages
 
 from all_notifications.views import get_notification_count
 
@@ -19,11 +20,11 @@ class CreateFaqComment(View):
     def get(self, request, id):
         form = AddFaqCommentForm()
         target_user = request.user.id
-        messages = Message.objects.filter(recipient=target_user)
+        user_messages = Message.objects.filter(recipient=target_user)
 
         notifications_count = get_notification_count(request.user)
         context = {
-            "messages": messages,
+            "user_messages": user_messages,
             "form": form,
             "notifications_count": notifications_count,
         }
@@ -40,6 +41,9 @@ class CreateFaqComment(View):
                 user=request.user,
                 faq=faq,
             )
+            messages.add_message(
+                request, message="Question answered.", level=messages.SUCCESS
+            )
             create_faq_notification(faq, faq_created)
             return redirect("homepage")
 
@@ -50,11 +54,11 @@ class ReplyToFaqComment(View):
         form = AddFaqCommentForm()
         template = 'generic_form.html'
         target_user = request.user.id
-        messages = Message.objects.filter(recipient=target_user)
+        user_messages = Message.objects.filter(recipient=target_user)
 
         notifications_count = get_notification_count(request.user)
         context = {
-            "messages": messages,
+            "user_messages": user_messages,
             "form": form,
             "notifications_count": notifications_count,
         }
@@ -73,6 +77,9 @@ class ReplyToFaqComment(View):
                 user=request.user,
                 faq=faq,
                 parent=comment
+            )
+            messages.add_message(
+                request, message="Reply sent.", level=messages.SUCCESS
             )
             create_faq_notification(faq, faq_created)
             return redirect("homepage")

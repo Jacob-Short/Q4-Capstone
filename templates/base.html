@@ -76,7 +76,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/user/{{request.user.id}}/messages">
             <i class="fa fa-globe">
-              <span class="badge badge-success">{{messages.count}}</span>
+              <span class="badge badge-success">{{user_messages.count}}</span>
             </i>
             Messages
           </a>
@@ -102,12 +102,17 @@
     </div>
   </nav>
 </div>
-  {% if django_messages %}
-  {% for message in django_messages %}
-    <div class="alert alert-danger" role="alert">
-      {{message}}
-    </div>
-  {% endfor %}
+{% if messages %}
+{% for message in messages %}
+<div class="container-fluid p-0">
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
 {% endif %}
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"

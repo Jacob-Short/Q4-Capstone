@@ -8,6 +8,7 @@ from message.views import get_messages_count
 from all_notifications.views import get_notification_count
 from message.models import Message
 import sqlite3
+from django.contrib import messages
 
 from all_notifications.views import get_notification_count
 
@@ -39,11 +40,11 @@ class CreateCommunity(View):
         template = "generic_form.html"
         form = CreateCommunityForm()
         notifications_count = get_notification_count(request.user)
-        messages = Message.objects.filter(recipient=request.user)
+        user_messages = Message.objects.filter(recipient=request.user)
         context = {
             "form": form,
             "notifications_count": notifications_count,
-            "messages": messages,
+            "user_messages": user_messages,
         }
         return render(request, template, context)
 
@@ -56,6 +57,7 @@ class CreateCommunity(View):
                 game=data["game"],
             )
             community.members.set(data["members"])
+            messages.add_message(request, message='You have sucessfully logged out.', level=messages.SUCCESS)
             return HttpResponseRedirect(reverse("homepage"))
 
 
@@ -65,7 +67,7 @@ class CommunityView(View):
 
     def get(self, request, id):
         template = "community.html"
-        messages = Message.objects.filter(recipient=request.user)
+        user_messages = Message.objects.filter(recipient=request.user)
         form = CreateCommunityMessageForm()
         community = Community.objects.get(id=id)
         community_messages = CommunityMessage.objects.filter(
@@ -79,7 +81,7 @@ class CommunityView(View):
             "form": form,
             "community_messages": community_messages,
             "notifications_count": notifications_count,
-            "messages": messages,
+            "user_messages": user_messages,
         }
         return render(request, template, context)
 

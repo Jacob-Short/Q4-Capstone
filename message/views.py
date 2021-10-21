@@ -12,19 +12,21 @@ from faq_notification.models import FaqNotification
 
 from all_notifications.views import get_notification_count
 
+from django.contrib import messages
+
 
 
 def get_messages_count(logged_in_user):
     target_user = logged_in_user
-    messages = Message.objects.filter(recipient=target_user)
+    user_messages = Message.objects.filter(recipient=target_user)
 
-    messages_count = len(messages)
+    messages_count = len(user_messages)
     return messages_count
 
 def MessageView(req, id):
     template = "generic_form.html"
     recip = MyUser.objects.get(id=id)
-    messages = Message.objects.filter(recipient=recip)
+    user_messages = Message.objects.filter(recipient=recip)
     if req.method == "POST":
         form = AddTextForm(req.POST)
         if form.is_valid():
@@ -33,10 +35,12 @@ def MessageView(req, id):
                 message=data["message"], author=req.user, recipient=recip
             )
             create_message_notification(message, recip)
-
+            messages.add_message(
+                req, message="Message sent.", level=messages.SUCCESS
+            )
             return HttpResponseRedirect(reverse("profile", args=(id,)))
     form = AddTextForm()
-    return render(req, "generic_form.html", {"messages": messages, "form": form, "header": "message"})
+    return render(req, "generic_form.html", {"user_messages": user_messages, "form": form, "header": "message"})
 
 
 def UserMessages(req, id):
@@ -45,9 +49,9 @@ def UserMessages(req, id):
     notifications_count = get_notification_count(req.user)
 
 
-    messages = Message.objects.filter(recipient=target_user)
+    user_messages = Message.objects.filter(recipient=target_user)
     context = {
-        "messages": messages,
+        "user_messages": user_messages,
         "notifications_count": notifications_count
     }
     return render(req, "messages.html", context)
@@ -57,6 +61,9 @@ def DeleteMessage(req, id):
     del_message = Message.objects.get(id=id)
     user_id = req.user.id
     del_message.delete()
+    messages.add_message(
+                req, message="Message deleted.", level=messages.ERROR
+            )
     return HttpResponseRedirect(reverse("usermessages", args=(user_id,)))
 
 

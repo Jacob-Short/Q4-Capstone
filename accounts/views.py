@@ -29,7 +29,7 @@ import random
 import pyttsx3
 
 
-from django.contrib import messages as django_messages
+from django.contrib import messages
 import smtplib
 import sqlite3
 
@@ -55,7 +55,7 @@ class HomePageView(LoginRequiredMixin, View):
 
         user = request.user.id
         target_user = request.user
-        messages = Message.objects.filter(recipient=user)
+        user_messages = Message.objects.filter(recipient=user)
 
         faqs = UserFaq.objects.all().order_by("-time_created")
 
@@ -136,7 +136,7 @@ class HomePageView(LoginRequiredMixin, View):
             "second_title": second_title,
             "third_image": third_image,
             "third_title": third_title,
-            "messages": messages,
+            "user_messages": user_messages,
             "faqs": faqs,
             "reviews": reviews,
             "games": games,
@@ -217,21 +217,19 @@ class LoginView(View):
             )
             if user:
                 login(request, user)
-                django_messages.success(request, f"You have successfully logged in")
+                messages.add_message(request, message='You have successfully logged in.', level=messages.SUCCESS)
                 return redirect(reverse("homepage"))
             if user is not None:
                 login(request, user)
                 return redirect(reverse("generic_form.html"))
             else:
-                django_messages.success(
-                    request, f"Invalid credentials, please try again!"
-                )
+                messages.add_message(request, message='Invalid credentials.', level=messages.ERROR)
                 return redirect("login")
 
 
 def logout_view(request):
     logout(request)
-    django_messages.error(request, f"Logged out")
+    messages.add_message(request, message='You have sucessfully logged out.', level=messages.SUCCESS)
     return redirect(reverse("homepage"))
 
 
@@ -243,13 +241,13 @@ class ProfileView(View):
 
         target_user = MyUser.objects.get(id=id)
         communities = Community.objects.filter(members=target_user)
-        messages = Message.objects.filter(recipient=target_user)
+        user_messages = Message.objects.filter(recipient=target_user)
 
         notifications_count = notifications_count = get_notification_count(request.user)
 
         context = {
             "target_user": target_user,
-            "messages": messages,
+            "user_messages": user_messages,
             "notifications_count": notifications_count,
             "communities": communities,
         }
@@ -282,26 +280,33 @@ class EditProfile(View):
         profile_id = request.user.id
         profile_user = MyUser.objects.get(id=id)
         form = EditProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            data = form.cleaned_data
-            profile_user.bio = data["bio"]
-            profile_user.email = data["email"]
-            profile_user.gamer_tag = data["gamer_tag"]
-            profile_user.picture = data["picture"]
-            profile_user.favorite_game = data["favorite_game"]
-            profile_user.save()
-            print(data["picture"])
-            return HttpResponseRedirect(reverse("homepage"))
+        try:
+            if form.is_valid():
+                data = form.cleaned_data
+                profile_user.bio = data["bio"]
+                profile_user.email = data["email"]
+                profile_user.gamer_tag = data["gamer_tag"]
+                profile_user.picture = data["picture"]
+                profile_user.favorite_game = data["favorite_game"]
+                profile_user.save()
+                print(data["picture"])
+                messages.add_message(request, message='You have sucessfully edited your profile.', level=messages.SUCCESS)
+                return HttpResponseRedirect(reverse("profile", args=(id, )))
+        except Exception as err:
+            print(err)
+            messages.add_message(request, message='There was an error editing your profile.', level=messages.ERROR)
+            return HttpResponseRedirect(reverse("profile", args=(id, )))
+
 
 
 def about_devs(request):
     template = "about_devs.html"
     user = request.user.id
-    messages = Message.objects.filter(recipient=user)
+    user_messages = Message.objects.filter(recipient=user)
 
     notifications_count = get_notification_count(request.user)
 
-    context = {"messages": messages, "notifications_count": notifications_count}
+    context = {"user_messages": user_messages, "notifications_count": notifications_count}
     return render(request, template, context)
 
 
@@ -322,9 +327,8 @@ class SearchUsersView(View):
         except Exception as err:
             # need to display message to user that match is not found
             # try checking capitalization
-            django_messages.error(
-                request, f"User does not exist, try checking capitalization"
-            )
+            messages.add_message(request, message='Gamertag does not exist, try checking capitalization.', level=messages.INFO)
+
             print(err)
             return HttpResponseRedirect(reverse("homepage"))
 
@@ -413,4 +417,5 @@ class VirtualTour(LoginRequiredMixin, View):
 def delete_account(request, id):
     account = MyUser.objects.get(id=id)
     account.delete()
+    messages.add_message(request, message='You have sucessfully deleted your account', level=messages.ERROR)
     return redirect('/')

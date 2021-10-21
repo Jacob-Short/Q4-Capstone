@@ -11,19 +11,20 @@ from review_notification.views import create_review_notification
 # from review.models import User
 
 from all_notifications.views import get_notification_count
+from django.contrib import messages
 
 
 class CreateReviewComment(View):
     def get(self, request, id):
         target_user = request.user.id
-        messages = Message.objects.filter(recipient=target_user)
+        user_messages = Message.objects.filter(recipient=target_user)
 
         notifications_count = get_notification_count(request.user)
 
         form = AddReviewCommentForm()
         context = {
             "form": form,
-            "messages": messages,
+            "user_messages": user_messages,
             "notifications_count": notifications_count,
         }
         return render(request, "generic_form.html", context)
@@ -40,6 +41,9 @@ class CreateReviewComment(View):
             )
             created_review = review.user_created
             create_review_notification(review, created_review)
+            messages.add_message(
+                request, message="Comment created.", level=messages.SUCCESS
+            )
             return redirect("homepage")
 
 
@@ -49,11 +53,11 @@ class ReplyToReviewComment(View):
         form = AddReviewCommentForm()
         template = 'generic_form.html'
         target_user = request.user.id
-        messages = Message.objects.filter(recipient=target_user)
+        user_messages = Message.objects.filter(recipient=target_user)
 
         notifications_count = get_notification_count(request.user)
         context = {
-            "messages": messages,
+            "user_messages": user_messages,
             "form": form,
             "notifications_count": notifications_count,
         }
@@ -74,6 +78,9 @@ class ReplyToReviewComment(View):
                 parent=comment
             )
             create_review_notification(review, review_created)
+            messages.add_message(
+                request, message="Reply sent.", level=messages.SUCCESS
+            )
             return redirect("homepage")
 
 

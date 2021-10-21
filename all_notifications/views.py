@@ -41,7 +41,7 @@ def get_notification_count(logged_in_user):
 def notification_view(request):
     target_user = request.user
     new_notifications = []
-    messages = Message.objects.filter(recipient=target_user)
+    user_messages = Message.objects.filter(recipient=target_user)
     new_message_notifications = MessageNotification.objects.filter(
         Q(user_notified=target_user) & Q(isNew=True)
     )
@@ -78,7 +78,7 @@ def notification_view(request):
     )
 
     print(new_notifications)
-    print(f"messages: {new_message_notifications}")
+    print(f"user_messages: {new_message_notifications}")
     print(f"reviews: {new_review_notifications}")
 
     context = {
@@ -88,7 +88,7 @@ def notification_view(request):
         "new_review_notifications": new_review_notifications,
         "new_faq_notifications": new_faq_notifications,
         "old_notifications": old_notifications,
-        "messages": messages
+        "user_messages": user_messages
     }
 
     notify_seen(new_notifications)

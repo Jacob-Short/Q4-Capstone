@@ -11,19 +11,20 @@ from faq_comment.models import FaqComment
 
 from all_notifications.views import get_notification_count
 
+from django.contrib import messages
 from community import settings
 
 
 class CreateFaqView(View):
     def get(self, request, id):
         target_user = request.user.id
-        messages = Message.objects.filter(recipient=target_user)
+        user_messages = Message.objects.filter(recipient=target_user)
         template_name = "generic_form.html"
         form = FaqForm()
         return render(
             request,
             template_name,
-            {"messages": messages, "form": form, "header": "Create a Post"},
+            {"user_messages": user_messages, "form": form, "header": "Create a Post"},
         )
 
     def post(self, request, id):
@@ -38,6 +39,9 @@ class CreateFaqView(View):
                 settings.faq_users[game] = [request.user.username]
             else:
                 settings.faq_users[game].append(request.user.username)
+            messages.add_message(
+                request, message="Question created.", level=messages.SUCCESS
+            )
 
             return HttpResponseRedirect(reverse("homepage"))
 
@@ -45,7 +49,18 @@ class CreateFaqView(View):
 class FaqView(View):
     def get(self, request):
         faqs = UserFaq.objects.all().order_by("-time_created")
-        return render(request, "faq.html", {"faqs": faqs})
+        user_messages = Message.objects.filter(recipient=request.user)
+        notifications_count = get_notification_count(request.user)
+
+        return render(
+            request,
+            "faq.html",
+            {
+                "faqs": faqs,
+                "notifications_count": notifications_count,
+                "messages": messages,
+            },
+        )
 
 
 class FaqDetailView(View):
@@ -55,14 +70,14 @@ class FaqDetailView(View):
 
         notifications_count = get_notification_count(request.user)
 
-        messages = Message.objects.filter(recipient=request.user)
+        user_messages = Message.objects.filter(recipient=request.user)
 
         template = "faq_detail.html"
         context = {
             "faq": faq,
             "comments": comments,
             "notifications_count": notifications_count,
-            "messages": messages,
+            "user_messages": user_messages,
         }
         return render(request, template, context)
 
@@ -70,4 +85,7 @@ class FaqDetailView(View):
 def delete_faq(request, id):
     faq = UserFaq.objects.get(id=id)
     faq.delete()
-    return redirect('/')
+    messages.add_message(
+                request, message="Question deleted.", level=messages.ERROR
+            )
+    return redirect("/")
