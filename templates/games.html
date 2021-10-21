@@ -18,9 +18,12 @@
     <div class="homepage-header">
       <h1>All games</h1>
     </div>
-    <form class="row gy-2 gx-3 align-items-center" method="post">
-      {% csrf_token %} {{ form.as_p }}
-    </form>
+    <div>
+      **Case Sensitive**
+      <form class="row gy-2 gx-3 align-items-center" method="post">
+        {% csrf_token %} {{ form.as_p }}
+      </form>
+    </div>
     <div class="d-grid gap-2 d-md-block">
       <a href="/create_game/">
       <button class="btn btn-primary" type="button">Add a Game</button>

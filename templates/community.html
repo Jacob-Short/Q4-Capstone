@@ -40,8 +40,16 @@
         {% for message in community_messages.all %}
         <div class="card mb-1">
           <div class="card-body">
-            <p class="card-text">{{message}}</p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            <p class="card-text">{{message}} from: {{message.author.gamer_tag}}
+              <a href="/profile/{{message.author.id}}/">
+                <img  src="{{message.author.picture.url}}" alt="Your profile photo" style="
+              height: 50px; 
+              width: 50px;
+              border-radius: 25px;
+              "/>
+              </a>
+            </p>
+            <p class="card-text"><small class="text-muted">{{message.date}}</small></p>
           </div>
         </div>
         {% endfor %}

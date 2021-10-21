@@ -59,9 +59,16 @@
 <div>
   <h1>Old Notifications</h1>
   {% for noti in old_notifications %}
-  <div class="card" style="width: 18rem;">
-      <div class="card-body">
-        <h5 class="card-title">{{noti.message}}</h5>
+  <div class="card" style="width: 18rem; ">
+      <div class="card-body"">
+        {% if noti.faq %}
+
+        <h5 class="card-title" style="color: grey;"><b>Someone Commented On:</b> {{noti.faq}}</h5>
+        {% elif noti.review %}
+        <h5 class="card-title" style="color: grey;">Someone Commented On: {{noti.review}}</h5>
+        {% elif noti.message %}
+        <h5 class="card-title" style="color: grey;">Someone Commented On: {{noti.message}}</h5>
+        {% endif %}
         <h6 class="card-subtitle mb-2 text-muted">{{noti.user_notified.username}}</h6>
       </div>
     </div>
