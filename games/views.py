@@ -18,15 +18,9 @@ def filtered_games(request, games):
     template = "games.html"
     user = request.user.id
     messages = Message.objects.filter(recipient=user)
-    message_notifications = MessageNotification.objects.filter(
-        user_notified=user
-    )
-    review_notifications = ReviewNotification.objects.filter(
-        user_notified=user
-    )
-    faq_notifications = MessageNotification.objects.filter(
-        user_notified=user
-    )
+    message_notifications = MessageNotification.objects.filter(user_notified=user)
+    review_notifications = ReviewNotification.objects.filter(user_notified=user)
+    faq_notifications = MessageNotification.objects.filter(user_notified=user)
     all_notifications = (
         list(message_notifications)
         + list(review_notifications)
@@ -53,15 +47,9 @@ class GamesHomeView(View):
         user = request.user.id
         messages = Message.objects.filter(recipient=user)
 
-        message_notifications = MessageNotification.objects.filter(
-            user_notified=user
-        )
-        review_notifications = ReviewNotification.objects.filter(
-            user_notified=user
-        )
-        faq_notifications = MessageNotification.objects.filter(
-            user_notified=user
-        )
+        message_notifications = MessageNotification.objects.filter(user_notified=user)
+        review_notifications = ReviewNotification.objects.filter(user_notified=user)
+        faq_notifications = MessageNotification.objects.filter(user_notified=user)
         all_notifications = (
             list(message_notifications)
             + list(review_notifications)
@@ -81,16 +69,10 @@ class GamesHomeView(View):
     def post(self, request):
         form = SearchGameForm(request.POST)
         user = request.user.id
-        all_game_names = [game.name for game in Game.objects.all()] 
-        message_notifications = MessageNotification.objects.filter(
-            user_notified=user
-        )
-        review_notifications = ReviewNotification.objects.filter(
-            user_notified=user
-        )
-        faq_notifications = MessageNotification.objects.filter(
-            user_notified=user
-        )
+        all_game_names = [game.name for game in Game.objects.all()]
+        message_notifications = MessageNotification.objects.filter(user_notified=user)
+        review_notifications = ReviewNotification.objects.filter(user_notified=user)
+        faq_notifications = MessageNotification.objects.filter(user_notified=user)
         all_notifications = (
             list(message_notifications)
             + list(review_notifications)
@@ -101,7 +83,7 @@ class GamesHomeView(View):
         print(all_game_names)
         if form.is_valid():
             data = form.cleaned_data
-            game = data['search']
+            game = data["search"]
             if game in all_game_names:
                 print(game)
                 # if title.lower() == game.lower():
@@ -112,11 +94,12 @@ class GamesHomeView(View):
                     "messages": messages,
                     "notifications_count": notifications_count,
                 }
-                return render(request, 'games.html', context)
+                return render(request, "games.html", context)
             else:
-                django_messages.success(request, django_messages.SUCCESS, f"Sorry!, Case Sensitive!")
-                return redirect('/games/')
-
+                django_messages.success(
+                    request, django_messages.SUCCESS, f"Sorry!, Case Sensitive!"
+                )
+                return redirect("/games/")
 
 
 class GameDetailView(View):
@@ -124,8 +107,16 @@ class GameDetailView(View):
 
     def get(self, request, id):
         game = Game.objects.get(id=id)
+
         template = "game_detail.html"
-        context = {"game": game}
+        target_user = request.user.id
+        messages = Message.objects.filter(recipient=target_user)
+        notifications_count = get_notification_count(request.user)
+        context = {
+            "game": game,
+            "notifications_count": notifications_count,
+            "messages": messages,
+        }
 
         return render(request, template, context)
 
@@ -142,7 +133,11 @@ class CreateGameView(View):
         target_user = request.user.id
         messages = Message.objects.filter(recipient=target_user)
         notifications_count = get_notification_count(request.user)
-        context = {"form": form, 'messages': messages, 'notifications_count': notifications_count}
+        context = {
+            "form": form,
+            "messages": messages,
+            "notifications_count": notifications_count,
+        }
         return render(request, template, context)
 
     def post(self, request):

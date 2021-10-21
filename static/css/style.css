@@ -112,6 +112,14 @@ input {
   align-items: center;
   width: auto;
 }
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+}
 /* .profile-container{
   margin-left: 30px;
 } */
