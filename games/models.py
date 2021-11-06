@@ -35,17 +35,14 @@ class Game(models.Model):
         (EXCEPTIONAL, 'exceptional'),
     ]
 
-    # id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=150)
     slug = models.CharField(max_length=150)
-    # language = models.CharField(max_length=150)
     rating = models.CharField(max_length=150, choices=RATING_CHOICES)
-    # screen_shots = models.CharField(max_length=150)
     platform = models.CharField(max_length=150, choices=SYS_CHOICES)
     released_at = models.DateField(null=True, blank=True)
-    image_background = models.ImageField(upload_to="images/", null=True, blank=True)
+    image_background = models.ImageField(upload_to='images/')
+    isNew = models.BooleanField(default=True)
 
-    # reviews = models.ForeignKey(Review, on_delete=models.CASCADE, null=True, blank=True)
 
 
     def __str__(self):

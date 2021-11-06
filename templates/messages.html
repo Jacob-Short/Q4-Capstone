@@ -1,50 +1,53 @@
-
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/style.css' %}"
+    />
     <title>User Detail</title>
   </head>
 
-  
   <body>
-     {% block content %}
-     <div class="homepage-header">
-       <h1>Messages for {{request.user.username}}</h1>
-      </div>
-      
-      <div class="messages-container">
-        {% for item in messages %}
-        <div class="card text-white bg-success mb-3" style="max-width: 20rem;">
-          <div class="card-header" style="
-            background: darkgreen;">
-            Message from: 
-            <a href="/profile/{{item.author.id}}/" style="text-decoration: none;
-            color: white;">
-              <img  src="{{item.author.picture.url}}" alt="Your profile photo" style="
-            height: 40px; 
-            width: 40px;
-            border-radius: 20px;
-            margin-left: 30px;
-            cursor: pointer;
-            
-            "/>
-            {{ item.author }}  
+    {% block content %} {% if target_user.username == signed_in_user.username %}
+    <div class="homepage-header">
+      <h1>Messages for {{ target_user.username }}</h1>
+    </div>
+
+    <div class="messages-container">
+      {% for item in messages %}
+      <div class="card text-white bg-success mb-3" style="max-width: 20rem">
+        <div class="card-header" style="background: darkgreen">
+          Message from:
+          <a
+            href="/profile/{{item.author.id}}/"
+            style="text-decoration: none; color: white"
+          >
+            <img
+              src="{{item.author.picture.url}}"
+              alt="Your profile photo"
+              style="
+                height: 40px;
+                width: 40px;
+                border-radius: 20px;
+                margin-left: 30px;
+                cursor: pointer;
+              "
+            />
+            {{ item.author }}
           </a>
         </div>
         <div class="card-body">
           <h4 class="card-title">{{ item.message }}</h4>
           <p class="card-text">at: {{ item.date }}</p>
         </div>
-        <a href='/delete/message/{{item.id}}'>
-          <button >
-            Delete
-          </button>
+        <a href="/delete/message/{{item.id}}">
+          <button>Delete</button>
         </a>
         <a href="/message/user/{{item.author.id}}">
           <button>reply</button>
@@ -52,11 +55,11 @@
       </div>
       {% endfor %}
     </div>
-      {% endblock %}
-    </body>
-    </html>
-    
-    
-    
-    
-    
+    {% else %}
+    <div>
+      <h2>You do not have access to view this users messages</h2>
+    </div>
+    {% endif %}
+    {% endblock %}
+  </body>
+</html>

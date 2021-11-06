@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, reverse, HttpResponseRedirect
 from .models import Message
 from accounts.models import MyUser
@@ -15,7 +16,6 @@ from all_notifications.views import get_notification_count
 from django.contrib import messages
 
 
-
 def get_messages_count(logged_in_user):
     target_user = logged_in_user
     user_messages = Message.objects.filter(recipient=target_user)
@@ -23,9 +23,11 @@ def get_messages_count(logged_in_user):
     messages_count = len(user_messages)
     return messages_count
 
+
 def MessageView(req, id):
     template = "generic_form.html"
     recip = MyUser.objects.get(id=id)
+    signed_in_user = req.user
     user_messages = Message.objects.filter(recipient=recip)
     if req.method == "POST":
         form = AddTextForm(req.POST)
@@ -35,24 +37,30 @@ def MessageView(req, id):
                 message=data["message"], author=req.user, recipient=recip
             )
             create_message_notification(message, recip)
-            messages.add_message(
-                req, message="Message sent.", level=messages.SUCCESS
-            )
+            messages.add_message(req, message="Message sent.", level=messages.SUCCESS)
             return HttpResponseRedirect(reverse("profile", args=(id,)))
     form = AddTextForm()
-    return render(req, "generic_form.html", {"user_messages": user_messages, "form": form, "header": "message"})
+    context = {
+        "user_messages": user_messages,
+        "form": form,
+        "header": "message",
+        "signed_in_user": signed_in_user,
+    }
+    return render(req, "generic_form.html")
 
 
 def UserMessages(req, id):
     target_user = MyUser.objects.get(id=id)
+    signed_in_user = MyUser.objects.get(id=req.user.id)
 
     notifications_count = get_notification_count(req.user)
-
 
     user_messages = Message.objects.filter(recipient=target_user)
     context = {
         "user_messages": user_messages,
-        "notifications_count": notifications_count
+        "notifications_count": notifications_count,
+        "signed_in_user": signed_in_user,
+        "target_user": target_user
     }
     return render(req, "messages.html", context)
 
@@ -61,9 +69,5 @@ def DeleteMessage(req, id):
     del_message = Message.objects.get(id=id)
     user_id = req.user.id
     del_message.delete()
-    messages.add_message(
-                req, message="Message deleted.", level=messages.ERROR
-            )
+    messages.add_message(req, message="Message deleted.", level=messages.ERROR)
     return HttpResponseRedirect(reverse("usermessages", args=(user_id,)))
-
-

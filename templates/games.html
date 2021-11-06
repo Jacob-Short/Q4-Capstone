@@ -18,7 +18,7 @@
     <div class="homepage-header">
       <h1>All games</h1>
     </div>
-    <div class='profile-container'>
+    <div class="profile-container">
       **Case Sensitive**
       <form class="row gy-2 gx-3 align-items-center" method="post">
         {% csrf_token %} {{ form.as_p }}
@@ -28,11 +28,11 @@
           <button class="btn btn-info" type="button">All Reviews</button>
         </a>
         <a href="/create_game/">
-        <button class="btn btn-primary" type="button">Add a Game</button>
-      </a>
-      <a href="/faqshome/">
-        <button class="btn btn-info" type="button">All FAQs</button>
-      </a>
+          <button class="btn btn-primary" type="button">Add a Game</button>
+        </a>
+        <a href="/faqshome/">
+          <button class="btn btn-info" type="button">All FAQs</button>
+        </a>
       </div>
     </div>
     <div id="games">
@@ -46,11 +46,19 @@
           box-shadow: 4px 4px 30px black;
         "
       >
+        {% if game.isNew == True %}
         <img
-          src="{{game.image_background}}"
+          src="{{ game.image_background }}"
           class="card-img-top"
           alt="picture-of-game"
         />
+        {% else %}
+        <img
+          src="{{ game.image_background.url }}"
+          class="card-img-top"
+          alt="picture-of-game"
+        />
+        {% endif %}
         <div class="card-body">
           <a href="/game_detail/{{game.id}}">
             <h5 class="card-title">{{game.name}}</h5>
@@ -58,9 +66,7 @@
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">Rating: {{game.rating}}</li>
-          <li class="list-group-item">
-            Platform: {{game.platform}}
-          </li>
+          <li class="list-group-item">Platform: {{game.platform}}</li>
           <li class="list-group-item">Release Date: {{game.released_at}}</li>
         </ul>
         <div class="card-body">

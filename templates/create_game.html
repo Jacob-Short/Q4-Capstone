@@ -13,35 +13,16 @@
   </head>
 
   {% load crispy_forms_tags %} {% block content %}
-  <div id="forms-container">
-    <div id="forms">
-      <div class="forms-header">
-        <h1>{{header}}</h1>
-        <br />
-      </div>
-
-      <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %} {{ form | crispy }}
-        <button class="btn-form" type="submit" style="margin-left: 110px">
-          Submit
-        </button>
-      </form>
-      {% if header == "Login" %}
-      <h6>--- not a member? Join us ---</h6>
-      <a class="signup-btn" href="/signup/">
-        <button class="btn-form" type="submit">Sign Up</button>
-      </a>
-      {% elif header == "Signup" %}
-      <h6>--- Already a member? Login! ---</h6>
-      <a class="signup-btn" href="/login/">
-        <button class="btn-form" type="submit">Login</button>
-      </a>
-      {% endif %}
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %} {{ form.as_p }}
+    <input type="submit" value="Submit" />
+  </form>
     </div>
   </div>
 
   {% endblock %}
 </html>
+
 
 
 

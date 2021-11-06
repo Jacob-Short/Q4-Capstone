@@ -130,7 +130,7 @@ class GameDetailView(View):
 
 
 class CreateGameView(View):
-    """can create a review on a game in db"""
+    """can create add a game into db"""
 
     def get(self, request):
         template = "create_game.html"
@@ -158,9 +158,11 @@ class CreateGameView(View):
                 released_at=data["released_at"],
                 image_background=data["image_background"],
             )
+            game.isNew = False
+            game.save()
             messages.add_message(
                 request, message="Game created.", level=messages.SUCCESS
             )
-            return HttpResponseRedirect(reverse("homepage"))
+            return redirect("homepage")
         else:
             print("form is not clean")
