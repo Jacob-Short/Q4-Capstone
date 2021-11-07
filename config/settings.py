@@ -40,7 +40,7 @@ MESSAGE_TAGS = {
 
 # SECURITY WARNING: keep the secret key used in production secret!
 KEY = os.getenv('SECRET_KEY')
-SECRET_KEY = KEY
+SECRET_KEY = 'django-insecure-6qqs+qfw_r!h5cva#qt0q3rcg3xy@#hh^&i%8^@8yowk7#+a-q' 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
