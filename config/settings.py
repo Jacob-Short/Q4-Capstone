@@ -45,7 +45,7 @@ SECRET_KEY = KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'thegamerzone.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'the-gamer-zone.herokuapp.com']
 
 LOGIN_URL = 'login'
 
