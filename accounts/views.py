@@ -188,8 +188,8 @@ class SignUpView(View):
                 smtp_server.sendmail(sent_from, to, email_text)
                 smtp_server.close()
                 print("Email sent successfully!")
-                django_messages.success(
-                    request, django_messages.SUCCESS, f"Login Successful"
+                messages.success(
+                    request, messages.SUCCESS, f"Login Successful"
                 )
                 login(request, user)
                 return redirect(reverse("homepage"))
