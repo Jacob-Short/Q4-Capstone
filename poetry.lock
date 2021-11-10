@@ -2122,11 +2122,8 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-<<<<<<< HEAD
-content-hash = "c1c9f7ff89450164ecf44e12f26643ceb8e2ad2f749a2b2f9086f5a2d6aa4396"
-=======
+
 content-hash = "c10e392430f55ea8a4543e6e7f66b12e843f875f76a869e5d6b970615e278161"
->>>>>>> 8f8f20d (downloaded django-heroku)
 
 [metadata.files]
 asgiref = [

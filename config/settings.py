@@ -45,7 +45,7 @@ SECRET_KEY = 'django-insecure-6qqs+qfw_r!h5cva#qt0q3rcg3xy@#hh^&i%8^@8yowk7#+a-q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'the-gamer-zone.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'the-game-zone.herokuapp.com']
 
 LOGIN_URL = 'login'
 
@@ -155,6 +155,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
