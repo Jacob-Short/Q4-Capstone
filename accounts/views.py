@@ -159,43 +159,77 @@ class SignUpView(View):
         form = SignupForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            user = MyUser.objects.create_user(
-                username=data.get("username"),
-                password=data.get("password"),
-                gamer_tag=data.get("gamer_tag"),
-                email=data.get("email"),
-            )
-
-            gmail_user = "jacobshort.stu@gmail.com"
-            gmail_password = "wlkkouoagzjzzggm"
-
-            sent_from = gmail_user
-            to = user.email
-            subject = "Welcome to Gamerzone!"
-            body = f"""Thank you so much for signing up with us {user.username}!"""
-
-            email_text = f"""
-            From: {sent_from}\n
-            To: {to}\n
-            Subject: {subject}\n
-            {body}
-            """
-
             try:
+                user = MyUser.objects.create_user(
+                    username=data.get("username"),
+                    password=data.get("password"),
+                    gamer_tag=data.get("gamer_tag"),
+                    email=data.get("email"),
+                )
+
+                gmail_user = "jacobshort.stu@gmail.com"
+                gmail_password = "wlkkouoagzjzzggm"
+
+                sent_from = gmail_user
+                to = user.email
+                subject = "Welcome to Gamerzone!"
+                body = f"""Thank you so much for signing up with us {user.username}!"""
+
+                email_text = f"""
+                From: {sent_from}\n
+                To: {to}\n
+                Subject: {subject}\n
+                {body}
+                """
+
                 smtp_server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
                 smtp_server.ehlo()
                 smtp_server.login(gmail_user, gmail_password)
                 smtp_server.sendmail(sent_from, to, email_text)
                 smtp_server.close()
                 print("Email sent successfully!")
-                messages.success(
-                    request, messages.SUCCESS, f"Login Successful"
-                )
+                messages.success(request, messages.SUCCESS, f"Login Successful")
                 login(request, user)
                 return redirect(reverse("homepage"))
             except Exception as ex:
-                print("Something went wrong….", ex)
+                # TODO:
+                # Set up logging when this fails
+                print("When this happens -- Please log the error….", ex)
                 return redirect(reverse("homepage"))
+
+        elif "email-domain" in form._errors:
+            messages.add_message(request, messages.ERROR, form._errors)
+            print(
+                "This should be when form validation fails.. ex: [ 'domain validation' ]"
+            )
+            print(form._errors)
+            return redirect(reverse("signup"))
+        elif "existing-username" in form._errors:
+            messages.add_message(request, messages.ERROR, form._errors)
+            print(
+                "This should be when form validation fails.. ex: [ 'UNIQUE contraint' for username ]"
+            )
+            print(form._errors)
+            return redirect(reverse("signup"))
+        elif "existing-gamer_tag" in form._errors:
+            messages.add_message(request, messages.ERROR, form._errors)
+            print(
+                "This should be when form validation fails.. ex: [ 'UNIQUE contraint' for gamer_tag ]"
+            )
+            print(form._errors)
+            return redirect(reverse("signup"))
+        else:
+            # TODO:
+            # Set up logging when this fails
+            messages.add_message(
+                request,
+                messages.ERROR,
+                f"""development purposes - if this happens, please screen shot error and add 
+                  description of what you did before crashing.""",
+            )
+            print("Something else happened")
+            print(form._errors)
+            return redirect(reverse("signup"))
 
 
 class LoginView(View):
@@ -217,19 +251,27 @@ class LoginView(View):
             )
             if user:
                 login(request, user)
-                messages.add_message(request, message='You have successfully logged in.', level=messages.SUCCESS)
+                messages.add_message(
+                    request,
+                    message="You have successfully logged in.",
+                    level=messages.SUCCESS,
+                )
                 return redirect(reverse("homepage"))
             if user is not None:
                 login(request, user)
                 return redirect(reverse("generic_form.html"))
             else:
-                messages.add_message(request, message='Invalid credentials.', level=messages.ERROR)
+                messages.add_message(
+                    request, message="Invalid credentials.", level=messages.ERROR
+                )
                 return redirect("login")
 
 
 def logout_view(request):
     logout(request)
-    messages.add_message(request, message='You have sucessfully logged out.', level=messages.SUCCESS)
+    messages.add_message(
+        request, message="You have sucessfully logged out.", level=messages.SUCCESS
+    )
     return redirect(reverse("homepage"))
 
 
@@ -273,7 +315,7 @@ class EditProfile(View):
                 "favorite_game": profile_user.favorite_game,
             }
         )
-        context = {"messages": messages, "form": form, 'profile_user': profile_user}
+        context = {"messages": messages, "form": form, "profile_user": profile_user}
         return render(request, "profile_edit.html", context)
 
     def post(self, request, id):
@@ -290,13 +332,20 @@ class EditProfile(View):
                 profile_user.favorite_game = data["favorite_game"]
                 profile_user.save()
                 print(data["picture"])
-                messages.add_message(request, message='You have sucessfully edited your profile.', level=messages.SUCCESS)
-                return HttpResponseRedirect(reverse("profile", args=(id, )))
+                messages.add_message(
+                    request,
+                    message="You have sucessfully edited your profile.",
+                    level=messages.SUCCESS,
+                )
+                return HttpResponseRedirect(reverse("profile", args=(id,)))
         except Exception as err:
             print(err)
-            messages.add_message(request, message='There was an error editing your profile.', level=messages.ERROR)
-            return HttpResponseRedirect(reverse("profile", args=(id, )))
-
+            messages.add_message(
+                request,
+                message="There was an error editing your profile.",
+                level=messages.ERROR,
+            )
+            return HttpResponseRedirect(reverse("profile", args=(id,)))
 
 
 def about_devs(request):
@@ -306,7 +355,10 @@ def about_devs(request):
 
     notifications_count = get_notification_count(request.user)
 
-    context = {"user_messages": user_messages, "notifications_count": notifications_count}
+    context = {
+        "user_messages": user_messages,
+        "notifications_count": notifications_count,
+    }
     return render(request, template, context)
 
 
@@ -327,7 +379,11 @@ class SearchUsersView(View):
         except Exception as err:
             # need to display message to user that match is not found
             # try checking capitalization
-            messages.add_message(request, message='Gamertag does not exist, try checking capitalization.', level=messages.INFO)
+            messages.add_message(
+                request,
+                message="Gamertag does not exist, try checking capitalization.",
+                level=messages.INFO,
+            )
 
             print(err)
             return HttpResponseRedirect(reverse("homepage"))
@@ -417,5 +473,9 @@ class VirtualTour(LoginRequiredMixin, View):
 def delete_account(request, id):
     account = MyUser.objects.get(id=id)
     account.delete()
-    messages.add_message(request, message='You have sucessfully deleted your account', level=messages.ERROR)
-    return redirect('/')
+    messages.add_message(
+        request,
+        message="You have sucessfully deleted your account",
+        level=messages.ERROR,
+    )
+    return redirect("/")
