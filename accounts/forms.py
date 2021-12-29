@@ -5,10 +5,10 @@ from django.forms.fields import EmailField
 from games.models import Game
 from accounts.models import MyUser
 
+
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=100)
     password = forms.CharField(widget=forms.PasswordInput)
-    
 
 
 class SignupForm(forms.Form):
@@ -26,6 +26,7 @@ class SignupForm(forms.Form):
         # get fields from form
         email = self.cleaned_data.get("email")
         username = self.cleaned_data.get("username")
+        gamer_tag = self.cleaned_data.get("gamer_tag")
 
         """
         can use raise ValidationError - although then we 
@@ -50,6 +51,13 @@ class SignupForm(forms.Form):
                 ["Username has been taken, please try a new one."]
             )
 
+        # IntegreityError: [ UNIQUE contraint failed (gamer_tag) ]
+        existing_gamer_tags = [user.gamer_tag for user in MyUser.objects.all()]
+        if gamer_tag in existing_gamer_tags:
+            self._errors["existing-gamer_tag"] = self.error_class(
+                ["Gamer Tag has been taken, please try a new one."]
+            )
+
         # TODO:
         # possiblity of giving a few suggestions based off 1st attempt
         # ex: input = dave, possibilities = ['dave0, 'dave1', 'davey']
@@ -57,7 +65,6 @@ class SignupForm(forms.Form):
         # possible validation for password
 
         return self.cleaned_data
-
 
 
 class EditProfileForm(forms.Form):
